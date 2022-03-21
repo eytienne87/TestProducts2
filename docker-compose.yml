@@ -1,0 +1,50 @@
+version: '3.4'
+
+services:
+  testproducts2:
+    image: ${DOCKER_REGISTRY-}testproducts2
+    container_name: test_products_2
+    build:
+      context: .
+      dockerfile: TestProducts2/Dockerfile
+    ports: 
+      - 5001:80
+    depends_on: 
+      - db
+      - sql-server-db
+    networks: 
+      - myproject
+  sql-server-db:
+    container_name: sql-server-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: always
+    ports:
+      - 2300:1433
+    environment:
+      SA_PASSWORD: Password123
+      ACCEPT_EULA: 'Y'
+    volumes: 
+      - db:/var/lib/sqlserver/data
+    networks:
+      - myproject
+  db:
+    container_name: postgres-server-db
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydbpostgres
+    ports:
+      - 5432:5432
+    volumes: 
+      - db:/var/lib/postgresql/data
+    networks:
+     - myproject
+networks:
+  myproject:
+    driver: bridge
+    name: test
+volumes:
+  db:
+    driver: local
