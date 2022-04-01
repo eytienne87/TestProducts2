@@ -4,6 +4,7 @@ namespace TestProducts2.Models
 {
     public class Benefit : BaseClass
     {
-        public ICollection<ProductBenefit> ProductBenefits { get; set; }
+        public virtual ICollection<Product>? Products { get; set; }
+        public virtual ICollection<BenefitDescription>? Descriptions { get; set; }
     }
 }

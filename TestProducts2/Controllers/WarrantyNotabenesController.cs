@@ -20,70 +20,59 @@ namespace TestProducts2.Controllers
                 _mapper = mapper;
             }
 
-        // GET: api/Dealers
+        // GET: api/WarrantyNotabene
         [HttpGet]
-        public ActionResult<IEnumerable<WarrantyNotabene>> GetAll()
+        public ActionResult<IEnumerable<WarrantyNotabeneReadDto>> GetAll()
 
         {
-            var items = _unitOfWork.WarrantyNotabeneRepository.GetAll();
+            var warrantyNotabeneModels = _unitOfWork.WarrantyNotabeneRepository.GetAll();
 
-            return Ok(items);
+            var mappedWarrantyNotabenes = _mapper.Map<IEnumerable<WarrantyNotabeneReadDto>>(warrantyNotabeneModels);
+
+            return Ok(mappedWarrantyNotabenes);
         }
 
-        // GET api/Dealers/{id}
+        // GET api/WarrantyNotabene/{id}
         [HttpGet("{id}")]
-        public ActionResult<WarrantyNotabene> GetById(int id)
+        public ActionResult<WarrantyNotabeneReadDto> GetById(int id)
         {
-            var item = _unitOfWork.WarrantyNotabeneRepository.GetById(id);
-            if (item != null)
+            var WarrantyNotabene = _unitOfWork.WarrantyNotabeneRepository.GetById(id);
+
+            if (WarrantyNotabene != null)
             {
-                return Ok(item);
+                var mappedWarrantyTitle = _mapper.Map<WarrantyNotabeneReadDto>(WarrantyNotabene);
+                return Ok(mappedWarrantyTitle);
             }
+
             return NotFound();
         }
 
-        // POST api/Dealers
+        // POST api/WarrantyNotabene
         [HttpPost]
-        public ActionResult<WarrantyNotabene> CreateDealer(WarrantyNotabene warrantyNotabene)
+        public ActionResult<WarrantyNotabeneReadDto> CreateWarrantyTitle(WarrantyNotabeneCreateDto warrantyNotabeneCreateDto)
         {
-            var model = _mapper.Map<WarrantyNotabene>(warrantyNotabene);
-            _unitOfWork.WarrantyNotabeneRepository.Create(model);
+            var warrantyNotabene = _mapper.Map<WarrantyNotabene>(warrantyNotabeneCreateDto);
+
+            _unitOfWork.WarrantyNotabeneRepository.Create(warrantyNotabene);
             _unitOfWork.WarrantyNotabeneRepository.SaveChanges();
 
-            //var dealerReadDto = _mapper.Map<DealerReadDto>(dealerModel);
+            var warrantyNotabeneReadDto = _mapper.Map<WarrantyNotabeneReadDto>(warrantyNotabene);
 
-            return Ok(model);
+            return Ok(warrantyNotabeneReadDto);
         }
 
-        // PUT api/Dealers/{id}
-        [HttpPut("{id}")]
-        public ActionResult Update(int id, WarrantyNotabene warrantyNotabene)
-        {
-            var model = _unitOfWork.WarrantyNotabeneRepository.GetById(id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-            //_mapper.Map(dealerUpdateDto, dealerModelFromRepo);
-
-            _unitOfWork.WarrantyNotabeneRepository.Update(model);
-
-            _unitOfWork.WarrantyNotabeneRepository.SaveChanges();
-
-            return NoContent();
-        }
-
-        // DELETE api/Dealers/{id}
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public ActionResult DeleteWarrantyNotabene(int id)
         {
-            var model = _unitOfWork.WarrantyNotabeneRepository.GetById(id);
-            if (model == null)
+            var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(id);
+            if (warrantyNotabeneModel == null)
             {
                 return NotFound();
             }
 
-            _unitOfWork.WarrantyNotabeneRepository.Delete(model);
+            _unitOfWork.WarrantyRepository.Get(w => w.WarrantyNotabene.Id == warrantyNotabeneModel.Id).ToList().ForEach(w => w.WarrantyNotabene = null);
+
+            _unitOfWork.WarrantyNotabeneRepository.Delete(warrantyNotabeneModel);
             _unitOfWork.WarrantyNotabeneRepository.SaveChanges();
 
             return NoContent();

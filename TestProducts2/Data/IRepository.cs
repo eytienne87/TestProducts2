@@ -1,4 +1,5 @@
-﻿using TestProducts2.Entities;
+﻿using System.Linq.Expressions;
+using TestProducts2.Entities;
 using TestProducts2.Models;
 
 namespace TestProducts2.Data
@@ -8,8 +9,10 @@ namespace TestProducts2.Data
         bool SaveChanges();
         IEnumerable<T> GetAll();
         T? GetById(int Id);
-        void Create(T item);
-        void Update(T item);
+        IQueryable<T> Get(Expression<Func<T, bool>> filter = null);
+        void BulkDelete(List<T> items);
+        bool Create(T item);
+        bool Update(T item);
         void Delete(T item);
     }
 }

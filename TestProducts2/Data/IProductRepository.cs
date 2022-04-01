@@ -3,15 +3,13 @@ using TestProducts2.Models;
 
 namespace TestProducts2.Data
 {
-    public interface IProductRepository<T> where T : BaseClass
+    public interface IProductRepository
     {
         bool SaveChanges();
-        IEnumerable<T> GetAll();
-        T? GetById(int Id);
-        bool Create(Product item);
-        void JoinWarranty(T item);
-        void JoinBenefit(Product item);
-        void Update(T item);
-        void Delete(T item);
+        IEnumerable<Product> GetAll();
+        bool Create(Product product);
+        Product? GetById(int Id);
+        void Update(Product product);
+        void Delete(Product product);
     }
 }

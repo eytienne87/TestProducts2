@@ -19,71 +19,63 @@ namespace TestProducts2.Controllers
                 _unitOfWork = unitOfWork;
                 _mapper = mapper;
             }
+        
+            //public WarrantyTitlesController(IUnitOfWork unitOfWork)
+            //{
+                
+            //}
 
-        // GET: api/Dealers
+        // GET: api/WarrantyTitle
         [HttpGet]
-        public ActionResult<IEnumerable<WarrantyTitle>> GetAll()
+        public ActionResult<IEnumerable<WarrantyTitleReadDto>> GetAllWarrantyTitles()
 
         {
-            var items = _unitOfWork.WarrantyTitleRepository.GetAll();
+            var warrantyTitleModels = _unitOfWork.WarrantyTitleRepository.GetAll();
 
-            return Ok(items);
+            var mappedWarrantyTitles = _mapper.Map<IEnumerable<WarrantyTitleReadDto>>(warrantyTitleModels);
+
+            return Ok(mappedWarrantyTitles);
         }
 
-        // GET api/Dealers/{id}
+        // GET api/WarrantyTitle/{id}
         [HttpGet("{id}")]
-        public ActionResult<WarrantyTitle> GetById(int id)
+        public ActionResult<WarrantyTitleReadDto> GetWarrantyTitleById(int id)
         {
-            var item = _unitOfWork.WarrantyTitleRepository.GetById(id);
-            if (item != null)
+            var warrantyTitle = _unitOfWork.WarrantyTitleRepository.GetById(id);
+
+            if (warrantyTitle != null)
             {
-                return Ok(item);
+                var mappedWarrantyTitle = _mapper.Map<WarrantyTitleReadDto>(warrantyTitle);
+                return Ok(mappedWarrantyTitle);
             }
+
             return NotFound();
         }
 
-        // POST api/Dealers
+        // POST api/WarrantyTitle
         [HttpPost]
-        public ActionResult<WarrantyTitle> CreateDealer(WarrantyTitle warrantyTitle)
+        public ActionResult<WarrantyTitleReadDto> CreateWarrantyTitle(WarrantyTitleCreateDto warrantyTitleCreateDto)
         {
-            var model = _mapper.Map<WarrantyTitle>(warrantyTitle);
-            _unitOfWork.WarrantyTitleRepository.Create(model);
+            var warrantyTitle = _mapper.Map<WarrantyTitle>(warrantyTitleCreateDto);
+
+            _unitOfWork.WarrantyTitleRepository.Create(warrantyTitle);
             _unitOfWork.WarrantyTitleRepository.SaveChanges();
 
-            //var dealerReadDto = _mapper.Map<DealerReadDto>(dealerModel);
+            var warrantyTitleReadDto = _mapper.Map<WarrantyTitleReadDto>(warrantyTitle);
 
-            return Ok(model);
+            return Ok(warrantyTitleReadDto);
         }
 
-        // PUT api/Dealers/{id}
-        [HttpPut("{id}")]
-        public ActionResult Update(int id, WarrantyTitle warrantyTitle)
-        {
-            var model = _unitOfWork.WarrantyTitleRepository.GetById(id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-            //_mapper.Map(dealerUpdateDto, dealerModelFromRepo);
-
-            _unitOfWork.WarrantyTitleRepository.Update(model);
-
-            _unitOfWork.WarrantyTitleRepository.SaveChanges();
-
-            return NoContent();
-        }
-
-        // DELETE api/Dealers/{id}
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public ActionResult DeleteWarrantyTitle(int id)
         {
-            var model = _unitOfWork.WarrantyTitleRepository.GetById(id);
-            if (model == null)
+            var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(id);
+            if (warrantyTitleModel == null)
             {
                 return NotFound();
             }
-
-            _unitOfWork.WarrantyTitleRepository.Delete(model);
+            
+            _unitOfWork.WarrantyTitleRepository.Delete(warrantyTitleModel);
             _unitOfWork.WarrantyTitleRepository.SaveChanges();
 
             return NoContent();

@@ -4,5 +4,6 @@ namespace TestProducts2.Models
 {
     public class WarrantyNotabene : BaseClass
     {
+        public ICollection<WarrantyNotabeneDescription> Descriptions { get; set; }
     }
 }

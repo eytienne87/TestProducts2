@@ -5,11 +5,11 @@ namespace TestProducts2.Data
     public class UnitOfWork : IUnitOfWork
     {
         private readonly SqlServerContext _sqlServerContext;
-        private IProductRepository<Product>? _productRepository;
-        private IRepository<ProductWarranty>? _productWarrantyRepository;
+        private IProductRepository? _productRepository;
+        private IRepository<Benefit>? _benefitRepository;
+        private IRepository<Warranty>? _warrantyRepository;
         private IRepository<WarrantyTitle>? _warrantyTitleRepository;
         private IRepository<WarrantyLength>? _warrantyLengthRepository;
-        private IRepository<Benefit>? _benefitRepository;
         private IRepository<WarrantyNotabene>? _warrantyNotabeneRepository;
 
         public UnitOfWork(SqlServerContext sqlServerContext)
@@ -17,28 +17,41 @@ namespace TestProducts2.Data
             _sqlServerContext = sqlServerContext;
         }
 
-        public IProductRepository<Product> ProductRepository
+        public IProductRepository ProductRepository
         {
             get
             {
                 if (_productRepository is null)
                 {
-                    _productRepository = new ProductRepository<Product>(_sqlServerContext);
+                    _productRepository = new ProductRepository(_sqlServerContext);
                 }
 
                 return _productRepository;
             }
         }
-        public IRepository<ProductWarranty> ProductWarrantyRepository
+        public IRepository<Benefit> BenefitRepository
         {
             get
             {
-                if (_productWarrantyRepository is null)
+                if (_benefitRepository is null)
                 {
-                    _productWarrantyRepository = new GenericRepository<ProductWarranty>(_sqlServerContext);
+                    _benefitRepository = new GenericRepository<Benefit>(_sqlServerContext);
                 }
 
-                return _productWarrantyRepository;
+                return _benefitRepository;
+            }
+        }
+
+        public IRepository<Warranty> WarrantyRepository
+        {
+            get
+            {
+                if (_warrantyRepository is null)
+                {
+                    _warrantyRepository = new GenericRepository<Warranty>(_sqlServerContext);
+                }
+
+                return _warrantyRepository;
             }
         }
         public IRepository<WarrantyTitle> WarrantyTitleRepository
@@ -77,18 +90,6 @@ namespace TestProducts2.Data
                 }
 
                 return _warrantyNotabeneRepository;
-            }
-        }
-        public IRepository<Benefit> BenefitRepository
-        {
-            get
-            {
-                if (_benefitRepository is null)
-                {
-                    _benefitRepository = new GenericRepository<Benefit>(_sqlServerContext);
-                }
-
-                return _benefitRepository;
             }
         }
 

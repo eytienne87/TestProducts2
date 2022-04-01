@@ -20,42 +20,46 @@ namespace TestProducts2.Controllers
                 _mapper = mapper;
             }
 
-        // GET: api/Dealers
+        // GET: api/Benefits
         [HttpGet]
         public ActionResult<IEnumerable<Benefit>> GetAll()
 
         {
-            var items = _unitOfWork.BenefitRepository.GetAll();
+            var benefits = _unitOfWork.BenefitRepository.GetAll();
 
-            return Ok(items);
+            var mappedBenefits = _mapper.Map<IEnumerable<BenefitReadDto>>(benefits);
+
+            return Ok(mappedBenefits);
         }
 
-        // GET api/Dealers/{id}
-        [HttpGet("{id}")]
-        public ActionResult<Benefit> GetById(int id)
+        // GET api/Benefits/{id}
+        [HttpGet("{id}", Name = "GetBenefitById")]
+        public ActionResult<Benefit> GetBenefitById(int id)
         {
-            var item = _unitOfWork.BenefitRepository.GetById(id);
-            if (item != null)
+            var benefitItem = _unitOfWork.BenefitRepository.GetById(id);
+            if (benefitItem != null)
             {
-                return Ok(item);
+                return Ok(_mapper.Map<BenefitReadDto>(benefitItem));
             }
             return NotFound();
         }
 
-        // POST api/Dealers
+        //POST api/Benefits
         [HttpPost]
-        public ActionResult<Benefit> CreateDealer(Benefit warrantyTitle)
+        public ActionResult<BenefitReadDto> CreateBenefit(BenefitCreateDto benefitCreateDto)
         {
-            var model = _mapper.Map<Benefit>(warrantyTitle);
-            _unitOfWork.BenefitRepository.Create(model);
-            _unitOfWork.BenefitRepository.SaveChanges();
+            var benefitModel = _mapper.Map<Benefit>(benefitCreateDto);
 
-            //var dealerReadDto = _mapper.Map<DealerReadDto>(dealerModel);
+            if (!_unitOfWork.BenefitRepository.Create(benefitModel))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
 
-            return Ok(model);
+            return Ok(_mapper.Map<BenefitReadDto>(benefitModel));
         }
 
-        // PUT api/Dealers/{id}
+        // PUT api/Benefits/{id}
         [HttpPut("{id}")]
         public ActionResult Update(int id, Benefit warrantyTitle)
         {
@@ -73,7 +77,7 @@ namespace TestProducts2.Controllers
             return NoContent();
         }
 
-        // DELETE api/Dealers/{id}
+        // DELETE api/Benefits/{id}
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {

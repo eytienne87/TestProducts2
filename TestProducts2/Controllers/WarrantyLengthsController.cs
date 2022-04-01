@@ -20,70 +20,57 @@ namespace TestProducts2.Controllers
                 _mapper = mapper;
             }
 
-        // GET: api/Dealers
+        // GET: api/WarrantyLength
         [HttpGet]
-        public ActionResult<IEnumerable<WarrantyLength>> GetAll()
+        public ActionResult<IEnumerable<WarrantyLengthReadDto>> GetAll()
 
         {
-            var items = _unitOfWork.WarrantyLengthRepository.GetAll();
+            var warrantyLengthModels = _unitOfWork.WarrantyLengthRepository.GetAll();
 
-            return Ok(items);
+            var mappedWarrantyLengths = _mapper.Map<IEnumerable<WarrantyLengthReadDto>>(warrantyLengthModels);
+
+            return Ok(mappedWarrantyLengths);
         }
 
-        // GET api/Dealers/{id}
+        // GET api/WarrantyLength/{id}
         [HttpGet("{id}")]
-        public ActionResult<WarrantyLength> GetById(int id)
+        public ActionResult<WarrantyLengthReadDto> GetById(int id)
         {
-            var item = _unitOfWork.WarrantyLengthRepository.GetById(id);
-            if (item != null)
+            var warrantyLength = _unitOfWork.WarrantyLengthRepository.GetById(id);
+
+            if (warrantyLength != null)
             {
-                return Ok(item);
+                var mappedWarrantyLength = _mapper.Map<WarrantyLengthReadDto>(warrantyLength);
+                return Ok(mappedWarrantyLength);
             }
+
             return NotFound();
         }
 
-        // POST api/Dealers
+        // POST api/WarrantyLength
         [HttpPost]
-        public ActionResult<WarrantyLength> CreateDealer(WarrantyLength warrantyLength)
+        public ActionResult<WarrantyLengthReadDto> CreateWarrantyTitle(WarrantyLengthCreateDto warrantyLengthCreateDto)
         {
-            var model = _mapper.Map<WarrantyLength>(warrantyLength);
-            _unitOfWork.WarrantyLengthRepository.Create(model);
+            var warrantyLength = _mapper.Map<WarrantyLength>(warrantyLengthCreateDto);
+
+            _unitOfWork.WarrantyLengthRepository.Create(warrantyLength);
             _unitOfWork.WarrantyLengthRepository.SaveChanges();
 
-            //var dealerReadDto = _mapper.Map<DealerReadDto>(dealerModel);
+            var warrantyLengthReadDto = _mapper.Map<WarrantyLengthReadDto>(warrantyLength);
 
-            return Ok(model);
+            return Ok(warrantyLengthReadDto);
         }
 
-        // PUT api/Dealers/{id}
-        [HttpPut("{id}")]
-        public ActionResult Update(int id, WarrantyLength warrantyLength)
-        {
-            var model = _unitOfWork.WarrantyLengthRepository.GetById(id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-            //_mapper.Map(dealerUpdateDto, dealerModelFromRepo);
-
-            _unitOfWork.WarrantyLengthRepository.Update(model);
-
-            _unitOfWork.WarrantyLengthRepository.SaveChanges();
-
-            return NoContent();
-        }
-
-        // DELETE api/Dealers/{id}
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public ActionResult DeleteWarrantyLength(int id)
         {
-            var model = _unitOfWork.WarrantyLengthRepository.GetById(id);
-            if (model == null)
+            var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(id);
+            if (warrantyLengthModel == null)
             {
                 return NotFound();
             }
 
-            _unitOfWork.WarrantyLengthRepository.Delete(model);
+            _unitOfWork.WarrantyLengthRepository.Delete(warrantyLengthModel);
             _unitOfWork.WarrantyLengthRepository.SaveChanges();
 
             return NoContent();

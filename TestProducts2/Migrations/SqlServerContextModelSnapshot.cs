@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TestProducts2.Data;
 
 #nullable disable
@@ -18,160 +18,290 @@ namespace TestProducts2.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-preview.1.22076.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("BenefitProduct", b =>
+                {
+                    b.Property<int>("BenefitsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("BenefitsId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("BenefitProduct");
+                });
+
+            modelBuilder.Entity("ProductWarranty", b =>
+                {
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WarrantiesId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ProductsId", "WarrantiesId");
+
+                    b.HasIndex("WarrantiesId");
+
+                    b.ToTable("ProductWarranty");
+                });
 
             modelBuilder.Entity("TestProducts2.Models.Benefit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Benefit");
+                    b.ToTable("Benefits");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.BenefitDescription", b =>
+                {
+                    b.Property<int>("BenefitId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("BenefitId", "Language");
+
+                    b.ToTable("BenefitDescription");
                 });
 
             modelBuilder.Entity("TestProducts2.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ProductType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("StyleCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("StyleName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("TestProducts2.Models.ProductBenefit", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BenefitId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId", "BenefitId");
-
-                    b.ToTable("ProductBenefit");
-                });
-
-            modelBuilder.Entity("TestProducts2.Models.ProductWarranty", b =>
+            modelBuilder.Entity("TestProducts2.Models.Warranty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("WarrantyLengthId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<int?>("WarrantyNotaBeneId")
-                        .HasColumnType("int");
+                    b.Property<int?>("WarrantyNotabeneId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("WarrantyTitleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
                     b.HasIndex("WarrantyLengthId");
 
-                    b.HasIndex("WarrantyNotaBeneId");
+                    b.HasIndex("WarrantyNotabeneId");
 
                     b.HasIndex("WarrantyTitleId");
 
-                    b.ToTable("ProductWarranties");
+                    b.ToTable("Warranties");
                 });
 
             modelBuilder.Entity("TestProducts2.Models.WarrantyLength", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("WarrantiesLengths");
+                    b.ToTable("WarrantyLengths");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.WarrantyLengthDescription", b =>
+                {
+                    b.Property<int>("WarrantyLengthId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("WarrantyLengthId", "Language");
+
+                    b.ToTable("WarrantyLengthDescription");
                 });
 
             modelBuilder.Entity("TestProducts2.Models.WarrantyNotabene", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("WarrantiesNotabenes");
+                    b.ToTable("WarrantyNotabenes");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.WarrantyNotabeneDescription", b =>
+                {
+                    b.Property<int>("WarrantyNotabeneId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("WarrantyNotabeneId", "Language");
+
+                    b.ToTable("WarrantyNotabeneDescription");
                 });
 
             modelBuilder.Entity("TestProducts2.Models.WarrantyTitle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("WarrantiesTitles");
+                    b.ToTable("WarrantyTitles");
                 });
 
-            modelBuilder.Entity("TestProducts2.Models.ProductBenefit", b =>
+            modelBuilder.Entity("TestProducts2.Models.WarrantyTitleDescription", b =>
                 {
-                    b.HasOne("TestProducts2.Models.Benefit", "Benefit")
-                        .WithMany("ProductBenefits")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("WarrantyTitleId")
+                        .HasColumnType("integer");
 
-                    b.HasOne("TestProducts2.Models.Product", "Product")
-                        .WithMany("ProductBenefits")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Language")
+                        .HasColumnType("integer");
 
-                    b.Navigation("Benefit");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Navigation("Product");
+                    b.HasKey("WarrantyTitleId", "Language");
+
+                    b.ToTable("WarrantyTitleDescription");
                 });
 
-            modelBuilder.Entity("TestProducts2.Models.ProductWarranty", b =>
+            modelBuilder.Entity("BenefitProduct", b =>
                 {
-                    b.HasOne("TestProducts2.Models.Product", "Product")
+                    b.HasOne("TestProducts2.Models.Benefit", null)
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("BenefitsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TestProducts2.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductWarranty", b =>
+                {
+                    b.HasOne("TestProducts2.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TestProducts2.Models.Warranty", null)
+                        .WithMany()
+                        .HasForeignKey("WarrantiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.BenefitDescription", b =>
+                {
+                    b.HasOne("TestProducts2.Models.Benefit", null)
+                        .WithMany("Descriptions")
+                        .HasForeignKey("BenefitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.Warranty", b =>
+                {
                     b.HasOne("TestProducts2.Models.WarrantyLength", "WarrantyLength")
                         .WithMany()
                         .HasForeignKey("WarrantyLengthId")
@@ -180,15 +310,13 @@ namespace TestProducts2.Migrations
 
                     b.HasOne("TestProducts2.Models.WarrantyNotabene", "WarrantyNotabene")
                         .WithMany()
-                        .HasForeignKey("WarrantyNotaBeneId");
+                        .HasForeignKey("WarrantyNotabeneId");
 
                     b.HasOne("TestProducts2.Models.WarrantyTitle", "WarrantyTitle")
-                        .WithMany("ProductWarranties")
+                        .WithMany()
                         .HasForeignKey("WarrantyTitleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
 
                     b.Navigation("WarrantyLength");
 
@@ -197,19 +325,51 @@ namespace TestProducts2.Migrations
                     b.Navigation("WarrantyTitle");
                 });
 
-            modelBuilder.Entity("TestProducts2.Models.Benefit", b =>
+            modelBuilder.Entity("TestProducts2.Models.WarrantyLengthDescription", b =>
                 {
-                    b.Navigation("ProductBenefits");
+                    b.HasOne("TestProducts2.Models.WarrantyLength", null)
+                        .WithMany("Descriptions")
+                        .HasForeignKey("WarrantyLengthId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("TestProducts2.Models.Product", b =>
+            modelBuilder.Entity("TestProducts2.Models.WarrantyNotabeneDescription", b =>
                 {
-                    b.Navigation("ProductBenefits");
+                    b.HasOne("TestProducts2.Models.WarrantyNotabene", null)
+                        .WithMany("Descriptions")
+                        .HasForeignKey("WarrantyNotabeneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.WarrantyTitleDescription", b =>
+                {
+                    b.HasOne("TestProducts2.Models.WarrantyTitle", null)
+                        .WithMany("Descriptions")
+                        .HasForeignKey("WarrantyTitleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.Benefit", b =>
+                {
+                    b.Navigation("Descriptions");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.WarrantyLength", b =>
+                {
+                    b.Navigation("Descriptions");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.WarrantyNotabene", b =>
+                {
+                    b.Navigation("Descriptions");
                 });
 
             modelBuilder.Entity("TestProducts2.Models.WarrantyTitle", b =>
                 {
-                    b.Navigation("ProductWarranties");
+                    b.Navigation("Descriptions");
                 });
 #pragma warning restore 612, 618
         }

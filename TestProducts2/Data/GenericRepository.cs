@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Linq.Expressions;
 using TestProducts2.Entities;
 using TestProducts2.Models;
 
@@ -18,13 +19,11 @@ namespace TestProducts2.Data
             table = _context.Set<T>();
         }
 
-        public void Create(T item)
+        public bool Create(T item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
             table.Add(item);
+
+            return SaveChanges();
         }
 
         public void Delete(T item)
@@ -35,6 +34,26 @@ namespace TestProducts2.Data
             }
             table.Remove(item);
 
+        }
+        public IQueryable<T> Get(Expression<Func<T, bool>> filter = null)
+        {
+            IQueryable<T> query = table;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            return query;
+        }
+
+        public void BulkDelete(List<T> items)
+        {
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));  
+            }
+
+            table.RemoveRange(items);
         }
 
         public IEnumerable<T> GetAll()
@@ -52,15 +71,11 @@ namespace TestProducts2.Data
             return (_context.SaveChanges() >= 0);
         }
 
-        public void Update(T item)
+        public bool Update(T item)
         {
-            //Nothing
+            _context.Update(item);
+            return SaveChanges();
         }
-
-        //public bool CreateCarpet(int warrantyId, T item)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }
 

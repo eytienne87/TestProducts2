@@ -10,131 +10,168 @@ namespace TestProducts2.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            private readonly IUnitOfWork _unitOfWork;
-            private readonly IMapper _mapper;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
 
-            public ProductsController(IUnitOfWork unitOfWork, IMapper mapper)
+        // GET: api/products 
+        [HttpGet]
+        public ActionResult<IEnumerable<ProductReadDto>> GetProducts()
+        {
+            var products = _unitOfWork.ProductRepository.GetAll();
+
+            var mappedProducts = _mapper.Map<IEnumerable<ProductReadDto>>(products);
+
+            return Ok(mappedProducts);
+        }
+
+        // GET api/Products/{id}
+        [HttpGet("{id}", Name = "GetProductById")]
+        public ActionResult<ProductReadDto> GetProductById(int id)
+        {
+            var productItem = _unitOfWork.ProductRepository.GetById(id);
+            if (productItem != null)
             {
-                _unitOfWork = unitOfWork;
-                _mapper = mapper;
+                return Ok(_mapper.Map<ProductReadDto>(productItem));
+            }
+            return NotFound();
+        }
+
+        // POST api/Products
+        [HttpPost]
+        public ActionResult<ProductReadDto> CreateProduct([FromBody] ProductCreateDto productCreateDto)
+        {
+            if (productCreateDto == null)
+                return BadRequest(ModelState);
+
+            var products = _unitOfWork.ProductRepository.GetAll()
+                .Where(product => product.StyleCode == productCreateDto.StyleCode)
+                .FirstOrDefault();
+
+            if (products != null)
+            {
+                ModelState.AddModelError("", "Product already exists");
+                return StatusCode(422, ModelState);
             }
 
-            // GET: api/products 
-            [HttpGet]
-            public ActionResult<IEnumerable<Product>> GetProducts()
+            if (!ModelState.IsValid)
+                return StatusCode(422, ModelState);
+
+            var productModel = _mapper.Map<Product>(productCreateDto);
+
+            productModel.Warranties = new List<Warranty>();
+            productModel.Benefits = new List<Benefit>();
+
+
+            foreach (var benefit in productCreateDto.Benefits)
             {
-                var products = _unitOfWork.ProductRepository.GetAll();
-
-                //var productReadDto = _mapper.Map<ProductReadDto>(products);
-
-                return Ok(products);
-            }
-
-            // GET api/Products/{id}
-            [HttpGet("{id}", Name = "GetProductById")]
-            public ActionResult<ProductReadDto> GetProductById(int id)
-            {
-                var productItem = _unitOfWork.ProductRepository.GetById(id);
-                if (productItem != null)
+                var benefitModel = _unitOfWork.BenefitRepository.GetById(benefit.Id);
+                if (benefitModel != null)
                 {
-                    return Ok(_mapper.Map<ProductReadDto>(productItem));
+                    productModel.Benefits.Add(benefitModel);
                 }
+            }
+
+            foreach (var warranty in productCreateDto.Warranties)
+            {
+                var warrantyModel  = _unitOfWork.WarrantyRepository.Get(w => w.WarrantyTitle.Id == warranty.WarrantyTitleId &&
+                                                                             w.WarrantyLength.Id == warranty.WarrantyLengthId &&
+                                                                             w.WarrantyNotabene.Id == warranty.WarrantyNotabeneId).FirstOrDefault();
+                var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(warranty.WarrantyTitleId);
+                var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(warranty.WarrantyLengthId);
+                var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(warranty.WarrantyNotabeneId);
+
+                if (warrantyModel != null)
+                {
+                    productModel.Warranties.Add(warrantyModel);
+                }
+                else if (warrantyTitleModel != null && warrantyLengthModel != null)    
+                {
+                    productModel.Warranties.Add(new Warranty
+                    {
+                        WarrantyTitle = warrantyTitleModel,
+                        WarrantyLength = warrantyLengthModel,
+                        WarrantyNotabene = warrantyNotabeneModel
+                    });
+                }
+
+            }
+
+            _unitOfWork.ProductRepository.Create(productModel);
+            _unitOfWork.ProductRepository.SaveChanges();
+
+            return Ok(_mapper.Map<ProductReadDto>(productModel));
+        }
+
+        // PUT api/Products/{id} 
+        [HttpPut("{id}")]
+        public ActionResult UpdateProduct(int id, ProductUpdateDto productUpdateDto)
+        {
+            var productModelFromRepo = _unitOfWork.ProductRepository.GetById(id);
+
+            if (productModelFromRepo == null)
+            {
                 return NotFound();
             }
 
-            // POST api/Products
-            [HttpPost]
-            public ActionResult<ProductReadDto> CreateProduct([FromBody] ProductCreateDto productCreateDto)
+            _mapper.Map(productUpdateDto, productModelFromRepo);
+
+            _unitOfWork.ProductRepository.Update(productModelFromRepo);
+
+            _unitOfWork.ProductRepository.SaveChanges();
+
+            return NoContent();
+        }
+
+        //[HttpPatch("{id}")]
+        //public ActionResult PartialProductUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc)
+        //{
+        //    var productModelFromRepo = _unitOfWork.ProductRepository.GetById(id);
+        //    if (productModelFromRepo == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var productToPatch = _mapper.Map<ProductUpdateDto>(productModelFromRepo);
+
+        //    patchDoc.ApplyTo(productToPatch, ModelState);
+
+        //    if (!TryValidateModel(productToPatch))
+        //    {
+        //        return ValidationProblem(ModelState);
+        //    }
+
+        //    _mapper.Map(productToPatch, productModelFromRepo);
+
+        //    _unitOfWork.ProductRepository.Update(productModelFromRepo);
+
+        //    _unitOfWork.ProductRepository.SaveChanges();
+
+        //    return NoContent();
+
+        //}
+
+        // DELETE api/Products/{id}
+        [HttpDelete("{id}")]
+        public ActionResult DeleteProduct(int id)
+        {
+            var productModelFromRepo = _unitOfWork.ProductRepository.GetById(id);
+            if (productModelFromRepo == null)
             {
-                if (productCreateDto == null)
-                    return BadRequest(ModelState);
-            
-                var products = _unitOfWork.ProductRepository.GetAll()
-                    .Where(product => product.StyleCode == productCreateDto.StyleCode)
-                    .FirstOrDefault();
-
-                if (products != null)
-                {
-                    ModelState.AddModelError("", "Product already exists");
-                    return StatusCode(422, ModelState); 
-                }
-
-                if (!ModelState.IsValid)
-                    return StatusCode(422, ModelState);
-
-                var productModel = _mapper.Map<Product>(productCreateDto);
-
-                if (!_unitOfWork.ProductRepository.Create(productModel))
-                {
-                    ModelState.AddModelError("", "Something went wrong while saving");
-                    return StatusCode(500, ModelState);
-                }
-
-                return Ok(_mapper.Map<ProductReadDto>(productModel)); 
+                return NotFound();
             }
 
-            // PUT api/Products/{id} 
-            [HttpPut("{id}")]
-            public ActionResult UpdateProduct(int id, ProductUpdateDto productUpdateDto)
-            {
-                var productModelFromRepo = _unitOfWork.ProductRepository.GetById(id);
-                if (productModelFromRepo == null)
-                {
-                    return NotFound();
-                }
-                _mapper.Map(productUpdateDto, productModelFromRepo);
+            _unitOfWork.ProductRepository.Delete(productModelFromRepo);
+            _unitOfWork.ProductRepository.SaveChanges();
 
-                _unitOfWork.ProductRepository.Update(productModelFromRepo);
-
-                _unitOfWork.ProductRepository.SaveChanges();
-
-                return NoContent();
-            }
-
-            [HttpPatch("{id}")]
-            public ActionResult PartialProductUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc)
-            {
-                var productModelFromRepo = _unitOfWork.ProductRepository.GetById(id);
-                if (productModelFromRepo == null)
-                {
-                    return NotFound();
-                }
-
-                var productToPatch = _mapper.Map<ProductUpdateDto>(productModelFromRepo);
-
-                patchDoc.ApplyTo(productToPatch, ModelState);
-
-                if (!TryValidateModel(productToPatch))
-                {
-                    return ValidationProblem(ModelState);
-                }
-
-                _mapper.Map(productToPatch, productModelFromRepo);
-
-                _unitOfWork.ProductRepository.Update(productModelFromRepo);
-
-                _unitOfWork.ProductRepository.SaveChanges();
-
-                return NoContent();
-
-            }
-
-            // DELETE api/Commands/{id}
-            [HttpDelete("{id}")]
-            public ActionResult DeleteCommand(int id)
-            {
-                var productModelFromRepo = _unitOfWork.ProductRepository.GetById(id);
-                if (productModelFromRepo == null)
-                {
-                    return NotFound();
-                }
-
-                _unitOfWork.ProductRepository.Delete(productModelFromRepo);
-                _unitOfWork.ProductRepository.SaveChanges();
-
-                return NoContent();
-            }
+            return NoContent();
+        }
 
 
     }
