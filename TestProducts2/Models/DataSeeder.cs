@@ -18,11 +18,6 @@ namespace TestProducts2.Models
             {
                 var products = new List<Product>()
                 {
-
-
-
-
-
                     new Product()
                     {
                         ProductType = "Redwood Laminate",
@@ -35,14 +30,18 @@ namespace TestProducts2.Models
                                 {
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Convenient" },
                                     new BenefitDescription() { Language = LanguageClass.fr, Description = "Utile" }
-                                }
+                                },
+                                CreatedDate = DateTime.Now,
+                                UpdatedDate = DateTime.Today.AddDays(1)
                             },
                             new Benefit {
                                 Descriptions = new List<BenefitDescription>()
                                 {
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Lasting" },
                                     new BenefitDescription() { Language = LanguageClass.fr, Description = "Endurant" }
-                                }
+                                },
+                                CreatedDate = DateTime.Now,
+                                UpdatedDate = DateTime.Today.AddDays(1)
                             }
                         },
                         Warranties = new List<Warranty>()
@@ -53,7 +52,9 @@ namespace TestProducts2.Models
                                     {
                                         new WarrantyTitleDescription { Language = LanguageClass.en, Description = "Wear"  },
                                         new WarrantyTitleDescription { Language = LanguageClass.fr, Description = "Usure"  }
-                                    }
+                                    },
+                                    CreatedDate = DateTime.Now,
+                                    UpdatedDate = DateTime.Today.AddDays(1)
                                 },
                                 WarrantyLength = new WarrantyLength {
                                     Descriptions = new List<WarrantyLengthDescription>()
@@ -61,6 +62,8 @@ namespace TestProducts2.Models
                                         new WarrantyLengthDescription { Language = LanguageClass.en, Description = "5 years" },
                                         new WarrantyLengthDescription { Language = LanguageClass.fr, Description = "5 ans" }
                                     },
+                                    CreatedDate = DateTime.Now,
+                                    UpdatedDate = DateTime.Today.AddDays(1)
                                 },
                                 WarrantyNotabene = new WarrantyNotabene {
                                     Descriptions = new List<WarrantyNotabeneDescription>()
@@ -68,9 +71,13 @@ namespace TestProducts2.Models
                                         new WarrantyNotabeneDescription { Language = LanguageClass.en, Description = "An example of Notabene" },
                                         new WarrantyNotabeneDescription { Language = LanguageClass.fr, Description = "Un exemple de Notabene" }
                                     },
+                                    CreatedDate = DateTime.Now,
+                                    UpdatedDate = DateTime.Today.AddDays(1)
                                 },
                             },
                         },
+                        CreatedDate = DateTime.Now,
+                        UpdatedDate = DateTime.Today.AddDays(1)
                     },
                     new Product()
                     {
@@ -84,14 +91,18 @@ namespace TestProducts2.Models
                                 {
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Convenient" },
                                     new BenefitDescription() { Language = LanguageClass.fr, Description = "Utile" }
-                                }
+                                },
+                                CreatedDate = DateTime.Now,
+                                UpdatedDate = DateTime.Today.AddDays(1)
                             },
                             new Benefit {
                                 Descriptions = new List<BenefitDescription>()
                                 {
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Lasting" },
                                     new BenefitDescription() { Language = LanguageClass.fr, Description = "Endurant" }
-                                }
+                                },
+                                CreatedDate = DateTime.Now,
+                                UpdatedDate = DateTime.Today.AddDays(1)
                             }
                         },
                         Warranties = new List<Warranty>()
@@ -102,7 +113,9 @@ namespace TestProducts2.Models
                                     {
                                         new WarrantyTitleDescription { Language = LanguageClass.en, Description = "Tear"  },
                                         new WarrantyTitleDescription { Language = LanguageClass.fr, Description = "Brisure"  }
-                                    }
+                                    },
+                                    CreatedDate = DateTime.Now,
+                                    UpdatedDate = DateTime.Today.AddDays(1)
                                 },
                                 WarrantyLength = new WarrantyLength {
                                     Descriptions = new List<WarrantyLengthDescription>()
@@ -110,6 +123,8 @@ namespace TestProducts2.Models
                                         new WarrantyLengthDescription { Language = LanguageClass.en, Description = "25 years" },
                                         new WarrantyLengthDescription { Language = LanguageClass.fr, Description = "25 ans" }
                                     },
+                                    CreatedDate = DateTime.Now,
+                                    UpdatedDate = DateTime.Today.AddDays(1)
                                 },
                                 WarrantyNotabene = new WarrantyNotabene {
                                     Descriptions = new List<WarrantyNotabeneDescription>()
@@ -117,9 +132,15 @@ namespace TestProducts2.Models
                                         new WarrantyNotabeneDescription { Language = LanguageClass.en, Description = "A second example" },
                                         new WarrantyNotabeneDescription { Language = LanguageClass.fr, Description = "Un deuxieme exemple" }
                                     },
+                                    CreatedDate = DateTime.Now,
+                                    UpdatedDate = DateTime.Today.AddDays(1)
                                 },
+                                CreatedDate = DateTime.Now,
+                                UpdatedDate = DateTime.Today.AddDays(1)
                             },
                         },
+                        CreatedDate = DateTime.Now,
+                        UpdatedDate = DateTime.Today.AddDays(1)
                     },
                 };
                 _context.Products.AddRange(products);

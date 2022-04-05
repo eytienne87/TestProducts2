@@ -44,7 +44,8 @@ namespace TestProducts2.Data
 
             public void Update(Product product)
             {
-                _context.Update(product);
+                //_context.Entry(product).State = EntityState.Modified;
+                _context.Products.Update(product);
             }
 
             public bool Create(Product product)

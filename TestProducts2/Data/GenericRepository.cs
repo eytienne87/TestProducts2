@@ -74,6 +74,7 @@ namespace TestProducts2.Data
         public bool Update(T item)
         {
             _context.Update(item);
+
             return SaveChanges();
         }
     }

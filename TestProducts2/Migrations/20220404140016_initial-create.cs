@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace TestProducts2.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialcreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +15,9 @@ namespace TestProducts2.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,7 +32,9 @@ namespace TestProducts2.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ProductType = table.Column<string>(type: "text", nullable: false),
                     StyleCode = table.Column<string>(type: "text", nullable: false),
-                    StyleName = table.Column<string>(type: "text", nullable: false)
+                    StyleName = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,7 +47,8 @@ namespace TestProducts2.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,7 +61,8 @@ namespace TestProducts2.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,7 +75,8 @@ namespace TestProducts2.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -119,6 +127,44 @@ namespace TestProducts2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "WarrantyLengthDescription",
+                columns: table => new
+                {
+                    WarrantyLengthId = table.Column<int>(type: "integer", nullable: false),
+                    Language = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WarrantyLengthDescription", x => new { x.WarrantyLengthId, x.Language });
+                    table.ForeignKey(
+                        name: "FK_WarrantyLengthDescription_WarrantyLengths_WarrantyLengthId",
+                        column: x => x.WarrantyLengthId,
+                        principalTable: "WarrantyLengths",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WarrantyNotabeneDescription",
+                columns: table => new
+                {
+                    WarrantyNotabeneId = table.Column<int>(type: "integer", nullable: false),
+                    Language = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WarrantyNotabeneDescription", x => new { x.WarrantyNotabeneId, x.Language });
+                    table.ForeignKey(
+                        name: "FK_WarrantyNotabeneDescription_WarrantyNotabenes_WarrantyNotab~",
+                        column: x => x.WarrantyNotabeneId,
+                        principalTable: "WarrantyNotabenes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Warranties",
                 columns: table => new
                 {
@@ -126,7 +172,9 @@ namespace TestProducts2.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     WarrantyTitleId = table.Column<int>(type: "integer", nullable: false),
                     WarrantyLengthId = table.Column<int>(type: "integer", nullable: false),
-                    WarrantyNotabeneId = table.Column<int>(type: "integer", nullable: true)
+                    WarrantyNotabeneId = table.Column<int>(type: "integer", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,6 +192,25 @@ namespace TestProducts2.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Warranties_WarrantyTitles_WarrantyTitleId",
+                        column: x => x.WarrantyTitleId,
+                        principalTable: "WarrantyTitles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WarrantyTitleDescription",
+                columns: table => new
+                {
+                    WarrantyTitleId = table.Column<int>(type: "integer", nullable: false),
+                    Language = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WarrantyTitleDescription", x => new { x.WarrantyTitleId, x.Language });
+                    table.ForeignKey(
+                        name: "FK_WarrantyTitleDescription_WarrantyTitles_WarrantyTitleId",
                         column: x => x.WarrantyTitleId,
                         principalTable: "WarrantyTitles",
                         principalColumn: "Id",
@@ -210,6 +277,15 @@ namespace TestProducts2.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductWarranty");
+
+            migrationBuilder.DropTable(
+                name: "WarrantyLengthDescription");
+
+            migrationBuilder.DropTable(
+                name: "WarrantyNotabeneDescription");
+
+            migrationBuilder.DropTable(
+                name: "WarrantyTitleDescription");
 
             migrationBuilder.DropTable(
                 name: "Benefits");

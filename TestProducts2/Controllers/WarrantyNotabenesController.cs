@@ -61,6 +61,26 @@ namespace TestProducts2.Controllers
             return Ok(warrantyNotabeneReadDto);
         }
 
+        // PUT api/WarrantyNotabene/{id}
+        [HttpPut("{id}")]
+        public ActionResult UpdateWarrantyNotabene(int id, WarrantyNotabeneUpdateDto warrantyNotabeneUpdateDto)
+        {
+            var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(id);
+            if (warrantyNotabeneModel == null)
+            {
+                return NotFound();
+            }
+
+            warrantyNotabeneUpdateDto.Id = warrantyNotabeneModel.Id;
+            _mapper.Map(warrantyNotabeneUpdateDto, warrantyNotabeneModel);
+
+            _unitOfWork.WarrantyNotabeneRepository.Update(warrantyNotabeneModel);
+
+            _unitOfWork.WarrantyNotabeneRepository.SaveChanges();
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public ActionResult DeleteWarrantyNotabene(int id)
         {

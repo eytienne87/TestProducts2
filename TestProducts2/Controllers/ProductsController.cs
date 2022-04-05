@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TestProducts2.Data;
 using TestProducts2.Dtos;
+using TestProducts2.Entities;
 using TestProducts2.Models;
 
 namespace TestProducts2.Controllers
@@ -22,11 +23,11 @@ namespace TestProducts2.Controllers
 
         // GET: api/products 
         [HttpGet]
-        public ActionResult<IEnumerable<ProductReadDto>> GetProducts()
+        public ActionResult<IEnumerable<ProductReadDto>> GetProducts([FromHeader(Name = "Accept-Language")] LanguageClass? lang)
         {
             var products = _unitOfWork.ProductRepository.GetAll();
 
-            var mappedProducts = _mapper.Map<IEnumerable<ProductReadDto>>(products);
+            var mappedProducts = _mapper.Map<IEnumerable<ProductReadDto>>(products, opt => opt.Items["lang"] = lang);
 
             return Ok(mappedProducts);
         }
@@ -113,20 +114,65 @@ namespace TestProducts2.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateProduct(int id, ProductUpdateDto productUpdateDto)
         {
-            var productModelFromRepo = _unitOfWork.ProductRepository.GetById(id);
+            if (productUpdateDto == null)
+                return BadRequest(ModelState);
 
-            if (productModelFromRepo == null)
+            var product = _unitOfWork.ProductRepository.GetById(id);
+
+            if (product == null)
             {
-                return NotFound();
+                ModelState.AddModelError("", "The product doesn't exist");
+                return StatusCode(422, ModelState);
             }
 
-            _mapper.Map(productUpdateDto, productModelFromRepo);
+            if (!ModelState.IsValid)
+                return StatusCode(422, ModelState);
 
-            _unitOfWork.ProductRepository.Update(productModelFromRepo);
+            //var productModel = _mapper.Map<Product>(productUpdateDto);
+            var productModel = product;
+            _mapper.Map(productModel, productUpdateDto);
+            //productModel.ProductType = productUpdateDto.ProductType;
 
+            productModel.Warranties = new List<Warranty>();
+            productModel.Benefits = new List<Benefit>();
+
+            //foreach (var benefit in productUpdateDto.Benefits)
+            //{
+            //    var benefitModel = _unitOfWork.BenefitRepository.GetById(benefit.Id);
+            //    if (benefitModel != null)
+            //    {
+            //        productModel.Benefits.Add(benefitModel);
+            //    }
+            //}
+
+            foreach (var warranty in productUpdateDto.Warranties)
+            {
+                var warrantyModel = _unitOfWork.WarrantyRepository.Get(w => w.WarrantyTitle.Id == warranty.WarrantyTitle &&
+                                                                            w.WarrantyLength.Id == warranty.WarrantyLength &&
+                                                                            w.WarrantyNotabene.Id == warranty.WarrantyNotabene).FirstOrDefault();
+                var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(warranty.WarrantyTitle);
+                var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(warranty.WarrantyLength);
+                var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(warranty.WarrantyNotabene);
+
+                if (warrantyModel != null)
+                {
+                    productModel.Warranties.Add(warrantyModel);
+                }
+                else if (warrantyTitleModel != null && warrantyLengthModel != null)
+                {
+                    productModel.Warranties.Add(new Warranty
+                    {
+                        WarrantyTitle = warrantyTitleModel,
+                        WarrantyLength = warrantyLengthModel,
+                        WarrantyNotabene = warrantyNotabeneModel
+                    });
+                }
+            }
+
+            _unitOfWork.ProductRepository.Update(productModel);
             _unitOfWork.ProductRepository.SaveChanges();
 
-            return NoContent();
+            return Ok(_mapper.Map<ProductReadDto>(productModel));
         }
 
         //[HttpPatch("{id}")]

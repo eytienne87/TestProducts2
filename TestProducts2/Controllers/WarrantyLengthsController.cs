@@ -61,6 +61,27 @@ namespace TestProducts2.Controllers
             return Ok(warrantyLengthReadDto);
         }
 
+        // PUT api/WarrantyLength/{id}
+        [HttpPut("{id}")]
+        public ActionResult UpdateWarrantyLength(int id, WarrantyLengthUpdateDto warrantyLengthUpdateDto)
+        {
+            var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(id);
+            if (warrantyLengthModel == null)
+            {
+                return NotFound();
+            }
+
+            warrantyLengthUpdateDto.Id = warrantyLengthModel.Id;
+            _mapper.Map(warrantyLengthUpdateDto, warrantyLengthModel);
+
+            _unitOfWork.WarrantyLengthRepository.Update(warrantyLengthModel);
+
+            _unitOfWork.WarrantyLengthRepository.SaveChanges();
+
+            return NoContent();
+        }
+
+        // DELETE api/WarrantyLength/{id}
         [HttpDelete("{id}")]
         public ActionResult DeleteWarrantyLength(int id)
         {

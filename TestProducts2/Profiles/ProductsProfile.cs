@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TestProducts2.Dtos;
+using TestProducts2.Entities;
 using TestProducts2.Models;
 
 namespace TestProducts2.Profiles
@@ -24,12 +25,18 @@ namespace TestProducts2.Profiles
 
             //Benefits
             CreateMap<Benefit, BenefitReadDto>()
-                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
+                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom<DescriptionResolver<BenefitDescription, BenefitDescriptionReadDto>>());
+
             CreateMap<BenefitDescription, BenefitDescriptionReadDto>();
+
             CreateMap<BenefitCreateDto, Benefit>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
             CreateMap<BenefitDescriptionCreateDto, BenefitDescription>();
 
+            CreateMap<BenefitUpdateDto, Benefit>()
+                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
+
+            CreateMap<BenefitDescriptionUpdateDto, BenefitDescription>();
 
             //Warranties
             CreateMap<Warranty, WarrantyReadDto>()
@@ -41,33 +48,49 @@ namespace TestProducts2.Profiles
                 .ForMember(dest => dest.WarrantyLength, opt => opt.MapFrom(src => new WarrantyLength { Id = src.WarrantyLengthId }))
                 .ForMember(dest => dest.WarrantyNotabene, opt => opt.MapFrom(src => new WarrantyNotabene { Id = src.WarrantyNotabeneId }));
 
+            //WarrantyTitles
+            CreateMap<WarrantyTitle, WarrantyTitleReadDto>()
+                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom<DescriptionResolver<WarrantyTitleDescription, WarrantyTitleDescriptionReadDto>>());
+            CreateMap<WarrantyTitleDescription, WarrantyTitleDescriptionReadDto>();
 
-            //WarrantyTitle
             CreateMap<WarrantyTitleCreateDto, WarrantyTitle>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
             CreateMap<WarrantyTitleDescriptionCreateDto, WarrantyTitleDescription>();
-
-            CreateMap<WarrantyTitle, WarrantyTitleReadDto>()
+            
+            CreateMap<WarrantyTitleUpdateDto, WarrantyTitle>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
-            CreateMap<WarrantyTitleDescription, WarrantyTitleDescriptionReadDto>();
 
-            //WarrantyLength
+            CreateMap<WarrantyTitleDescriptionUpdateDto, WarrantyTitleDescription>();
+
+
+            //WarrantyLengths
+            CreateMap<WarrantyLength, WarrantyLengthReadDto>()
+                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom<DescriptionResolver<WarrantyLengthDescription, WarrantyLengthDescriptionReadDto>>());
+            CreateMap<WarrantyLengthDescription, WarrantyLengthDescriptionReadDto>();
+
             CreateMap<WarrantyLengthCreateDto, WarrantyLength>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
             CreateMap<WarrantyLengthDescriptionCreateDto, WarrantyLengthDescription>();
-
-            CreateMap<WarrantyLength, WarrantyLengthReadDto>()
+            
+            CreateMap<WarrantyLengthUpdateDto, WarrantyLength>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
-            CreateMap<WarrantyLengthDescription, WarrantyLengthDescriptionReadDto>();
 
-            //WarrantyNotabene
+            CreateMap<WarrantyLengthDescriptionUpdateDto, WarrantyLengthDescription>();
+
+
+            //WarrantyNotabenes
+            CreateMap<WarrantyNotabene, WarrantyNotabeneReadDto>()
+                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom<DescriptionResolver<WarrantyNotabeneDescription, WarrantyNotabeneDescriptionReadDto>>());
+            CreateMap<WarrantyNotabeneDescription, WarrantyNotabeneDescriptionReadDto>();
+
             CreateMap<WarrantyNotabeneCreateDto, WarrantyNotabene>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
             CreateMap<WarrantyNotabeneDescriptionCreateDto, WarrantyNotabeneDescription>();
 
-            CreateMap<WarrantyNotabene, WarrantyNotabeneReadDto>()
+            CreateMap<WarrantyNotabeneUpdateDto, WarrantyNotabene>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
-            CreateMap<WarrantyNotabeneDescription, WarrantyNotabeneDescriptionReadDto>();
+
+            CreateMap<WarrantyNotabeneDescriptionUpdateDto, WarrantyNotabeneDescription>();
 
         }
     }

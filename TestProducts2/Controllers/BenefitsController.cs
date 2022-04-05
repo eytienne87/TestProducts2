@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TestProducts2.Data;
 using TestProducts2.Dtos;
+using TestProducts2.Entities;
 using TestProducts2.Models;
 
 namespace TestProducts2.Controllers
@@ -22,19 +23,19 @@ namespace TestProducts2.Controllers
 
         // GET: api/Benefits
         [HttpGet]
-        public ActionResult<IEnumerable<Benefit>> GetAll()
+        public ActionResult<IEnumerable<BenefitReadDto>> GetBenefits([FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
 
         {
             var benefits = _unitOfWork.BenefitRepository.GetAll();
 
-            var mappedBenefits = _mapper.Map<IEnumerable<BenefitReadDto>>(benefits);
+            var mappedBenefits = _mapper.Map<IEnumerable<BenefitReadDto>>(benefits, opt => opt.Items["lang"] = lang);
 
             return Ok(mappedBenefits);
         }
 
         // GET api/Benefits/{id}
         [HttpGet("{id}", Name = "GetBenefitById")]
-        public ActionResult<Benefit> GetBenefitById(int id)
+        public ActionResult<BenefitReadDto> GetBenefitById(int id)
         {
             var benefitItem = _unitOfWork.BenefitRepository.GetById(id);
             if (benefitItem != null)
@@ -61,16 +62,63 @@ namespace TestProducts2.Controllers
 
         // PUT api/Benefits/{id}
         [HttpPut("{id}")]
-        public ActionResult Update(int id, Benefit warrantyTitle)
+        public ActionResult Update(int id, BenefitUpdateDto benefitUpdateDto)
         {
-            var model = _unitOfWork.BenefitRepository.GetById(id);
-            if (model == null)
+            var benefitModel = _unitOfWork.BenefitRepository.GetById(id);
+            if (benefitModel == null)
             {
                 return NotFound();
             }
-            //_mapper.Map(dealerUpdateDto, dealerModelFromRepo);
+            benefitUpdateDto.Id = benefitModel.Id;
+            _mapper.Map(benefitUpdateDto, benefitModel);
 
-            _unitOfWork.BenefitRepository.Update(model);
+            _unitOfWork.BenefitRepository.Update(benefitModel);
+
+            _unitOfWork.BenefitRepository.SaveChanges();
+
+            return NoContent();
+        }
+
+        // PATCH api/Benefits/{id}
+        //[HttpPatch("{id}")]
+        //public ActionResult PartialUpdate(int id, BenefitUpdateDto benefitUpdateDto)
+        //{
+        //    var benefitModel = _unitOfWork.BenefitRepository.GetById(id);
+        //    if (benefitModel == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    benefitUpdateDto.Id = benefitModel.Id;
+        //    _mapper.Map(benefitUpdateDto, benefitModel);
+
+        //    _unitOfWork.BenefitRepository.Update(benefitModel);
+
+        //    _unitOfWork.BenefitRepository.SaveChanges();
+
+        //    return NoContent();
+        //}
+
+        // PATCH api/Benefits/{id}
+        [HttpPatch("{id}")]
+        public ActionResult PartialBenefitUpdate(int id, JsonPatchDocument<BenefitUpdateDto> patchDoc)
+        {
+            var benefitModel = _unitOfWork.BenefitRepository.GetById(id);
+            if (benefitModel == null)
+            {
+                return NotFound();
+            }
+
+            var benefitToPatch = _mapper.Map<BenefitUpdateDto>(benefitModel);
+            patchDoc.ApplyTo(benefitToPatch, ModelState);
+
+            if (!TryValidateModel(benefitToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(benefitToPatch, benefitModel);
+
+            _unitOfWork.BenefitRepository.Update(benefitModel);
 
             _unitOfWork.BenefitRepository.SaveChanges();
 

@@ -66,6 +66,26 @@ namespace TestProducts2.Controllers
             return Ok(warrantyTitleReadDto);
         }
 
+        // PUT api/WarrantyTitle
+        [HttpPut("{id}")]
+        public ActionResult UpdateWarrantyTitle(int id, WarrantyTitleUpdateDto warrantyTitleUpdateDto)
+        {
+            var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(id);
+            if (warrantyTitleModel == null)
+            {
+                return NotFound();
+            }
+
+            warrantyTitleUpdateDto.Id = warrantyTitleModel.Id;
+            _mapper.Map(warrantyTitleUpdateDto, warrantyTitleModel);
+
+            _unitOfWork.WarrantyTitleRepository.Update(warrantyTitleModel);
+
+            _unitOfWork.WarrantyTitleRepository.SaveChanges();
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public ActionResult DeleteWarrantyTitle(int id)
         {
