@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TestProducts2.Data;
 using TestProducts2.Dtos;
+using TestProducts2.Entities;
 using TestProducts2.Models;
 
 namespace TestProducts2.Controllers
@@ -22,25 +23,25 @@ namespace TestProducts2.Controllers
 
         // GET: api/WarrantyLength
         [HttpGet]
-        public ActionResult<IEnumerable<WarrantyLengthReadDto>> GetAll()
+        public ActionResult<IEnumerable<WarrantyLengthReadDto>> GetWarrantyLengths([FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
 
         {
             var warrantyLengthModels = _unitOfWork.WarrantyLengthRepository.GetAll();
 
-            var mappedWarrantyLengths = _mapper.Map<IEnumerable<WarrantyLengthReadDto>>(warrantyLengthModels);
+            var mappedWarrantyLengths = _mapper.Map<IEnumerable<WarrantyLengthReadDto>>(warrantyLengthModels, opt => opt.Items["lang"] = lang);
 
             return Ok(mappedWarrantyLengths);
         }
 
         // GET api/WarrantyLength/{id}
         [HttpGet("{id}")]
-        public ActionResult<WarrantyLengthReadDto> GetById(int id)
+        public ActionResult<WarrantyLengthReadDto> GetById(int id, [FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
         {
             var warrantyLength = _unitOfWork.WarrantyLengthRepository.GetById(id);
 
             if (warrantyLength != null)
             {
-                var mappedWarrantyLength = _mapper.Map<WarrantyLengthReadDto>(warrantyLength);
+                var mappedWarrantyLength = _mapper.Map<WarrantyLengthReadDto>(warrantyLength, opt => opt.Items["lang"] = lang);
                 return Ok(mappedWarrantyLength);
             }
 

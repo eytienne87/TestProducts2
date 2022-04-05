@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TestProducts2.Profiles;
 
 namespace TestProducts2.Entities
 {
@@ -7,6 +8,12 @@ namespace TestProducts2.Entities
         where TSourceMember : class
     {
         private readonly IMapper _mapper;
+
+
+        public DescriptionResolver()
+        {
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfile<ProductsProfile>()).CreateMapper();
+        }
 
         public DescriptionResolver(IMapper mapper)
         {
@@ -21,6 +28,7 @@ namespace TestProducts2.Entities
             {
                 filteredDescriptions = filteredDescriptions.Where(q => (LanguageClass)q.GetType().GetProperty("Language").GetValue(q, null) == (LanguageClass)context.Items["lang"]).ToHashSet();
             }
+                filteredDescriptions = filteredDescriptions.OrderBy(q => (LanguageClass)q.GetType().GetProperty("Language").GetValue(q, null)).ToHashSet();
 
             return _mapper.Map(filteredDescriptions, descriptions);
         }

@@ -128,31 +128,29 @@ namespace TestProducts2.Controllers
             if (!ModelState.IsValid)
                 return StatusCode(422, ModelState);
 
-            //var productModel = _mapper.Map<Product>(productUpdateDto);
             var productModel = product;
             _mapper.Map(productModel, productUpdateDto);
-            //productModel.ProductType = productUpdateDto.ProductType;
 
             productModel.Warranties = new List<Warranty>();
             productModel.Benefits = new List<Benefit>();
 
-            //foreach (var benefit in productUpdateDto.Benefits)
-            //{
-            //    var benefitModel = _unitOfWork.BenefitRepository.GetById(benefit.Id);
-            //    if (benefitModel != null)
-            //    {
-            //        productModel.Benefits.Add(benefitModel);
-            //    }
-            //}
+            foreach (var benefit in productUpdateDto.Benefits)
+            {
+                var benefitModel = _unitOfWork.BenefitRepository.GetById(benefit.Id);
+                if (benefitModel != null)
+                {
+                    productModel.Benefits.Add(benefitModel);
+                }
+            }
 
             foreach (var warranty in productUpdateDto.Warranties)
             {
-                var warrantyModel = _unitOfWork.WarrantyRepository.Get(w => w.WarrantyTitle.Id == warranty.WarrantyTitle &&
-                                                                            w.WarrantyLength.Id == warranty.WarrantyLength &&
-                                                                            w.WarrantyNotabene.Id == warranty.WarrantyNotabene).FirstOrDefault();
-                var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(warranty.WarrantyTitle);
-                var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(warranty.WarrantyLength);
-                var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(warranty.WarrantyNotabene);
+                var warrantyModel = _unitOfWork.WarrantyRepository.Get(w => w.WarrantyTitle.Id == warranty.WarrantyTitleId &&
+                                                                            w.WarrantyLength.Id == warranty.WarrantyLengthId &&
+                                                                            w.WarrantyNotabene.Id == warranty.WarrantyNotabeneId).FirstOrDefault();
+                var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(warranty.WarrantyTitleId);
+                var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(warranty.WarrantyLengthId);
+                var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(warranty.WarrantyNotabeneId);
 
                 if (warrantyModel != null)
                 {
@@ -175,33 +173,68 @@ namespace TestProducts2.Controllers
             return Ok(_mapper.Map<ProductReadDto>(productModel));
         }
 
-        //[HttpPatch("{id}")]
-        //public ActionResult PartialProductUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc)
-        //{
-        //    var productModelFromRepo = _unitOfWork.ProductRepository.GetById(id);
-        //    if (productModelFromRepo == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPatch("{id}")]
+        public ActionResult PartialProductUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc)
+        {
+            var productModel = _unitOfWork.ProductRepository.GetById(id);
+            if (productModel == null)
+            {
+                return NotFound();
+            }
 
-        //    var productToPatch = _mapper.Map<ProductUpdateDto>(productModelFromRepo);
+            var productToPatch = _mapper.Map<ProductUpdateDto>(productModel);
 
-        //    patchDoc.ApplyTo(productToPatch, ModelState);
+            patchDoc.ApplyTo(productToPatch, ModelState);
 
-        //    if (!TryValidateModel(productToPatch))
-        //    {
-        //        return ValidationProblem(ModelState);
-        //    }
+            if (!TryValidateModel(productToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
 
-        //    _mapper.Map(productToPatch, productModelFromRepo);
+            _mapper.Map(productToPatch, productModel);
 
-        //    _unitOfWork.ProductRepository.Update(productModelFromRepo);
+            productModel.Warranties = new List<Warranty>();
+            productModel.Benefits = new List<Benefit>();
 
-        //    _unitOfWork.ProductRepository.SaveChanges();
+            foreach (var benefit in productToPatch.Benefits)
+            {
+                var benefitModel = _unitOfWork.BenefitRepository.GetById(benefit.Id);
+                if (benefitModel != null)
+                {
+                    productModel.Benefits.Add(benefitModel);
+                }
+            }
 
-        //    return NoContent();
+            foreach (var warranty in productToPatch.Warranties)
+            {
+                var warrantyModel = _unitOfWork.WarrantyRepository.Get(w => w.WarrantyTitle.Id == warranty.WarrantyTitleId &&
+                                                                            w.WarrantyLength.Id == warranty.WarrantyLengthId &&
+                                                                            w.WarrantyNotabene.Id == warranty.WarrantyNotabeneId).FirstOrDefault();
+                var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(warranty.WarrantyTitleId);
+                var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(warranty.WarrantyLengthId);
+                var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(warranty.WarrantyNotabeneId);
 
-        //}
+                if (warrantyModel != null)
+                {
+                    productModel.Warranties.Add(warrantyModel);
+                }
+                else if (warrantyTitleModel != null && warrantyLengthModel != null)
+                {
+                    productModel.Warranties.Add(new Warranty
+                    {
+                        WarrantyTitle = warrantyTitleModel,
+                        WarrantyLength = warrantyLengthModel,
+                        WarrantyNotabene = warrantyNotabeneModel
+                    });
+                }
+            }
+
+            _unitOfWork.ProductRepository.Update(productModel);
+
+            _unitOfWork.ProductRepository.SaveChanges();
+
+            return NoContent();
+        }
 
         // DELETE api/Products/{id}
         [HttpDelete("{id}")]

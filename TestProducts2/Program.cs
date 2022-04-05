@@ -17,9 +17,13 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddControllers().AddNewtonsoftJson(s => {
-    s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-});
+
+builder.Services.AddControllers().AddNewtonsoftJson(s => 
+    s.SerializerSettings.ContractResolver = new DefaultContractResolver
+    {
+        NamingStrategy = new SnakeCaseNamingStrategy()
+    }
+);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

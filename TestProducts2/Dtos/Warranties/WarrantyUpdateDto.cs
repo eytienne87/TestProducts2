@@ -2,8 +2,8 @@
 {
     public class WarrantyUpdateDto
     {
-        public int WarrantyTitle { get; set; }
-        public int WarrantyLength { get; set; }
-        public int WarrantyNotabene { get; set; }
+        public int WarrantyTitleId { get; set; }
+        public int WarrantyLengthId { get; set; }
+        public int WarrantyNotabeneId { get; set; }
     }
 }

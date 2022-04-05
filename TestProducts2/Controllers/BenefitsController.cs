@@ -34,13 +34,13 @@ namespace TestProducts2.Controllers
         }
 
         // GET api/Benefits/{id}
-        [HttpGet("{id}", Name = "GetBenefitById")]
-        public ActionResult<BenefitReadDto> GetBenefitById(int id)
+        [HttpGet("{id}")]
+        public ActionResult<BenefitReadDto> GetBenefitById(int id, [FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
         {
             var benefitItem = _unitOfWork.BenefitRepository.GetById(id);
             if (benefitItem != null)
             {
-                return Ok(_mapper.Map<BenefitReadDto>(benefitItem));
+                return Ok(_mapper.Map<BenefitReadDto>(benefitItem, opt => opt.Items["lang"] = lang));
             }
             return NotFound();
         }

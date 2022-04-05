@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TestProducts2.Data;
 using TestProducts2.Dtos;
+using TestProducts2.Entities;
 using TestProducts2.Models;
 
 namespace TestProducts2.Controllers
@@ -22,25 +23,25 @@ namespace TestProducts2.Controllers
 
         // GET: api/WarrantyNotabene
         [HttpGet]
-        public ActionResult<IEnumerable<WarrantyNotabeneReadDto>> GetAll()
+        public ActionResult<IEnumerable<WarrantyNotabeneReadDto>> GetWarrantyNotabenes([FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
 
         {
             var warrantyNotabeneModels = _unitOfWork.WarrantyNotabeneRepository.GetAll();
 
-            var mappedWarrantyNotabenes = _mapper.Map<IEnumerable<WarrantyNotabeneReadDto>>(warrantyNotabeneModels);
+            var mappedWarrantyNotabenes = _mapper.Map<IEnumerable<WarrantyNotabeneReadDto>>(warrantyNotabeneModels, opt => opt.Items["lang"] = lang);
 
             return Ok(mappedWarrantyNotabenes);
         }
 
         // GET api/WarrantyNotabene/{id}
         [HttpGet("{id}")]
-        public ActionResult<WarrantyNotabeneReadDto> GetById(int id)
+        public ActionResult<WarrantyNotabeneReadDto> GetById(int id, [FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
         {
             var WarrantyNotabene = _unitOfWork.WarrantyNotabeneRepository.GetById(id);
 
             if (WarrantyNotabene != null)
             {
-                var mappedWarrantyTitle = _mapper.Map<WarrantyNotabeneReadDto>(WarrantyNotabene);
+                var mappedWarrantyTitle = _mapper.Map<WarrantyNotabeneReadDto>(WarrantyNotabene, opt => opt.Items["lang"] = lang);
                 return Ok(mappedWarrantyTitle);
             }
 
