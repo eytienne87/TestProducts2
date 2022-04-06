@@ -10,7 +10,7 @@ namespace TestProducts2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BenefitsController : ControllerBase
+    public class BenefitsController : Controller
         {
             private readonly IUnitOfWork _unitOfWork;
             private readonly IMapper _mapper;
