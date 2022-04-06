@@ -44,17 +44,7 @@ namespace NUnitTests
             unitOfWorkStub.Setup(uow => uow.BenefitRepository.GetAll())
                 .Returns(_benefits);
             _unitOfWork = unitOfWorkStub.Object;
-            _client = new HttpClient { BaseAddress = new Uri(ServiceBaseURL)};
-            _client.DefaultRequestHeaders.Add("Accept-Language", "en");
         }
-
-        [SetUp]
-        public void ReInitializeTest()
-        {
-            _client = new HttpClient { BaseAddress = new Uri(ServiceBaseURL)};
-            _client.DefaultRequestHeaders.Add("Accept-Language", "en");
-        }
-
 
         [Test]
         public void GetBenefits_ShouldReturnAllBenefits()
@@ -67,10 +57,9 @@ namespace NUnitTests
             var mappedResult = _mapper.Map<IEnumerable<BenefitReadDto>>(_benefits, opt => opt.Items["lang"] = null);
 
             //Assert
-            string[] list = { "helo", "allo" };
-            string[] secondList = { "helo", "allo" };
-            //Assert.That(result.Value, Is.EquivalentTo(mappedResult));
-            Assert.AreEqual(list, secondList);
+            Assert.That(result.Value, Is.EqualTo(mappedResult));
+            //Assert.AreEqual(list, secondList);
+            CollectionAssert.AreEqual(result.Value, mappedResult);
         }
     }
 }

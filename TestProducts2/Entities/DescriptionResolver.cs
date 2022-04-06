@@ -20,7 +20,7 @@ namespace TestProducts2.Entities
             _mapper = mapper;
         }
 
-        public ICollection<TDestinationMember> Resolve(object source, object destination, ICollection<TDestinationMember> descriptions, ResolutionContext context)
+        public ICollection<TDestinationMember> Resolve(object source, object destination, ICollection<TDestinationMember> descriptions, ResolutionContext? context)
         {
             var filteredDescriptions = (HashSet<TSourceMember>)source.GetType().GetProperty("Descriptions").GetValue(source, null);   
 

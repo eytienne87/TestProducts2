@@ -55,59 +55,60 @@ namespace TestProducts2.Controllers
                 .Where(product => product.StyleCode == productCreateDto.StyleCode)
                 .FirstOrDefault();
 
-            if (products != null)
-            {
-                ModelState.AddModelError("", "Product already exists");
-                return StatusCode(422, ModelState);
-            }
+            //if (products != null)
+            //{
+            //    ModelState.AddModelError("", "Product already exists");
+            //    return StatusCode(422, ModelState);
+            //}
 
-            if (!ModelState.IsValid)
-                return StatusCode(422, ModelState);
+            //if (!ModelState.IsValid)
+            //    return StatusCode(422, ModelState);
 
             var productModel = _mapper.Map<Product>(productCreateDto);
 
-            productModel.Warranties = new List<Warranty>();
-            productModel.Benefits = new List<Benefit>();
+            //productModel.Warranties = new List<Warranty>();
+            //productModel.Benefits = new List<Benefit>();
 
 
-            foreach (var benefit in productCreateDto.Benefits)
-            {
-                var benefitModel = _unitOfWork.BenefitRepository.GetById(benefit.Id);
-                if (benefitModel != null)
-                {
-                    productModel.Benefits.Add(benefitModel);
-                }
-            }
+            //foreach (var benefit in productCreateDto.Benefits)
+            //{
+            //    var benefitModel = _unitOfWork.BenefitRepository.GetById(benefit.Id);
+            //    if (benefitModel != null)
+            //    {
+            //        productModel.Benefits.Add(benefitModel);
+            //    }
+            //}
 
-            foreach (var warranty in productCreateDto.Warranties)
-            {
-                var warrantyModel  = _unitOfWork.WarrantyRepository.Get(w => w.WarrantyTitle.Id == warranty.WarrantyTitleId &&
-                                                                             w.WarrantyLength.Id == warranty.WarrantyLengthId &&
-                                                                             w.WarrantyNotabene.Id == warranty.WarrantyNotabeneId).FirstOrDefault();
-                var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(warranty.WarrantyTitleId);
-                var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(warranty.WarrantyLengthId);
-                var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(warranty.WarrantyNotabeneId);
+            //foreach (var warranty in productCreateDto.Warranties)
+            //{
+            //    var warrantyModel = _unitOfWork.WarrantyRepository.Get(w => w.WarrantyTitle.Id == warranty.WarrantyTitleId &&
+            //                                                                w.WarrantyLength.Id == warranty.WarrantyLengthId &&
+            //                                                                w.WarrantyNotabene.Id == warranty.WarrantyNotabeneId).FirstOrDefault();
+            //    var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(warranty.WarrantyTitleId);
+            //    var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(warranty.WarrantyLengthId);
+            //    var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(warranty.WarrantyNotabeneId);
 
-                if (warrantyModel != null)
-                {
-                    productModel.Warranties.Add(warrantyModel);
-                }
-                else if (warrantyTitleModel != null && warrantyLengthModel != null)    
-                {
-                    productModel.Warranties.Add(new Warranty
-                    {
-                        WarrantyTitle = warrantyTitleModel,
-                        WarrantyLength = warrantyLengthModel,
-                        WarrantyNotabene = warrantyNotabeneModel
-                    });
-                }
+            //    if (warrantyModel != null)
+            //    {
+            //        productModel.Warranties.Add(warrantyModel);
+            //    }
+            //    else if (warrantyTitleModel != null && warrantyLengthModel != null)
+            //    {
+            //        productModel.Warranties.Add(new Warranty
+            //        {
+            //            WarrantyTitle = warrantyTitleModel,
+            //            WarrantyLength = warrantyLengthModel,
+            //            WarrantyNotabene = warrantyNotabeneModel
+            //        });
+            //    }
 
-            }
+            //}
 
             _unitOfWork.ProductRepository.Create(productModel);
             _unitOfWork.ProductRepository.SaveChanges();
 
-            return Ok(_mapper.Map<ProductReadDto>(productModel));
+            //return Ok(_mapper.Map<ProductReadDto>(productModel));
+            return Ok(productModel);
         }
 
         // PUT api/Products/{id} 
