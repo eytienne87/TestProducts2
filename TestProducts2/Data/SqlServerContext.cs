@@ -56,6 +56,12 @@ namespace TestProducts2.Data
             
                 //WarrantyNotabeneDescription
                 modelBuilder.Entity<WarrantyNotabeneDescription>().HasKey(wn => new { wn.WarrantyNotabeneId, wn.Language });
+            
+                //MarketSegmentDescription
+                modelBuilder.Entity<MarketSegmentDescription>().HasKey(wn => new { wn.MarketSegmentId, wn.Language });
+            
+                //MarketSegmentDescription
+                modelBuilder.Entity<CategoryDescription>().HasKey(wn => new { wn.CategoryId, wn.Language });
 
             }
 

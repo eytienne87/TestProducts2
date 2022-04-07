@@ -22,6 +22,21 @@ namespace TestProducts2.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("BenefitMarketSegment", b =>
+                {
+                    b.Property<int>("BenefitsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MarketSegmentsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("BenefitsId", "MarketSegmentsId");
+
+                    b.HasIndex("MarketSegmentsId");
+
+                    b.ToTable("BenefitMarketSegment");
+                });
+
             modelBuilder.Entity("BenefitProduct", b =>
                 {
                     b.Property<int>("BenefitsId")
@@ -60,13 +75,26 @@ namespace TestProducts2.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ProductType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Benefits");
                 });
@@ -86,6 +114,82 @@ namespace TestProducts2.Migrations
                     b.HasKey("BenefitId", "Language");
 
                     b.ToTable("BenefitDescription");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.CategoryDescription", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("CategoryId", "Language");
+
+                    b.ToTable("CategoryDescription");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.MarketSegment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("UrlName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MarketSegment");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.MarketSegmentDescription", b =>
+                {
+                    b.Property<int>("MarketSegmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("MarketSegmentId", "Language");
+
+                    b.ToTable("MarketSegmentDescription");
                 });
 
             modelBuilder.Entity("TestProducts2.Models.Product", b =>
@@ -261,6 +365,21 @@ namespace TestProducts2.Migrations
                     b.ToTable("WarrantyTitleDescription");
                 });
 
+            modelBuilder.Entity("BenefitMarketSegment", b =>
+                {
+                    b.HasOne("TestProducts2.Models.Benefit", null)
+                        .WithMany()
+                        .HasForeignKey("BenefitsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TestProducts2.Models.MarketSegment", null)
+                        .WithMany()
+                        .HasForeignKey("MarketSegmentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BenefitProduct", b =>
                 {
                     b.HasOne("TestProducts2.Models.Benefit", null)
@@ -291,11 +410,40 @@ namespace TestProducts2.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TestProducts2.Models.Benefit", b =>
+                {
+                    b.HasOne("TestProducts2.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("TestProducts2.Models.BenefitDescription", b =>
                 {
                     b.HasOne("TestProducts2.Models.Benefit", null)
                         .WithMany("Descriptions")
                         .HasForeignKey("BenefitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.CategoryDescription", b =>
+                {
+                    b.HasOne("TestProducts2.Models.Category", null)
+                        .WithMany("Descriptions")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.MarketSegmentDescription", b =>
+                {
+                    b.HasOne("TestProducts2.Models.MarketSegment", null)
+                        .WithMany("Descriptions")
+                        .HasForeignKey("MarketSegmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -353,6 +501,16 @@ namespace TestProducts2.Migrations
                 });
 
             modelBuilder.Entity("TestProducts2.Models.Benefit", b =>
+                {
+                    b.Navigation("Descriptions");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.Category", b =>
+                {
+                    b.Navigation("Descriptions");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.MarketSegment", b =>
                 {
                     b.Navigation("Descriptions");
                 });

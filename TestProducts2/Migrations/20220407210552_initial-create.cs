@@ -11,7 +11,7 @@ namespace TestProducts2.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Benefits",
+                name: "Category",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -21,7 +21,22 @@ namespace TestProducts2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Benefits", x => x.Id);
+                    table.PrimaryKey("PK_Category", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MarketSegment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UrlName = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MarketSegment", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,44 +99,62 @@ namespace TestProducts2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BenefitDescription",
+                name: "Benefits",
                 columns: table => new
                 {
-                    BenefitId = table.Column<int>(type: "integer", nullable: false),
-                    Language = table.Column<int>(type: "integer", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProductType = table.Column<string>(type: "text", nullable: false),
+                    Country = table.Column<string>(type: "text", nullable: false),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BenefitDescription", x => new { x.BenefitId, x.Language });
+                    table.PrimaryKey("PK_Benefits", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BenefitDescription_Benefits_BenefitId",
-                        column: x => x.BenefitId,
-                        principalTable: "Benefits",
+                        name: "FK_Benefits_Category_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Category",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "BenefitProduct",
+                name: "CategoryDescription",
                 columns: table => new
                 {
-                    BenefitsId = table.Column<int>(type: "integer", nullable: false),
-                    ProductsId = table.Column<int>(type: "integer", nullable: false)
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    Language = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BenefitProduct", x => new { x.BenefitsId, x.ProductsId });
+                    table.PrimaryKey("PK_CategoryDescription", x => new { x.CategoryId, x.Language });
                     table.ForeignKey(
-                        name: "FK_BenefitProduct_Benefits_BenefitsId",
-                        column: x => x.BenefitsId,
-                        principalTable: "Benefits",
+                        name: "FK_CategoryDescription_Category_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Category",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MarketSegmentDescription",
+                columns: table => new
+                {
+                    MarketSegmentId = table.Column<int>(type: "integer", nullable: false),
+                    Language = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MarketSegmentDescription", x => new { x.MarketSegmentId, x.Language });
                     table.ForeignKey(
-                        name: "FK_BenefitProduct_Products_ProductsId",
-                        column: x => x.ProductsId,
-                        principalTable: "Products",
+                        name: "FK_MarketSegmentDescription_MarketSegment_MarketSegmentId",
+                        column: x => x.MarketSegmentId,
+                        principalTable: "MarketSegment",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -218,6 +251,73 @@ namespace TestProducts2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BenefitDescription",
+                columns: table => new
+                {
+                    BenefitId = table.Column<int>(type: "integer", nullable: false),
+                    Language = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BenefitDescription", x => new { x.BenefitId, x.Language });
+                    table.ForeignKey(
+                        name: "FK_BenefitDescription_Benefits_BenefitId",
+                        column: x => x.BenefitId,
+                        principalTable: "Benefits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BenefitMarketSegment",
+                columns: table => new
+                {
+                    BenefitsId = table.Column<int>(type: "integer", nullable: false),
+                    MarketSegmentsId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BenefitMarketSegment", x => new { x.BenefitsId, x.MarketSegmentsId });
+                    table.ForeignKey(
+                        name: "FK_BenefitMarketSegment_Benefits_BenefitsId",
+                        column: x => x.BenefitsId,
+                        principalTable: "Benefits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BenefitMarketSegment_MarketSegment_MarketSegmentsId",
+                        column: x => x.MarketSegmentsId,
+                        principalTable: "MarketSegment",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BenefitProduct",
+                columns: table => new
+                {
+                    BenefitsId = table.Column<int>(type: "integer", nullable: false),
+                    ProductsId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BenefitProduct", x => new { x.BenefitsId, x.ProductsId });
+                    table.ForeignKey(
+                        name: "FK_BenefitProduct_Benefits_BenefitsId",
+                        column: x => x.BenefitsId,
+                        principalTable: "Benefits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BenefitProduct_Products_ProductsId",
+                        column: x => x.ProductsId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductWarranty",
                 columns: table => new
                 {
@@ -242,9 +342,19 @@ namespace TestProducts2.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_BenefitMarketSegment_MarketSegmentsId",
+                table: "BenefitMarketSegment",
+                column: "MarketSegmentsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BenefitProduct_ProductsId",
                 table: "BenefitProduct",
                 column: "ProductsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Benefits_CategoryId",
+                table: "Benefits",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductWarranty_WarrantiesId",
@@ -273,7 +383,16 @@ namespace TestProducts2.Migrations
                 name: "BenefitDescription");
 
             migrationBuilder.DropTable(
+                name: "BenefitMarketSegment");
+
+            migrationBuilder.DropTable(
                 name: "BenefitProduct");
+
+            migrationBuilder.DropTable(
+                name: "CategoryDescription");
+
+            migrationBuilder.DropTable(
+                name: "MarketSegmentDescription");
 
             migrationBuilder.DropTable(
                 name: "ProductWarranty");
@@ -291,10 +410,16 @@ namespace TestProducts2.Migrations
                 name: "Benefits");
 
             migrationBuilder.DropTable(
+                name: "MarketSegment");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Warranties");
+
+            migrationBuilder.DropTable(
+                name: "Category");
 
             migrationBuilder.DropTable(
                 name: "WarrantyLengths");
