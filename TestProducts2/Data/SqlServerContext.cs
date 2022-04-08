@@ -12,10 +12,12 @@ namespace TestProducts2.Data
 
             public DbSet<Product> Products { get; set; } = default!;
             public DbSet<Benefit> Benefits { get; set; } = default!;
+            public DbSet<OfBenefitsCategory> OfBenefitsCategories { get; set; } = default!;
             public DbSet<Warranty> Warranties { get; set; } = default!;
             public DbSet<WarrantyTitle> WarrantyTitles { get; set; } = default!;
             public DbSet<WarrantyLength> WarrantyLengths { get; set; } = default!;
             public DbSet<WarrantyNotabene> WarrantyNotabenes { get; set; } = default!;
+            public DbSet<MarketSegment> MarketSegments { get; set; } = default!;
                 
         
             protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,6 +30,9 @@ namespace TestProducts2.Data
 
                 //Benefits
                 modelBuilder.Entity<Benefit>().Navigation(b => b.Descriptions).AutoInclude();
+
+                //OfBenefits Category
+                modelBuilder.Entity<OfBenefitsCategory>().Navigation(wt => wt.Descriptions).AutoInclude();
 
                 //Warranties
                 modelBuilder.Entity<Warranty>().Navigation(w => w.WarrantyTitle).AutoInclude();
@@ -42,6 +47,10 @@ namespace TestProducts2.Data
                 
                 //Warranty Notabene
                 modelBuilder.Entity<WarrantyNotabene>().Navigation(wt => wt.Descriptions).AutoInclude();
+            
+                //Market Segment
+                modelBuilder.Entity<MarketSegment>().Navigation(wt => wt.Descriptions).AutoInclude();
+                
                 
                                         // ----- Unique Keys -----
 
@@ -60,12 +69,12 @@ namespace TestProducts2.Data
                 //MarketSegmentDescription
                 modelBuilder.Entity<MarketSegmentDescription>().HasKey(wn => new { wn.MarketSegmentId, wn.Language });
             
-                //MarketSegmentDescription
-                modelBuilder.Entity<CategoryDescription>().HasKey(wn => new { wn.CategoryId, wn.Language });
+                //CategoryDescription
+                modelBuilder.Entity<OfBenefitsCategoryDescription>().HasKey(wn => new { wn.CategoryId, wn.Language });
 
             }
 
-            public override int SaveChanges()
+            àpublic override int SaveChanges()
             {
                 var entries = ChangeTracker
                                     .Entries()

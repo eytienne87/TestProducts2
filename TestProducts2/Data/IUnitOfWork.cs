@@ -10,6 +10,7 @@ namespace TestProducts2.Data
         IRepository<WarrantyTitle> WarrantyTitleRepository { get; }
         IRepository<WarrantyLength> WarrantyLengthRepository { get; }
         IRepository<WarrantyNotabene> WarrantyNotabeneRepository { get; }
+        IRepository<MarketSegment> MarketSegmentRepository { get; }
         void Save();
     }
 }

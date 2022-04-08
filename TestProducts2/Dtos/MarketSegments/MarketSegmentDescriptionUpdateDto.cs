@@ -1,10 +1,10 @@
 ﻿using TestProducts2.Entities;
+using TestProducts2.Models;
 
-namespace TestProducts2.Models
+namespace TestProducts2.Dtos
 {
-    public class CategoryDescription
+    public class MarketSegmentDescriptionUpdateDto
     {
-        public int CategoryId { get; set; } 
         public LanguageClass Language { get; set; }
         public string Description { get; set; } = string.Empty;
     }

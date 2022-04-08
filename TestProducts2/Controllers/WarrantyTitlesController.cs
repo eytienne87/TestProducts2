@@ -20,11 +20,6 @@ namespace TestProducts2.Controllers
                 _unitOfWork = unitOfWork;
                 _mapper = mapper;
             }
-        
-            //public WarrantyTitlesController(IUnitOfWork unitOfWork)
-            //{
-                
-            //}
 
         // GET: api/WarrantyTitle
         [HttpGet]

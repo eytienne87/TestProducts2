@@ -31,6 +31,25 @@ namespace TestProducts2.Models
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Convenient" },
                                     new BenefitDescription() { Language = LanguageClass.fr, Description = "Utile" }
                                 },
+                                MarketSegments = new List<MarketSegment>()
+                                {
+                                    new MarketSegment() {
+                                        UrlName = "/residential",
+                                        Descriptions = new List<MarketSegmentDescription>()
+                                        {
+                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Residential"  },
+                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Résidentiel"  }
+                                        },
+                                    },
+                                    new MarketSegment() {
+                                        UrlName = "/government",
+                                        Descriptions = new List<MarketSegmentDescription>()
+                                        {
+                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Government"  },
+                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Gouvernement"  }
+                                        },
+                                    },
+                                },
                                 CreatedDate = DateTime.Now,
                                 UpdatedDate = DateTime.Today.AddDays(1)
                             },
@@ -39,6 +58,25 @@ namespace TestProducts2.Models
                                 {
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Lasting" },
                                     new BenefitDescription() { Language = LanguageClass.fr, Description = "Endurant" }
+                                },
+                                MarketSegments = new List<MarketSegment>()
+                                {
+                                    new MarketSegment() { 
+                                        UrlName = "/commercial",
+                                        Descriptions = new List<MarketSegmentDescription>() 
+                                        {
+                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Commercial" },
+                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Entreprise" }
+                                        },     
+                                    },
+                                    new MarketSegment() { 
+                                        UrlName = "/sportsfacility",
+                                        Descriptions = new List<MarketSegmentDescription>() 
+                                        {
+                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Sports Facility" },
+                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Centre Sportif" }
+                                        },     
+                                    },
                                 },
                                 CreatedDate = DateTime.Now,
                                 UpdatedDate = DateTime.Today.AddDays(1)
@@ -92,6 +130,25 @@ namespace TestProducts2.Models
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Convenient" },
                                     new BenefitDescription() { Language = LanguageClass.fr, Description = "Utile" }
                                 },
+                                MarketSegments = new List<MarketSegment>()
+                                {
+                                    new MarketSegment() {
+                                        UrlName = "/commercial",
+                                        Descriptions = new List<MarketSegmentDescription>()
+                                        {
+                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Commercial" },
+                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Entreprise" }
+                                        },
+                                    },
+                                    new MarketSegment() {
+                                        UrlName = "/sportsfacility",
+                                        Descriptions = new List<MarketSegmentDescription>()
+                                        {
+                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Sports Facility" },
+                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Centre Sportif" }
+                                        },
+                                    },
+                                },
                                 CreatedDate = DateTime.Now,
                                 UpdatedDate = DateTime.Today.AddDays(1)
                             },
@@ -100,6 +157,25 @@ namespace TestProducts2.Models
                                 {
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Lasting" },
                                     new BenefitDescription() { Language = LanguageClass.fr, Description = "Endurant" }
+                                },
+                                MarketSegments = new List<MarketSegment>()
+                                {
+                                    new MarketSegment() {
+                                        UrlName = "/residential",
+                                        Descriptions = new List<MarketSegmentDescription>()
+                                        {
+                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Residential"  },
+                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Résidentiel"  }
+                                        },
+                                    },
+                                    new MarketSegment() {
+                                        UrlName = "/government",
+                                        Descriptions = new List<MarketSegmentDescription>()
+                                        {
+                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Government"  },
+                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Gouvernement"  }
+                                        },
+                                    },
                                 },
                                 CreatedDate = DateTime.Now,
                                 UpdatedDate = DateTime.Today.AddDays(1)
@@ -111,8 +187,8 @@ namespace TestProducts2.Models
                                 WarrantyTitle = new WarrantyTitle {
                                     Descriptions = new List<WarrantyTitleDescription>()
                                     {
-                                        new WarrantyTitleDescription { Language = LanguageClass.en, Description = "Tear"  },
-                                        new WarrantyTitleDescription { Language = LanguageClass.fr, Description = "Brisure"  }
+                                        new WarrantyTitleDescription { Language = LanguageClass.en, Description = "Tear" },
+                                        new WarrantyTitleDescription { Language = LanguageClass.fr, Description = "Brisure" }
                                     },
                                     CreatedDate = DateTime.Now,
                                     UpdatedDate = DateTime.Today.AddDays(1)

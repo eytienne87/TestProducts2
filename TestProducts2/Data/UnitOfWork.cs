@@ -11,6 +11,7 @@ namespace TestProducts2.Data
         private IRepository<WarrantyTitle>? _warrantyTitleRepository;
         private IRepository<WarrantyLength>? _warrantyLengthRepository;
         private IRepository<WarrantyNotabene>? _warrantyNotabeneRepository;
+        private IRepository<MarketSegment>? _marketSegmentRepository;
 
         public UnitOfWork(SqlServerContext sqlServerContext)
         {
@@ -90,6 +91,18 @@ namespace TestProducts2.Data
                 }
 
                 return _warrantyNotabeneRepository;
+            }
+        }
+        public IRepository<MarketSegment> MarketSegmentRepository
+        {
+            get
+            {
+                if (_marketSegmentRepository is null)
+                {
+                    _marketSegmentRepository = new GenericRepository<MarketSegment>(_sqlServerContext);
+                }
+
+                return _marketSegmentRepository;
             }
         }
 
