@@ -7,6 +7,7 @@ namespace TestProducts2.Data
         private readonly SqlServerContext _sqlServerContext;
         private IProductRepository? _productRepository;
         private IRepository<Benefit>? _benefitRepository;
+        private IRepository<CategoryOfBenefit>? _categoryOfBenefitRepository;
         private IRepository<Warranty>? _warrantyRepository;
         private IRepository<WarrantyTitle>? _warrantyTitleRepository;
         private IRepository<WarrantyLength>? _warrantyLengthRepository;
@@ -103,6 +104,19 @@ namespace TestProducts2.Data
                 }
 
                 return _marketSegmentRepository;
+            }
+        }
+        
+        public IRepository<CategoryOfBenefit> CategoryOfBenefitRepository
+        {
+            get
+            {
+                if (_categoryOfBenefitRepository is null)
+                {
+                    _categoryOfBenefitRepository = new GenericRepository<CategoryOfBenefit>(_sqlServerContext);
+                }
+
+                return _categoryOfBenefitRepository;
             }
         }
 

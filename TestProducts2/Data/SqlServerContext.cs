@@ -12,7 +12,7 @@ namespace TestProducts2.Data
 
             public DbSet<Product> Products { get; set; } = default!;
             public DbSet<Benefit> Benefits { get; set; } = default!;
-            public DbSet<OfBenefitsCategory> OfBenefitsCategories { get; set; } = default!;
+            public DbSet<CategoryOfBenefit> CategoryOfBenefits { get; set; } = default!;
             public DbSet<Warranty> Warranties { get; set; } = default!;
             public DbSet<WarrantyTitle> WarrantyTitles { get; set; } = default!;
             public DbSet<WarrantyLength> WarrantyLengths { get; set; } = default!;
@@ -32,8 +32,8 @@ namespace TestProducts2.Data
                 modelBuilder.Entity<Benefit>().Navigation(b => b.Descriptions).AutoInclude();
                 modelBuilder.Entity<Benefit>().Navigation(b => b.Category).AutoInclude();
 
-                //OfBenefits Category
-                modelBuilder.Entity<OfBenefitsCategory>().Navigation(wt => wt.Descriptions).AutoInclude();
+                //Category of Benefits
+                modelBuilder.Entity<CategoryOfBenefit>().Navigation(cb => cb.Descriptions).AutoInclude();
 
                 //Warranties
                 modelBuilder.Entity<Warranty>().Navigation(w => w.WarrantyTitle).AutoInclude();
@@ -50,7 +50,7 @@ namespace TestProducts2.Data
                 modelBuilder.Entity<WarrantyNotabene>().Navigation(wt => wt.Descriptions).AutoInclude();
             
                 //Market Segment
-                modelBuilder.Entity<MarketSegment>().Navigation(wt => wt.Descriptions).AutoInclude();
+                modelBuilder.Entity<MarketSegment>().Navigation(ms => ms.Descriptions).AutoInclude();
                 
                 
                                         // ----- Unique Keys -----
@@ -70,8 +70,8 @@ namespace TestProducts2.Data
                 //MarketSegmentDescription
                 modelBuilder.Entity<MarketSegmentDescription>().HasKey(ms => new { ms.MarketSegmentId, ms.Language });
             
-                //CategoryDescription
-                modelBuilder.Entity<OfBenefitsCategoryDescription>().HasKey(bc => new { bc.CategoryId, bc.Language });
+                //CategoryOfBenefitDescription
+                modelBuilder.Entity<CategoryOfBenefitDescription>().HasKey(bc => new { bc.CategoryId, bc.Language });
 
             }
 

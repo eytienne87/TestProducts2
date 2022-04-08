@@ -37,10 +37,10 @@ namespace TestProducts2.Controllers
         [HttpGet("{id}")]
         public ActionResult<MarketSegmentReadDto> GetMarketSegmentById(int id, [FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
         {
-            var benefitItem = _unitOfWork.MarketSegmentRepository.GetById(id);
-            if (benefitItem != null)
+            var categoryOfBenefitItem = _unitOfWork.MarketSegmentRepository.GetById(id);
+            if (categoryOfBenefitItem != null)
             {
-                return Ok(_mapper.Map<MarketSegmentReadDto>(benefitItem, opt => opt.Items["lang"] = lang));
+                return Ok(_mapper.Map<MarketSegmentReadDto>(categoryOfBenefitItem, opt => opt.Items["lang"] = lang));
             }
             return NotFound();
         }
@@ -62,15 +62,15 @@ namespace TestProducts2.Controllers
 
         // PUT api/MarketSegments/{id}
         [HttpPut("{id}")]
-        public ActionResult Update(int id, MarketSegmentUpdateDto benefitUpdateDto)
+        public ActionResult Update(int id, MarketSegmentUpdateDto categoryOfBenefitUpdateDto)
         {
             var marketSegmentModel = _unitOfWork.MarketSegmentRepository.GetById(id);
             if (marketSegmentModel == null)
             {
                 return NotFound();
             }
-            benefitUpdateDto.Id = marketSegmentModel.Id;
-            _mapper.Map(benefitUpdateDto, marketSegmentModel);
+            categoryOfBenefitUpdateDto.Id = marketSegmentModel.Id;
+            _mapper.Map(categoryOfBenefitUpdateDto, marketSegmentModel);
 
             _unitOfWork.MarketSegmentRepository.Update(marketSegmentModel);
 

@@ -26,6 +26,7 @@ namespace TestProducts2.Models
                         Benefits = new List<Benefit>()
                         {
                             new Benefit {
+                                ProductType = "1",
                                 Descriptions = new List<BenefitDescription>()
                                 {
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Really Convenient and easy to assemble" },
@@ -50,11 +51,11 @@ namespace TestProducts2.Models
                                         },
                                     },
                                 },
-                                Category = new OfBenefitsCategory {
-                                    Descriptions = new List<OfBenefitsCategoryDescription>()
+                                Category = new CategoryOfBenefit {
+                                    Descriptions = new List<CategoryOfBenefitDescription>()
                                     {
-                                        new OfBenefitsCategoryDescription { Language = LanguageClass.en, Description = "Easy" },
-                                        new OfBenefitsCategoryDescription { Language = LanguageClass.fr, Description = "Facile" }
+                                        new CategoryOfBenefitDescription { Language = LanguageClass.en, Description = "Easy" },
+                                        new CategoryOfBenefitDescription { Language = LanguageClass.fr, Description = "Facile" }
                                     },
                                     CreatedDate = DateTime.Now,
                                     UpdatedDate = DateTime.Today.AddDays(1)
@@ -63,6 +64,7 @@ namespace TestProducts2.Models
                                 UpdatedDate = DateTime.Today.AddDays(1)
                             },
                             new Benefit {
+                                ProductType = "2",
                                 Descriptions = new List<BenefitDescription>()
                                 {
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Will last for many decades" },
@@ -87,11 +89,11 @@ namespace TestProducts2.Models
                                         },     
                                     },
                                 },
-                                Category = new OfBenefitsCategory {
-                                    Descriptions = new List<OfBenefitsCategoryDescription>()
+                                Category = new CategoryOfBenefit {
+                                    Descriptions = new List<CategoryOfBenefitDescription>()
                                     {
-                                        new OfBenefitsCategoryDescription { Language = LanguageClass.en, Description = "Lasting" },
-                                        new OfBenefitsCategoryDescription { Language = LanguageClass.fr, Description = "Endurant" }
+                                        new CategoryOfBenefitDescription { Language = LanguageClass.en, Description = "Lasting" },
+                                        new CategoryOfBenefitDescription { Language = LanguageClass.fr, Description = "Endurant" }
                                     },
                                     CreatedDate = DateTime.Now,
                                     UpdatedDate = DateTime.Today.AddDays(1)
@@ -143,6 +145,7 @@ namespace TestProducts2.Models
                         Benefits = new List<Benefit>()
                         {
                             new Benefit {
+                                ProductType = "2",
                                 Descriptions = new List<BenefitDescription>()
                                 {
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Really Convenient and easy to assemble" },
@@ -167,11 +170,11 @@ namespace TestProducts2.Models
                                         },
                                     },
                                 },
-                                Category = new OfBenefitsCategory {
-                                    Descriptions = new List<OfBenefitsCategoryDescription>()
+                                Category = new CategoryOfBenefit {
+                                    Descriptions = new List<CategoryOfBenefitDescription>()
                                     {
-                                        new OfBenefitsCategoryDescription { Language = LanguageClass.en, Description = "Easy" },
-                                        new OfBenefitsCategoryDescription { Language = LanguageClass.fr, Description = "Facile" }
+                                        new CategoryOfBenefitDescription { Language = LanguageClass.en, Description = "Easy" },
+                                        new CategoryOfBenefitDescription { Language = LanguageClass.fr, Description = "Facile" }
                                     },
                                     CreatedDate = DateTime.Now,
                                     UpdatedDate = DateTime.Today.AddDays(1)
@@ -180,6 +183,7 @@ namespace TestProducts2.Models
                                 UpdatedDate = DateTime.Today.AddDays(1)
                             },
                             new Benefit {
+                                ProductType = "1",
                                 Descriptions = new List<BenefitDescription>()
                                 {
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Will last for many decades" },
@@ -204,11 +208,11 @@ namespace TestProducts2.Models
                                         },
                                     },
                                 },
-                                Category = new OfBenefitsCategory {
-                                    Descriptions = new List<OfBenefitsCategoryDescription>()
+                                Category = new CategoryOfBenefit {
+                                    Descriptions = new List<CategoryOfBenefitDescription>()
                                     {
-                                        new OfBenefitsCategoryDescription { Language = LanguageClass.en, Description = "Lasting" },
-                                        new OfBenefitsCategoryDescription { Language = LanguageClass.fr, Description = "Endurant" }
+                                        new CategoryOfBenefitDescription { Language = LanguageClass.en, Description = "Lasting" },
+                                        new CategoryOfBenefitDescription { Language = LanguageClass.fr, Description = "Endurant" }
                                     },
                                     CreatedDate = DateTime.Now,
                                     UpdatedDate = DateTime.Today.AddDays(1)
