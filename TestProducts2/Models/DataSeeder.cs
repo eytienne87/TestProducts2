@@ -28,8 +28,8 @@ namespace TestProducts2.Models
                             new Benefit {
                                 Descriptions = new List<BenefitDescription>()
                                 {
-                                    new BenefitDescription() { Language = LanguageClass.en, Description = "Convenient" },
-                                    new BenefitDescription() { Language = LanguageClass.fr, Description = "Utile" }
+                                    new BenefitDescription() { Language = LanguageClass.en, Description = "Really Convenient and easy to assemble" },
+                                    new BenefitDescription() { Language = LanguageClass.fr, Description = "Très pratique et facile à assembler" }
                                 },
                                 MarketSegments = new List<MarketSegment>()
                                 {
@@ -50,14 +50,23 @@ namespace TestProducts2.Models
                                         },
                                     },
                                 },
+                                Category = new OfBenefitsCategory {
+                                    Descriptions = new List<OfBenefitsCategoryDescription>()
+                                    {
+                                        new OfBenefitsCategoryDescription { Language = LanguageClass.en, Description = "Easy" },
+                                        new OfBenefitsCategoryDescription { Language = LanguageClass.fr, Description = "Facile" }
+                                    },
+                                    CreatedDate = DateTime.Now,
+                                    UpdatedDate = DateTime.Today.AddDays(1)
+                                },
                                 CreatedDate = DateTime.Now,
                                 UpdatedDate = DateTime.Today.AddDays(1)
                             },
                             new Benefit {
                                 Descriptions = new List<BenefitDescription>()
                                 {
-                                    new BenefitDescription() { Language = LanguageClass.en, Description = "Lasting" },
-                                    new BenefitDescription() { Language = LanguageClass.fr, Description = "Endurant" }
+                                    new BenefitDescription() { Language = LanguageClass.en, Description = "Will last for many decades" },
+                                    new BenefitDescription() { Language = LanguageClass.fr, Description = "Va durer plusieurs décennies" }
                                 },
                                 MarketSegments = new List<MarketSegment>()
                                 {
@@ -77,6 +86,15 @@ namespace TestProducts2.Models
                                             new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Centre Sportif" }
                                         },     
                                     },
+                                },
+                                Category = new OfBenefitsCategory {
+                                    Descriptions = new List<OfBenefitsCategoryDescription>()
+                                    {
+                                        new OfBenefitsCategoryDescription { Language = LanguageClass.en, Description = "Lasting" },
+                                        new OfBenefitsCategoryDescription { Language = LanguageClass.fr, Description = "Endurant" }
+                                    },
+                                    CreatedDate = DateTime.Now,
+                                    UpdatedDate = DateTime.Today.AddDays(1)
                                 },
                                 CreatedDate = DateTime.Now,
                                 UpdatedDate = DateTime.Today.AddDays(1)
@@ -127,8 +145,8 @@ namespace TestProducts2.Models
                             new Benefit {
                                 Descriptions = new List<BenefitDescription>()
                                 {
-                                    new BenefitDescription() { Language = LanguageClass.en, Description = "Convenient" },
-                                    new BenefitDescription() { Language = LanguageClass.fr, Description = "Utile" }
+                                    new BenefitDescription() { Language = LanguageClass.en, Description = "Really Convenient and easy to assemble" },
+                                    new BenefitDescription() { Language = LanguageClass.fr, Description = "Très pratique et facile à assembler" }
                                 },
                                 MarketSegments = new List<MarketSegment>()
                                 {
@@ -149,14 +167,23 @@ namespace TestProducts2.Models
                                         },
                                     },
                                 },
+                                Category = new OfBenefitsCategory {
+                                    Descriptions = new List<OfBenefitsCategoryDescription>()
+                                    {
+                                        new OfBenefitsCategoryDescription { Language = LanguageClass.en, Description = "Easy" },
+                                        new OfBenefitsCategoryDescription { Language = LanguageClass.fr, Description = "Facile" }
+                                    },
+                                    CreatedDate = DateTime.Now,
+                                    UpdatedDate = DateTime.Today.AddDays(1)
+                                },
                                 CreatedDate = DateTime.Now,
                                 UpdatedDate = DateTime.Today.AddDays(1)
                             },
                             new Benefit {
                                 Descriptions = new List<BenefitDescription>()
                                 {
-                                    new BenefitDescription() { Language = LanguageClass.en, Description = "Lasting" },
-                                    new BenefitDescription() { Language = LanguageClass.fr, Description = "Endurant" }
+                                    new BenefitDescription() { Language = LanguageClass.en, Description = "Will last for many decades" },
+                                    new BenefitDescription() { Language = LanguageClass.fr, Description = "Va durer plusieurs décennies" }
                                 },
                                 MarketSegments = new List<MarketSegment>()
                                 {
@@ -164,18 +191,27 @@ namespace TestProducts2.Models
                                         UrlName = "/residential",
                                         Descriptions = new List<MarketSegmentDescription>()
                                         {
-                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Residential"  },
-                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Résidentiel"  }
+                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Residential" },
+                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Résidentiel" }
                                         },
                                     },
                                     new MarketSegment() {
                                         UrlName = "/government",
                                         Descriptions = new List<MarketSegmentDescription>()
                                         {
-                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Government"  },
-                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Gouvernement"  }
+                                            new MarketSegmentDescription { Language = LanguageClass.en, Description = "Government" },
+                                            new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Gouvernement" }
                                         },
                                     },
+                                },
+                                Category = new OfBenefitsCategory {
+                                    Descriptions = new List<OfBenefitsCategoryDescription>()
+                                    {
+                                        new OfBenefitsCategoryDescription { Language = LanguageClass.en, Description = "Lasting" },
+                                        new OfBenefitsCategoryDescription { Language = LanguageClass.fr, Description = "Endurant" }
+                                    },
+                                    CreatedDate = DateTime.Now,
+                                    UpdatedDate = DateTime.Today.AddDays(1)
                                 },
                                 CreatedDate = DateTime.Now,
                                 UpdatedDate = DateTime.Today.AddDays(1)

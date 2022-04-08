@@ -30,6 +30,7 @@ namespace TestProducts2.Data
 
                 //Benefits
                 modelBuilder.Entity<Benefit>().Navigation(b => b.Descriptions).AutoInclude();
+                modelBuilder.Entity<Benefit>().Navigation(b => b.Category).AutoInclude();
 
                 //OfBenefits Category
                 modelBuilder.Entity<OfBenefitsCategory>().Navigation(wt => wt.Descriptions).AutoInclude();
@@ -67,14 +68,14 @@ namespace TestProducts2.Data
                 modelBuilder.Entity<WarrantyNotabeneDescription>().HasKey(wn => new { wn.WarrantyNotabeneId, wn.Language });
             
                 //MarketSegmentDescription
-                modelBuilder.Entity<MarketSegmentDescription>().HasKey(wn => new { wn.MarketSegmentId, wn.Language });
+                modelBuilder.Entity<MarketSegmentDescription>().HasKey(ms => new { ms.MarketSegmentId, ms.Language });
             
                 //CategoryDescription
-                modelBuilder.Entity<OfBenefitsCategoryDescription>().HasKey(wn => new { wn.CategoryId, wn.Language });
+                modelBuilder.Entity<OfBenefitsCategoryDescription>().HasKey(bc => new { bc.CategoryId, bc.Language });
 
             }
 
-            àpublic override int SaveChanges()
+            public override int SaveChanges()
             {
                 var entries = ChangeTracker
                                     .Entries()
