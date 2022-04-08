@@ -11,7 +11,7 @@ namespace TestProducts2.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Category",
+                name: "CategoryOfBenefits",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -21,11 +21,11 @@ namespace TestProducts2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.Id);
+                    table.PrimaryKey("PK_CategoryOfBenefits", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "MarketSegment",
+                name: "MarketSegments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -36,7 +36,7 @@ namespace TestProducts2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MarketSegment", x => x.Id);
+                    table.PrimaryKey("PK_MarketSegments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -105,8 +105,7 @@ namespace TestProducts2.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ProductType = table.Column<string>(type: "text", nullable: false),
-                    Country = table.Column<string>(type: "text", nullable: false),
-                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    CategoryId = table.Column<int>(type: "integer", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
@@ -114,30 +113,29 @@ namespace TestProducts2.Migrations
                 {
                     table.PrimaryKey("PK_Benefits", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Benefits_Category_CategoryId",
+                        name: "FK_Benefits_CategoryOfBenefits_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "CategoryOfBenefits",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryDescription",
+                name: "CategoryOfBenefitDescription",
                 columns: table => new
                 {
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
                     Language = table.Column<int>(type: "integer", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    CategoryOfBenefitId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryDescription", x => new { x.CategoryId, x.Language });
+                    table.PrimaryKey("PK_CategoryOfBenefitDescription", x => new { x.CategoryId, x.Language });
                     table.ForeignKey(
-                        name: "FK_CategoryDescription_Category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_CategoryOfBenefitDescription_CategoryOfBenefits_CategoryOfB~",
+                        column: x => x.CategoryOfBenefitId,
+                        principalTable: "CategoryOfBenefits",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -152,9 +150,9 @@ namespace TestProducts2.Migrations
                 {
                     table.PrimaryKey("PK_MarketSegmentDescription", x => new { x.MarketSegmentId, x.Language });
                     table.ForeignKey(
-                        name: "FK_MarketSegmentDescription_MarketSegment_MarketSegmentId",
+                        name: "FK_MarketSegmentDescription_MarketSegments_MarketSegmentId",
                         column: x => x.MarketSegmentId,
-                        principalTable: "MarketSegment",
+                        principalTable: "MarketSegments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -286,9 +284,9 @@ namespace TestProducts2.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BenefitMarketSegment_MarketSegment_MarketSegmentsId",
+                        name: "FK_BenefitMarketSegment_MarketSegments_MarketSegmentsId",
                         column: x => x.MarketSegmentsId,
-                        principalTable: "MarketSegment",
+                        principalTable: "MarketSegments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -357,6 +355,11 @@ namespace TestProducts2.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CategoryOfBenefitDescription_CategoryOfBenefitId",
+                table: "CategoryOfBenefitDescription",
+                column: "CategoryOfBenefitId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductWarranty_WarrantiesId",
                 table: "ProductWarranty",
                 column: "WarrantiesId");
@@ -389,7 +392,7 @@ namespace TestProducts2.Migrations
                 name: "BenefitProduct");
 
             migrationBuilder.DropTable(
-                name: "CategoryDescription");
+                name: "CategoryOfBenefitDescription");
 
             migrationBuilder.DropTable(
                 name: "MarketSegmentDescription");
@@ -410,7 +413,7 @@ namespace TestProducts2.Migrations
                 name: "Benefits");
 
             migrationBuilder.DropTable(
-                name: "MarketSegment");
+                name: "MarketSegments");
 
             migrationBuilder.DropTable(
                 name: "Products");
@@ -419,7 +422,7 @@ namespace TestProducts2.Migrations
                 name: "Warranties");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "CategoryOfBenefits");
 
             migrationBuilder.DropTable(
                 name: "WarrantyLengths");

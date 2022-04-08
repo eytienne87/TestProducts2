@@ -12,8 +12,8 @@ using TestProducts2.Data;
 namespace TestProducts2.Migrations
 {
     [DbContext(typeof(SqlServerContext))]
-    [Migration("20220408145430_NewNamingForOfBenefitsCategoryTable")]
-    partial class NewNamingForOfBenefitsCategoryTable
+    [Migration("20220408193237_initial-create")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -77,7 +77,7 @@ namespace TestProducts2.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedDate")
@@ -112,6 +112,47 @@ namespace TestProducts2.Migrations
                     b.HasKey("BenefitId", "Language");
 
                     b.ToTable("BenefitDescription");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.CategoryOfBenefit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CategoryOfBenefits");
+                });
+
+            modelBuilder.Entity("TestProducts2.Models.CategoryOfBenefitDescription", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("CategoryOfBenefitId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("CategoryId", "Language");
+
+                    b.HasIndex("CategoryOfBenefitId");
+
+                    b.ToTable("CategoryOfBenefitDescription");
                 });
 
             modelBuilder.Entity("TestProducts2.Models.MarketSegment", b =>
@@ -152,47 +193,6 @@ namespace TestProducts2.Migrations
                     b.HasKey("MarketSegmentId", "Language");
 
                     b.ToTable("MarketSegmentDescription");
-                });
-
-            modelBuilder.Entity("TestProducts2.Models.OfBenefitsCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OfBenefitsCategories");
-                });
-
-            modelBuilder.Entity("TestProducts2.Models.OfBenefitsCategoryDescription", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Language")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("OfBenefitsCategoryId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("CategoryId", "Language");
-
-                    b.HasIndex("OfBenefitsCategoryId");
-
-                    b.ToTable("OfBenefitsCategoryDescription");
                 });
 
             modelBuilder.Entity("TestProducts2.Models.Product", b =>
@@ -415,11 +415,9 @@ namespace TestProducts2.Migrations
 
             modelBuilder.Entity("TestProducts2.Models.Benefit", b =>
                 {
-                    b.HasOne("TestProducts2.Models.OfBenefitsCategory", "Category")
+                    b.HasOne("TestProducts2.Models.CategoryOfBenefit", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });
@@ -433,6 +431,13 @@ namespace TestProducts2.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TestProducts2.Models.CategoryOfBenefitDescription", b =>
+                {
+                    b.HasOne("TestProducts2.Models.CategoryOfBenefit", null)
+                        .WithMany("Descriptions")
+                        .HasForeignKey("CategoryOfBenefitId");
+                });
+
             modelBuilder.Entity("TestProducts2.Models.MarketSegmentDescription", b =>
                 {
                     b.HasOne("TestProducts2.Models.MarketSegment", null)
@@ -440,13 +445,6 @@ namespace TestProducts2.Migrations
                         .HasForeignKey("MarketSegmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TestProducts2.Models.OfBenefitsCategoryDescription", b =>
-                {
-                    b.HasOne("TestProducts2.Models.OfBenefitsCategory", null)
-                        .WithMany("Descriptions")
-                        .HasForeignKey("OfBenefitsCategoryId");
                 });
 
             modelBuilder.Entity("TestProducts2.Models.Warranty", b =>
@@ -506,12 +504,12 @@ namespace TestProducts2.Migrations
                     b.Navigation("Descriptions");
                 });
 
-            modelBuilder.Entity("TestProducts2.Models.MarketSegment", b =>
+            modelBuilder.Entity("TestProducts2.Models.CategoryOfBenefit", b =>
                 {
                     b.Navigation("Descriptions");
                 });
 
-            modelBuilder.Entity("TestProducts2.Models.OfBenefitsCategory", b =>
+            modelBuilder.Entity("TestProducts2.Models.MarketSegment", b =>
                 {
                     b.Navigation("Descriptions");
                 });

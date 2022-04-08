@@ -31,6 +31,7 @@ namespace TestProducts2.Data
                 //Benefits
                 modelBuilder.Entity<Benefit>().Navigation(b => b.Descriptions).AutoInclude();
                 modelBuilder.Entity<Benefit>().Navigation(b => b.Category).AutoInclude();
+                modelBuilder.Entity<Benefit>().Navigation(b => b.MarketSegments).AutoInclude();
 
                 //Category of Benefits
                 modelBuilder.Entity<CategoryOfBenefit>().Navigation(cb => cb.Descriptions).AutoInclude();
@@ -71,7 +72,7 @@ namespace TestProducts2.Data
                 modelBuilder.Entity<MarketSegmentDescription>().HasKey(ms => new { ms.MarketSegmentId, ms.Language });
             
                 //CategoryOfBenefitDescription
-                modelBuilder.Entity<CategoryOfBenefitDescription>().HasKey(bc => new { bc.CategoryId, bc.Language });
+                modelBuilder.Entity<CategoryOfBenefitDescription>().HasKey(bc => new { bc.CategoryOfBenefitId, bc.Language });
 
             }
 

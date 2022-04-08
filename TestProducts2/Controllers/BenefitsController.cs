@@ -51,13 +51,22 @@ namespace TestProducts2.Controllers
         {
             var benefitModel = _mapper.Map<Benefit>(benefitCreateDto);
 
-            if (!_unitOfWork.BenefitRepository.Create(benefitModel))
+            benefitModel.MarketSegments = new List<MarketSegment>();
+
+            foreach (var marketSegment in benefitCreateDto.MarketSegments)
             {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
+                var marketSegmentModel = _unitOfWork.MarketSegmentRepository.GetById(marketSegment.Id);
+                if (marketSegmentModel != null)
+                {
+                    benefitModel.MarketSegments.Add(marketSegmentModel);
+                }
             }
 
-            return Ok(_mapper.Map<BenefitReadDto>(benefitModel));
+            _unitOfWork.BenefitRepository.Create(benefitModel);
+            _unitOfWork.BenefitRepository.SaveChanges();
+
+            //return Ok(_mapper.Map<BenefitReadDto>(benefitModel));
+            return Ok(benefitModel);
         }
 
         // PUT api/Benefits/{id}

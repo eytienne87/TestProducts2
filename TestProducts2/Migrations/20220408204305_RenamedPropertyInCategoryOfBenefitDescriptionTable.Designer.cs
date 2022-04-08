@@ -12,8 +12,8 @@ using TestProducts2.Data;
 namespace TestProducts2.Migrations
 {
     [DbContext(typeof(SqlServerContext))]
-    [Migration("20220408174440_ChangedNamingofCategoryOfBenefits")]
-    partial class ChangedNamingofCategoryOfBenefits
+    [Migration("20220408204305_RenamedPropertyInCategoryOfBenefitDescriptionTable")]
+    partial class RenamedPropertyInCategoryOfBenefitDescriptionTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -135,22 +135,17 @@ namespace TestProducts2.Migrations
 
             modelBuilder.Entity("TestProducts2.Models.CategoryOfBenefitDescription", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("CategoryOfBenefitId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Language")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("CategoryOfBenefitId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("CategoryId", "Language");
-
-                    b.HasIndex("CategoryOfBenefitId");
+                    b.HasKey("CategoryOfBenefitId", "Language");
 
                     b.ToTable("CategoryOfBenefitDescription");
                 });
@@ -435,7 +430,9 @@ namespace TestProducts2.Migrations
                 {
                     b.HasOne("TestProducts2.Models.CategoryOfBenefit", null)
                         .WithMany("Descriptions")
-                        .HasForeignKey("CategoryOfBenefitId");
+                        .HasForeignKey("CategoryOfBenefitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TestProducts2.Models.MarketSegmentDescription", b =>

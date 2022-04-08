@@ -4,7 +4,7 @@ namespace TestProducts2.Models
 {
     public class CategoryOfBenefitDescription
     {
-        public int CategoryId { get; set; } 
+        public int CategoryOfBenefitId { get; set; } 
         public LanguageClass Language { get; set; }
         public string Description { get; set; } = string.Empty;
     }
