@@ -57,7 +57,7 @@ namespace TestProducts2.Controllers
             _unitOfWork.WarrantyTitleRepository.Create(warrantyTitle);
             _unitOfWork.WarrantyTitleRepository.SaveChanges();
 
-            var warrantyTitleReadDto = _mapper.Map<WarrantyTitleReadDto>(warrantyTitle);
+            var warrantyTitleReadDto = _mapper.Map<WarrantyTitleReadDto>(warrantyTitle, opt => opt.Items["lang"] = null);
 
             return Ok(warrantyTitleReadDto);
         }

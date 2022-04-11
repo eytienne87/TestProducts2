@@ -47,8 +47,14 @@ namespace TestProducts2.Controllers
 
         //POST api/Benefits
         [HttpPost]
-        public ActionResult<BenefitReadDto> CreateBenefit(BenefitCreateDto benefitCreateDto)
+        public ActionResult CreateBenefit(BenefitCreateDto benefitCreateDto)
         {
+            if (benefitCreateDto == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return StatusCode(422, ModelState);
+
             var benefitModel = _mapper.Map<Benefit>(benefitCreateDto);
 
             benefitModel.MarketSegments = new List<MarketSegment>();
@@ -61,12 +67,11 @@ namespace TestProducts2.Controllers
                     benefitModel.MarketSegments.Add(marketSegmentModel);
                 }
             }
-
+           
             _unitOfWork.BenefitRepository.Create(benefitModel);
             _unitOfWork.BenefitRepository.SaveChanges();
 
-            //return Ok(_mapper.Map<BenefitReadDto>(benefitModel));
-            return Ok(benefitModel);
+            return Ok();
         }
 
         // PUT api/Benefits/{id}

@@ -10,7 +10,9 @@ namespace TestProducts2.Profiles
         public BenefitsProfile()
         {
             CreateMap<Benefit, BenefitReadDto>()
-                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom<DescriptionResolver<BenefitDescription, BenefitDescriptionReadDto>>());
+                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom<DescriptionResolver<BenefitDescription, BenefitDescriptionReadDto>>())
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.MarketSegments))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category));
 
             CreateMap<BenefitDescription, BenefitDescriptionReadDto>();
 
