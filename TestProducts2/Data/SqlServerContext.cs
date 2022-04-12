@@ -76,25 +76,25 @@ namespace TestProducts2.Data
 
             }
 
-            public override int SaveChanges()
-            {
-                var entries = ChangeTracker
-                                    .Entries()
-                                    .Where(e => e.Entity is BaseClass && (
-                                            e.State == EntityState.Added
-                                            || e.State == EntityState.Modified));
+        //public override int SaveChanges()
+        //{
+        //    var entries = ChangeTracker
+        //                        .Entries()
+        //                        .Where(e => e.Entity is BaseClass && (
+        //                                e.State == EntityState.Added
+        //                                || e.State == EntityState.Modified));
 
-                foreach (var entityEntry in entries)
-                {
-                    ((BaseClass)entityEntry.Entity).UpdatedDate = DateTime.Now.ToUniversalTime();
+        //    foreach (var entityEntry in entries)
+        //    {
+        //        ((BaseClass)entityEntry.Entity).UpdatedDate = DateTime.Now.ToUniversalTime();
 
-                    if (entityEntry.State == EntityState.Added)
-                    {
-                        ((BaseClass)entityEntry.Entity).CreatedDate = DateTime.Now.ToUniversalTime();
-                    }
-                }
+        //        if (entityEntry.State == EntityState.Added)
+        //        {
+        //            ((BaseClass)entityEntry.Entity).CreatedDate = DateTime.Now.ToUniversalTime();
+        //        }
+        //    }
 
-                return base.SaveChanges();
-            }
+        //    return base.SaveChanges();
+        //}   
     }
 }

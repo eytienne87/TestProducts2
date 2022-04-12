@@ -4,6 +4,8 @@ namespace TestProducts2.Models
 {
     public class CategoryOfBenefit : BaseClass
     {
-        public ICollection<CategoryOfBenefitDescription> Descriptions { get; set; }
+        public virtual ICollection<CategoryOfBenefitDescription>? Descriptions { get; set; }
+
+        public virtual HashSet<Benefit> Benefits { get; set; }  
     }
 }

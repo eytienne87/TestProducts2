@@ -5,6 +5,7 @@ using TestProducts2.Data;
 using TestProducts2.Dtos;
 using TestProducts2.Entities;
 using TestProducts2.Models;
+using TestProducts2.Common;
 
 namespace TestProducts2.Controllers
 {
@@ -23,7 +24,7 @@ namespace TestProducts2.Controllers
 
         // GET: api/Benefits
         [HttpGet]
-        public ActionResult<IEnumerable<BenefitReadDto>> GetBenefits([FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
+        public ActionResult<IEnumerable<BenefitReadDto>> GetAll([FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
 
         {
             var benefits = _unitOfWork.BenefitRepository.GetAll();
@@ -35,94 +36,77 @@ namespace TestProducts2.Controllers
 
         // GET api/Benefits/{id}
         [HttpGet("{id}")]
-        public ActionResult<BenefitReadDto> GetBenefitById(int id, [FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
+        public ActionResult<BenefitReadDto> GetById(int id, [FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
         {
-            var benefitItem = _unitOfWork.BenefitRepository.GetById(id);
-            if (benefitItem != null)
+            var benefit = _unitOfWork.BenefitRepository.GetById(id);
+            if (benefit != null)
             {
-                return Ok(_mapper.Map<BenefitReadDto>(benefitItem, opt => opt.Items["lang"] = lang));
+                return Ok(_mapper.Map<BenefitReadDto>(benefit, opt => opt.Items["lang"] = lang));
             }
             return NotFound();
         }
 
         //POST api/Benefits
         [HttpPost]
-        public ActionResult CreateBenefit(BenefitCreateDto benefitCreateDto)
+        public ActionResult Create(BenefitCreateDto benefitDto)
         {
-            if (benefitCreateDto == null)
+            if (benefitDto == null)
                 return BadRequest(ModelState);
 
             if (!ModelState.IsValid)
                 return StatusCode(422, ModelState);
 
-            var benefitModel = _mapper.Map<Benefit>(benefitCreateDto);
+            var benefit = _mapper.Map<Benefit>(benefitDto);
 
-            benefitModel.MarketSegments = new List<MarketSegment>();
+            SetBenefitNavigations(benefit, benefitDto);
 
-            foreach (var marketSegment in benefitCreateDto.MarketSegments)
-            {
-                var marketSegmentModel = _unitOfWork.MarketSegmentRepository.GetById(marketSegment.Id);
-                if (marketSegmentModel != null)
-                {
-                    benefitModel.MarketSegments.Add(marketSegmentModel);
-                }
-            }
-           
-            _unitOfWork.BenefitRepository.Create(benefitModel);
+            _unitOfWork.BenefitRepository.Create(benefit);
             _unitOfWork.BenefitRepository.SaveChanges();
 
-            return Ok();
+            return Ok(_mapper.Map<BenefitReadDto>(benefit));
         }
 
         // PUT api/Benefits/{id}
         [HttpPut("{id}")]
-        public ActionResult Update(int id, BenefitUpdateDto benefitUpdateDto)
+        public ActionResult Update(int id, BenefitUpdateDto benefitDto)
         {
-            var benefitModel = _unitOfWork.BenefitRepository.GetById(id);
-            if (benefitModel == null)
+            if (benefitDto == null)
+                return BadRequest(ModelState);
+
+            var benefit = _unitOfWork.BenefitRepository.GetById(id);
+
+            if (benefit == null)
             {
-                return NotFound();
+                ModelState.AddModelError("", "The benefit doesn't exist");
+                return StatusCode(422, ModelState);
             }
-            benefitUpdateDto.Id = benefitModel.Id;
-            _mapper.Map(benefitUpdateDto, benefitModel);
 
-            _unitOfWork.BenefitRepository.Update(benefitModel);
+            if (!ModelState.IsValid)
+                return StatusCode(422, ModelState);
 
+            benefitDto.Id = benefit.Id;
+            _mapper.Map(benefitDto, benefit);
+            //another possibility is -> benefit.Id = id;
+
+            SetBenefitNavigations(benefit, benefitDto);
+
+            _unitOfWork.BenefitRepository.Update(benefit);
             _unitOfWork.BenefitRepository.SaveChanges();
 
-            return NoContent();
+            return Ok(_mapper.Map<BenefitReadDto>(benefit));
         }
 
         // PATCH api/Benefits/{id}
-        //[HttpPatch("{id}")]
-        //public ActionResult PartialUpdate(int id, BenefitUpdateDto benefitUpdateDto)
-        //{
-        //    var benefitModel = _unitOfWork.BenefitRepository.GetById(id);
-        //    if (benefitModel == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    benefitUpdateDto.Id = benefitModel.Id;
-        //    _mapper.Map(benefitUpdateDto, benefitModel);
-
-        //    _unitOfWork.BenefitRepository.Update(benefitModel);
-
-        //    _unitOfWork.BenefitRepository.SaveChanges();
-
-        //    return NoContent();
-        //}
-
-        // PATCH api/Benefits/{id}
         [HttpPatch("{id}")]
-        public ActionResult PartialBenefitUpdate(int id, JsonPatchDocument<BenefitUpdateDto> patchDoc)
+        public ActionResult PartialUpdate(int id, JsonPatchDocument<BenefitUpdateDto> patchDoc)
         {
-            var benefitModel = _unitOfWork.BenefitRepository.GetById(id);
-            if (benefitModel == null)
+            var benefit = _unitOfWork.BenefitRepository.GetById(id);
+            if (benefit == null)
             {
                 return NotFound();
             }
 
-            var benefitToPatch = _mapper.Map<BenefitUpdateDto>(benefitModel);
+            var benefitToPatch = _mapper.Map<BenefitUpdateDto>(benefit);
             patchDoc.ApplyTo(benefitToPatch, ModelState);
 
             if (!TryValidateModel(benefitToPatch))
@@ -130,9 +114,12 @@ namespace TestProducts2.Controllers
                 return ValidationProblem(ModelState);
             }
 
-            _mapper.Map(benefitToPatch, benefitModel);
+            benefitToPatch.Id = benefit.Id;
+            _mapper.Map(benefitToPatch, benefit);
 
-            _unitOfWork.BenefitRepository.Update(benefitModel);
+            SetBenefitNavigations(benefit, benefitToPatch);
+
+            _unitOfWork.BenefitRepository.Update(benefit);
 
             _unitOfWork.BenefitRepository.SaveChanges();
 
@@ -155,5 +142,30 @@ namespace TestProducts2.Controllers
             return NoContent();
         }
 
+        private void SetBenefitNavigations(Benefit benefit, object benefitDto)
+        {
+            var category = Helper.GetDynamicValue(benefitDto, "Category");
+            benefit.Category = _unitOfWork.CategoryOfBenefitRepository.GetById((int)Helper.GetDynamicValue(category, "Id")!);
+
+            benefit.MarketSegments= new HashSet<MarketSegment>();
+            var marketSegmentsFromDto = Helper.GetDynamicValue(benefitDto, "MarketSegments");
+
+            SetBenefitMarketSegments(benefit, marketSegmentsFromDto); 
+        }
+        
+        private void SetBenefitMarketSegments(Benefit benefit, dynamic? marketSegments)
+        {
+            if (marketSegments == null)
+                return;
+
+            foreach (var marketSegment in marketSegments)
+            {
+                var marketSegmentModel = _unitOfWork.MarketSegmentRepository.GetById((int)Helper.GetDynamicValue(marketSegment, "Id"));
+                if (marketSegmentModel != null)
+                {
+                    benefit.MarketSegments.Add(marketSegmentModel);
+                }
+            }
+        }
     }
 }

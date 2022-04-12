@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using TestProducts2.Common;
 using TestProducts2.Data;
 using TestProducts2.Dtos;
 using TestProducts2.Entities;
@@ -66,49 +67,13 @@ namespace TestProducts2.Controllers
 
             var productModel = _mapper.Map<Product>(productCreateDto);
 
-            //productModel.Warranties = new List<Warranty>();
-            //productModel.Benefits = new List<Benefit>();
-
-
-            //foreach (var benefit in productCreateDto.Benefits)
-            //{
-            //    var benefitModel = _unitOfWork.BenefitRepository.GetById(benefit.Id);
-            //    if (benefitModel != null)
-            //    {
-            //        productModel.Benefits.Add(benefitModel);
-            //    }
-            //}
-
-            //foreach (var warranty in productCreateDto.Warranties)
-            //{
-            //    var warrantyModel = _unitOfWork.WarrantyRepository.Get(w => w.WarrantyTitle.Id == warranty.WarrantyTitleId &&
-            //                                                                w.WarrantyLength.Id == warranty.WarrantyLengthId &&
-            //                                                                w.WarrantyNotabene.Id == warranty.WarrantyNotabeneId).FirstOrDefault();
-            //    var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(warranty.WarrantyTitleId);
-            //    var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(warranty.WarrantyLengthId);
-            //    var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(warranty.WarrantyNotabeneId);
-
-            //    if (warrantyModel != null)
-            //    {
-            //        productModel.Warranties.Add(warrantyModel);
-            //    }
-            //    else if (warrantyTitleModel != null && warrantyLengthModel != null)
-            //    {
-            //        productModel.Warranties.Add(new Warranty
-            //        {
-            //            WarrantyTitle = warrantyTitleModel,
-            //            WarrantyLength = warrantyLengthModel,
-            //            WarrantyNotabene = warrantyNotabeneModel
-            //        });
-            //    }
-
-            //}
+            SetProductNavigations(productModel, productCreateDto);
 
             _unitOfWork.ProductRepository.Create(productModel);
             _unitOfWork.ProductRepository.SaveChanges();
 
             //return Ok(_mapper.Map<ProductReadDto>(productModel));
-            return Ok(productModel);
+            return Ok();
         }
 
         // PUT api/Products/{id} 
@@ -130,48 +95,14 @@ namespace TestProducts2.Controllers
                 return StatusCode(422, ModelState);
 
             var productModel = product;
-            _mapper.Map(productModel, productUpdateDto);
+            _mapper.Map(productUpdateDto, productModel);
 
-            productModel.Warranties = new List<Warranty>();
-            productModel.Benefits = new List<Benefit>();
-
-            foreach (var benefit in productUpdateDto.Benefits)
-            {
-                var benefitModel = _unitOfWork.BenefitRepository.GetById(benefit.Id);
-                if (benefitModel != null)
-                {
-                    productModel.Benefits.Add(benefitModel);
-                }
-            }
-
-            foreach (var warranty in productUpdateDto.Warranties)
-            {
-                var warrantyModel = _unitOfWork.WarrantyRepository.Get(w => w.WarrantyTitle.Id == warranty.WarrantyTitleId &&
-                                                                            w.WarrantyLength.Id == warranty.WarrantyLengthId &&
-                                                                            w.WarrantyNotabene.Id == warranty.WarrantyNotabeneId).FirstOrDefault();
-                var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(warranty.WarrantyTitleId);
-                var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(warranty.WarrantyLengthId);
-                var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(warranty.WarrantyNotabeneId);
-
-                if (warrantyModel != null)
-                {
-                    productModel.Warranties.Add(warrantyModel);
-                }
-                else if (warrantyTitleModel != null && warrantyLengthModel != null)
-                {
-                    productModel.Warranties.Add(new Warranty
-                    {
-                        WarrantyTitle = warrantyTitleModel,
-                        WarrantyLength = warrantyLengthModel,
-                        WarrantyNotabene = warrantyNotabeneModel
-                    });
-                }
-            }
+            SetProductNavigations(productModel, productUpdateDto);
 
             _unitOfWork.ProductRepository.Update(productModel);
             _unitOfWork.ProductRepository.SaveChanges();
 
-            return Ok(_mapper.Map<ProductReadDto>(productModel));
+            return Ok();
         }
 
         [HttpPatch("{id}")]
@@ -194,41 +125,7 @@ namespace TestProducts2.Controllers
 
             _mapper.Map(productToPatch, productModel);
 
-            productModel.Warranties = new List<Warranty>();
-            productModel.Benefits = new List<Benefit>();
-
-            foreach (var benefit in productToPatch.Benefits)
-            {
-                var benefitModel = _unitOfWork.BenefitRepository.GetById(benefit.Id);
-                if (benefitModel != null)
-                {
-                    productModel.Benefits.Add(benefitModel);
-                }
-            }
-
-            foreach (var warranty in productToPatch.Warranties)
-            {
-                var warrantyModel = _unitOfWork.WarrantyRepository.Get(w => w.WarrantyTitle.Id == warranty.WarrantyTitleId &&
-                                                                            w.WarrantyLength.Id == warranty.WarrantyLengthId &&
-                                                                            w.WarrantyNotabene.Id == warranty.WarrantyNotabeneId).FirstOrDefault();
-                var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(warranty.WarrantyTitleId);
-                var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(warranty.WarrantyLengthId);
-                var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(warranty.WarrantyNotabeneId);
-
-                if (warrantyModel != null)
-                {
-                    productModel.Warranties.Add(warrantyModel);
-                }
-                else if (warrantyTitleModel != null && warrantyLengthModel != null)
-                {
-                    productModel.Warranties.Add(new Warranty
-                    {
-                        WarrantyTitle = warrantyTitleModel,
-                        WarrantyLength = warrantyLengthModel,
-                        WarrantyNotabene = warrantyNotabeneModel
-                    });
-                }
-            }
+            SetProductNavigations(productModel, productToPatch);
 
             _unitOfWork.ProductRepository.Update(productModel);
 
@@ -252,6 +149,70 @@ namespace TestProducts2.Controllers
 
             return NoContent();
         }
+
+        private void SetProductNavigations(Product product, object productDto)
+        {
+            product.Benefits= new HashSet<Benefit>();
+            var benefitsFromDto = (HashSet<object>?)Helper.GetDynamicValue(productDto, "Benefits");
+            SetProductBenefits(product, benefitsFromDto);
+            
+            product.Warranties= new HashSet<Warranty>();
+            var warrantiesFromDto = (HashSet<object>?)Helper.GetDynamicValue(productDto, "Warranties");
+            SetProductWarranties(product, warrantiesFromDto);
+        }
+
+        private void SetProductBenefits(Product product, HashSet<object>? benefits)
+        {
+            if (benefits == null)
+                return;
+
+            foreach (var benefit in benefits)
+            {
+                var benefitModel = _unitOfWork.BenefitRepository.GetById((int)Helper.GetDynamicValue(benefit, "Id")!);
+                if (benefitModel != null)
+                {
+                    product.Benefits.Add(benefitModel);
+                }
+            }
+        }
+        private void SetProductWarranties(Product product, HashSet<object>? warranties)
+        {
+            if (warranties == null)
+                return;
+
+            foreach (var warranty in warranties)
+            {
+                int warrantyTitleId = (int)Helper.GetDynamicValue(warranty, "WarrantyTitleId");
+                int warrantyLengthId = (int)Helper.GetDynamicValue(warranty, "WarrantyLengthId");
+                int warrantyNotabeneId = (int)Helper.GetDynamicValue(warranty, "WarrantyNotabeneId");
+
+                var warrantyModel = _unitOfWork.WarrantyRepository.Get(w => w.WarrantyTitle.Id == warrantyTitleId &&
+                                                                            w.WarrantyLength.Id == warrantyLengthId &&
+                                                                            w.WarrantyNotabene.Id == warrantyNotabeneId).FirstOrDefault();
+
+
+                var warrantyTitleModel = _unitOfWork.WarrantyTitleRepository.GetById(warrantyTitleId!);
+                var warrantyLengthModel = _unitOfWork.WarrantyLengthRepository.GetById(warrantyLengthId!);
+                var warrantyNotabeneModel = _unitOfWork.WarrantyNotabeneRepository.GetById(warrantyNotabeneId!);
+
+                if (warrantyModel != null)
+                {
+                    product.Warranties.Add(warrantyModel);
+                }
+                else if (warrantyTitleModel != null && warrantyLengthModel != null)
+                {
+                    product.Warranties.Add(new Warranty
+                    {
+                        WarrantyTitle = warrantyTitleModel,
+                        WarrantyLength = warrantyLengthModel,
+                        WarrantyNotabene = warrantyNotabeneModel
+                    });
+                }
+            }
+
+        }
+
+
 
 
     }

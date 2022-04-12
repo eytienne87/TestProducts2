@@ -8,7 +8,7 @@ namespace TestProducts2.Models
         public string ProductType { get; set; } = string.Empty;
         public string StyleCode { get; set; } = string.Empty;
         public string StyleName { get; set; } = string.Empty;
-        public virtual ICollection<Benefit>? Benefits { get; set; }
-        public virtual ICollection<Warranty>? Warranties { get; set; }
+        public virtual HashSet<Benefit> Benefits { get; set; } = new HashSet<Benefit>();
+        public virtual HashSet<Warranty> Warranties { get; set; } = new HashSet<Warranty>();
     }
 }

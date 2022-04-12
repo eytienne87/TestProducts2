@@ -11,7 +11,7 @@ namespace TestProducts2.Profiles
         {
             CreateMap<Benefit, BenefitReadDto>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom<DescriptionResolver<BenefitDescription, BenefitDescriptionReadDto>>())
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.MarketSegments))
+                .ForMember(dest => dest.MarketSegments, opt => opt.MapFrom(src => src.MarketSegments))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category));
 
             CreateMap<BenefitDescription, BenefitDescriptionReadDto>();
@@ -23,12 +23,14 @@ namespace TestProducts2.Profiles
             CreateMap<BenefitDescriptionCreateDto, BenefitDescription>();
 
             CreateMap<BenefitUpdateDto, Benefit>()
-                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
+                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions))
+                .ForMember(dest => dest.MarketSegments, opt => opt.MapFrom(src => src.MarketSegments))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category));
+            CreateMap<BenefitDescriptionUpdateDto, BenefitDescription>();
 
             CreateMap<Benefit, BenefitUpdateDto>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
 
-            CreateMap<BenefitDescriptionUpdateDto, BenefitDescription>();
             CreateMap<BenefitDescription, BenefitDescriptionUpdateDto>();
         }
     }

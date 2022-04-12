@@ -17,7 +17,7 @@ namespace TestProducts2.Data
 
         public Product? GetById(int Id)
         {
-            return _context.Products
+            var product = _context.Products
                 .Include(p => p.Benefits)
                 .Include(p => p.Warranties)
                     .ThenInclude(w => w.WarrantyTitle)
@@ -25,8 +25,9 @@ namespace TestProducts2.Data
                    .ThenInclude(w => w.WarrantyLength)
                 .Include(p => p.Warranties)
                     .ThenInclude(w => w.WarrantyNotabene)
-                .Where(p => p.Id == Id)
-                .FirstOrDefault();
+                .FirstOrDefault(p => p.Id == Id);
+            _context.Entry(product.Benefits).State = EntityState.Detached;
+            return product;
         }
 
         public IEnumerable<Product> GetAll()
@@ -40,34 +41,49 @@ namespace TestProducts2.Data
                 .Include(p => p.Warranties)
                    .ThenInclude(w => w.WarrantyNotabene)
                 .ToList();
+
         }
 
-            public void Update(Product product)
-            {
-                //_context.Entry(product).State = EntityState.Modified;
-                _context.Products.Update(product);
-            }
+        public void Update(Product product)
+        {
+            //_context.ChangeTracker
+            //.TrackGraph(product, e =>
+            //{
+            //    if (e.Entry.IsKeySet)
+            //    {
+            //        e.Entry.State = EntityState.Modified;
+            //    }
+            //    else
+            //    {
+            //        e.Entry.State = EntityState.Added;
+            //    }
+            //});
+            _context.Products.Attach(product);
+            _context.Entry(product).State = EntityState.Modified;
+            _context.Entry(product.Benefits).State = EntityState.Modified;
+            //_context.Products.Update(product);
+        }
 
-            public bool Create(Product product)
-            {
-                _context.Products.Add(product);
+        public bool Create(Product product)
+        {
+            _context.Products.Add(product);
 
-                return SaveChanges();
-            }
+            return SaveChanges();
+        }
 
-            public void Delete(Product product)
+        public void Delete(Product product)
+        {
+            if (product == null)
             {
-                if (product == null)
-                {
-                    throw new ArgumentNullException(nameof(product));
-                }
-                _context.Products.Remove(product);
+                throw new ArgumentNullException(nameof(product));
             }
+            _context.Products.Remove(product);
+        }
 
-            public bool SaveChanges()
-            {
-                return (_context.SaveChanges() >= 0);
-            }
+        public bool SaveChanges()
+        {
+            return (_context.SaveChanges() >= 0);
         }
     }
+}
 

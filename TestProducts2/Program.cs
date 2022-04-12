@@ -22,6 +22,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(s =>
     s.SerializerSettings.ContractResolver = new DefaultContractResolver
     {
         NamingStrategy = new SnakeCaseNamingStrategy()
+        //NamingStrategy = new CamelCaseNamingStrategy()
     }
 );
 

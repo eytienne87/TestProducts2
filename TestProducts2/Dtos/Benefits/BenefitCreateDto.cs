@@ -6,8 +6,8 @@ namespace TestProducts2.Dtos
     public class BenefitCreateDto : BaseClass
     {
         public string ProductType { get; set; } = string.Empty; 
-        public ICollection<BenefitDescriptionCreateDto>? Descriptions { get; set; }
-        public ICollection<MarketSegmentCreateDto>? MarketSegments { get; set; }
+        public HashSet<BenefitDescriptionCreateDto>? Descriptions { get; set; }
+        public HashSet<MarketSegmentCreateDto>? MarketSegments { get; set; }
         public CategoryOfBenefitCreateDto? Category { get; set; }
     }
 }

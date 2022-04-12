@@ -16,27 +16,27 @@ namespace TestProducts2.Models
         {
             if (!_context.Products.Any())
             {
-                var products = new List<Product>()
+                var products = new HashSet<Product>()
                 {
                     new Product()
                     {
                         ProductType = "Redwood Laminate",
                         StyleCode = "1234",
                         StyleName = "Wood",
-                        Benefits = new List<Benefit>()
+                        Benefits = new HashSet<Benefit>()
                         {
                             new Benefit {
                                 ProductType = "1",
-                                Descriptions = new List<BenefitDescription>()
+                                Descriptions = new HashSet<BenefitDescription>()
                                 {
                                     new BenefitDescription() { Language = LanguageClass.en, Description = "Really Convenient and easy to assemble" },
                                     new BenefitDescription() { Language = LanguageClass.fr, Description = "Très pratique et facile à assembler" }
                                 },
-                                MarketSegments = new List<MarketSegment>()
+                                MarketSegments = new HashSet<MarketSegment>()
                                 {
                                     new MarketSegment() {
                                         UrlName = "/residential",
-                                        Descriptions = new List<MarketSegmentDescription>()
+                                        Descriptions = new HashSet<MarketSegmentDescription>()
                                         {
                                             new MarketSegmentDescription { Language = LanguageClass.en, Description = "Residential"  },
                                             new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Résidentiel"  }
@@ -44,7 +44,7 @@ namespace TestProducts2.Models
                                     },
                                     new MarketSegment() {
                                         UrlName = "/government",
-                                        Descriptions = new List<MarketSegmentDescription>()
+                                        Descriptions = new HashSet<MarketSegmentDescription>()
                                         {
                                             new MarketSegmentDescription { Language = LanguageClass.en, Description = "Government"  },
                                             new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Gouvernement"  }
@@ -52,7 +52,7 @@ namespace TestProducts2.Models
                                     },
                                 },
                                 Category = new CategoryOfBenefit {
-                                    Descriptions = new List<CategoryOfBenefitDescription>()
+                                    Descriptions = new HashSet<CategoryOfBenefitDescription>()
                                     {
                                         new CategoryOfBenefitDescription { Language = LanguageClass.en, Description = "Easy" },
                                         new CategoryOfBenefitDescription { Language = LanguageClass.fr, Description = "Facile" }
@@ -65,16 +65,16 @@ namespace TestProducts2.Models
                             },
                             //new Benefit {
                             //    ProductType = "2",
-                            //    Descriptions = new List<BenefitDescription>()
+                            //    Descriptions = new HashSet<BenefitDescription>()
                             //    {
                             //        new BenefitDescription() { Language = LanguageClass.en, Description = "Will last for many decades" },
                             //        new BenefitDescription() { Language = LanguageClass.fr, Description = "Va durer plusieurs décennies" }
                             //    },
-                            //    MarketSegments = new List<MarketSegment>()
+                            //    MarketSegments = new HashSet<MarketSegment>()
                             //    {
                             //        new MarketSegment() {
                             //            UrlName = "/commercial",
-                            //            Descriptions = new List<MarketSegmentDescription>()
+                            //            Descriptions = new HashSet<MarketSegmentDescription>()
                             //            {
                             //                new MarketSegmentDescription { Language = LanguageClass.en, Description = "Commercial" },
                             //                new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Entreprise" }
@@ -82,7 +82,7 @@ namespace TestProducts2.Models
                             //        },
                             //        new MarketSegment() {
                             //            UrlName = "/sportsfacility",
-                            //            Descriptions = new List<MarketSegmentDescription>()
+                            //            Descriptions = new HashSet<MarketSegmentDescription>()
                             //            {
                             //                new MarketSegmentDescription { Language = LanguageClass.en, Description = "Sports Facility" },
                             //                new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Centre Sportif" }
@@ -90,7 +90,7 @@ namespace TestProducts2.Models
                             //        },
                             //    },
                             //    Category = new CategoryOfBenefit {
-                            //        Descriptions = new List<CategoryOfBenefitDescription>()
+                            //        Descriptions = new HashSet<CategoryOfBenefitDescription>()
                             //        {
                             //            new CategoryOfBenefitDescription { Language = LanguageClass.en, Description = "Lasting" },
                             //            new CategoryOfBenefitDescription { Language = LanguageClass.fr, Description = "Endurant" }
@@ -102,11 +102,11 @@ namespace TestProducts2.Models
                             //    UpdatedDate = DateTime.Today.AddDays(1)
                             //}
                         },
-                        Warranties = new List<Warranty>()
+                        Warranties = new HashSet<Warranty>()
                         {
                             new Warranty {
                                 WarrantyTitle = new WarrantyTitle {
-                                    Descriptions = new List<WarrantyTitleDescription>()
+                                    Descriptions = new HashSet<WarrantyTitleDescription>()
                                     {
                                         new WarrantyTitleDescription { Language = LanguageClass.en, Description = "Wear"  },
                                         new WarrantyTitleDescription { Language = LanguageClass.fr, Description = "Usure"  }
@@ -115,7 +115,7 @@ namespace TestProducts2.Models
                                     UpdatedDate = DateTime.Today.AddDays(1)
                                 },
                                 WarrantyLength = new WarrantyLength {
-                                    Descriptions = new List<WarrantyLengthDescription>()
+                                    Descriptions = new HashSet<WarrantyLengthDescription>()
                                     {
                                         new WarrantyLengthDescription { Language = LanguageClass.en, Description = "5 years" },
                                         new WarrantyLengthDescription { Language = LanguageClass.fr, Description = "5 ans" }
@@ -124,7 +124,7 @@ namespace TestProducts2.Models
                                     UpdatedDate = DateTime.Today.AddDays(1)
                                 },
                                 WarrantyNotabene = new WarrantyNotabene {
-                                    Descriptions = new List<WarrantyNotabeneDescription>()
+                                    Descriptions = new HashSet<WarrantyNotabeneDescription>()
                                     {
                                         new WarrantyNotabeneDescription { Language = LanguageClass.en, Description = "An example of Notabene" },
                                         new WarrantyNotabeneDescription { Language = LanguageClass.fr, Description = "Un exemple de Notabene" }
@@ -142,20 +142,20 @@ namespace TestProducts2.Models
                     //    ProductType = "Grey Carpet",
                     //    StyleCode = "5678",
                     //    StyleName = "Carpet",
-                    //    Benefits = new List<Benefit>()
+                    //    Benefits = new HashSet<Benefit>()
                     //    {
                     //        new Benefit {
                     //            ProductType = "2",
-                    //            Descriptions = new List<BenefitDescription>()
+                    //            Descriptions = new HashSet<BenefitDescription>()
                     //            {
                     //                new BenefitDescription() { Language = LanguageClass.en, Description = "Really Convenient and easy to assemble" },
                     //                new BenefitDescription() { Language = LanguageClass.fr, Description = "Très pratique et facile à assembler" }
                     //            },
-                    //            MarketSegments = new List<MarketSegment>()
+                    //            MarketSegments = new HashSet<MarketSegment>()
                     //            {
                     //                new MarketSegment() {
                     //                    UrlName = "/commercial",
-                    //                    Descriptions = new List<MarketSegmentDescription>()
+                    //                    Descriptions = new HashSet<MarketSegmentDescription>()
                     //                    {
                     //                        new MarketSegmentDescription { Language = LanguageClass.en, Description = "Commercial" },
                     //                        new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Entreprise" }
@@ -163,7 +163,7 @@ namespace TestProducts2.Models
                     //                },
                     //                new MarketSegment() {
                     //                    UrlName = "/sportsfacility",
-                    //                    Descriptions = new List<MarketSegmentDescription>()
+                    //                    Descriptions = new HashSet<MarketSegmentDescription>()
                     //                    {
                     //                        new MarketSegmentDescription { Language = LanguageClass.en, Description = "Sports Facility" },
                     //                        new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Centre Sportif" }
@@ -171,7 +171,7 @@ namespace TestProducts2.Models
                     //                },
                     //            },
                     //            Category = new CategoryOfBenefit {
-                    //                Descriptions = new List<CategoryOfBenefitDescription>()
+                    //                Descriptions = new HashSet<CategoryOfBenefitDescription>()
                     //                {
                     //                    new CategoryOfBenefitDescription { Language = LanguageClass.en, Description = "Easy" },
                     //                    new CategoryOfBenefitDescription { Language = LanguageClass.fr, Description = "Facile" }
@@ -184,16 +184,16 @@ namespace TestProducts2.Models
                     //        },
                     //        new Benefit {
                     //            ProductType = "1",
-                    //            Descriptions = new List<BenefitDescription>()
+                    //            Descriptions = new HashSet<BenefitDescription>()
                     //            {
                     //                new BenefitDescription() { Language = LanguageClass.en, Description = "Will last for many decades" },
                     //                new BenefitDescription() { Language = LanguageClass.fr, Description = "Va durer plusieurs décennies" }
                     //            },
-                    //            MarketSegments = new List<MarketSegment>()
+                    //            MarketSegments = new HashSet<MarketSegment>()
                     //            {
                     //                new MarketSegment() {
                     //                    UrlName = "/residential",
-                    //                    Descriptions = new List<MarketSegmentDescription>()
+                    //                    Descriptions = new HashSet<MarketSegmentDescription>()
                     //                    {
                     //                        new MarketSegmentDescription { Language = LanguageClass.en, Description = "Residential" },
                     //                        new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Résidentiel" }
@@ -201,7 +201,7 @@ namespace TestProducts2.Models
                     //                },
                     //                new MarketSegment() {
                     //                    UrlName = "/government",
-                    //                    Descriptions = new List<MarketSegmentDescription>()
+                    //                    Descriptions = new HashSet<MarketSegmentDescription>()
                     //                    {
                     //                        new MarketSegmentDescription { Language = LanguageClass.en, Description = "Government" },
                     //                        new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Gouvernement" }
@@ -209,7 +209,7 @@ namespace TestProducts2.Models
                     //                },
                     //            },
                     //            Category = new CategoryOfBenefit {
-                    //                Descriptions = new List<CategoryOfBenefitDescription>()
+                    //                Descriptions = new HashSet<CategoryOfBenefitDescription>()
                     //                {
                     //                    new CategoryOfBenefitDescription { Language = LanguageClass.en, Description = "Lasting" },
                     //                    new CategoryOfBenefitDescription { Language = LanguageClass.fr, Description = "Endurant" }
@@ -221,11 +221,11 @@ namespace TestProducts2.Models
                     //            UpdatedDate = DateTime.Today.AddDays(1)
                     //        }
                     //    },
-                    //    Warranties = new List<Warranty>()
+                    //    Warranties = new HashSet<Warranty>()
                     //    {
                     //        new Warranty {
                     //            WarrantyTitle = new WarrantyTitle {
-                    //                Descriptions = new List<WarrantyTitleDescription>()
+                    //                Descriptions = new HashSet<WarrantyTitleDescription>()
                     //                {
                     //                    new WarrantyTitleDescription { Language = LanguageClass.en, Description = "Tear" },
                     //                    new WarrantyTitleDescription { Language = LanguageClass.fr, Description = "Brisure" }
@@ -234,7 +234,7 @@ namespace TestProducts2.Models
                     //                UpdatedDate = DateTime.Today.AddDays(1)
                     //            },
                     //            WarrantyLength = new WarrantyLength {
-                    //                Descriptions = new List<WarrantyLengthDescription>()
+                    //                Descriptions = new HashSet<WarrantyLengthDescription>()
                     //                {
                     //                    new WarrantyLengthDescription { Language = LanguageClass.en, Description = "25 years" },
                     //                    new WarrantyLengthDescription { Language = LanguageClass.fr, Description = "25 ans" }
@@ -243,7 +243,7 @@ namespace TestProducts2.Models
                     //                UpdatedDate = DateTime.Today.AddDays(1)
                     //            },
                     //            WarrantyNotabene = new WarrantyNotabene {
-                    //                Descriptions = new List<WarrantyNotabeneDescription>()
+                    //                Descriptions = new HashSet<WarrantyNotabeneDescription>()
                     //                {
                     //                    new WarrantyNotabeneDescription { Language = LanguageClass.en, Description = "A second example" },
                     //                    new WarrantyNotabeneDescription { Language = LanguageClass.fr, Description = "Un deuxieme exemple" }
