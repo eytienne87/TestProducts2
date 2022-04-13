@@ -25,7 +25,7 @@ namespace TestProducts2.Profiles
             CreateMap<BenefitUpdateDto, Benefit>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions))
                 .ForMember(dest => dest.MarketSegments, opt => opt.MapFrom(src => src.MarketSegments))
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category));
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => new CategoryOfBenefit { Id = src.CategoryId }));
             CreateMap<BenefitDescriptionUpdateDto, BenefitDescription>();
 
             CreateMap<Benefit, BenefitUpdateDto>()

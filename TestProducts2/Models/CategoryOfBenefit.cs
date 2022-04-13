@@ -6,6 +6,6 @@ namespace TestProducts2.Models
     {
         public virtual ICollection<CategoryOfBenefitDescription>? Descriptions { get; set; }
 
-        public virtual HashSet<Benefit> Benefits { get; set; }  
+        public virtual ICollection<Benefit> Benefits { get; set; }  
     }
 }

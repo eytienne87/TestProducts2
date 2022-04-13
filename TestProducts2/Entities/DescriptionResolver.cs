@@ -24,7 +24,7 @@ namespace TestProducts2.Entities
         {
             var filteredDescriptions = (HashSet<TSourceMember>)source.GetType().GetProperty("Descriptions").GetValue(source, null);   
 
-            if(context.Items["lang"] != null)
+            if(context.Items.TryGetValue("lang", out object lang))
             {
                 filteredDescriptions = filteredDescriptions.Where(q => (LanguageClass)q.GetType().GetProperty("Language").GetValue(q, null) == (LanguageClass)context.Items["lang"]).ToHashSet();
             }

@@ -20,11 +20,11 @@ namespace TestProducts2.Profiles
 
             CreateMap<MarketSegmentUpdateDto, MarketSegment>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
+            CreateMap<MarketSegmentDescriptionUpdateDto, MarketSegmentDescription>();
 
             CreateMap<MarketSegment, MarketSegmentUpdateDto>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
 
-            CreateMap<MarketSegmentDescriptionUpdateDto, MarketSegmentDescription>();
             CreateMap<MarketSegmentDescription, MarketSegmentDescriptionUpdateDto>();
         }
     }

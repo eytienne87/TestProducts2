@@ -86,7 +86,6 @@ namespace TestProducts2.Controllers
 
             benefitDto.Id = benefit.Id;
             _mapper.Map(benefitDto, benefit);
-            //another possibility is -> benefit.Id = id;
 
             SetBenefitNavigations(benefit, benefitDto);
 
@@ -144,8 +143,7 @@ namespace TestProducts2.Controllers
 
         private void SetBenefitNavigations(Benefit benefit, object benefitDto)
         {
-            var category = Helper.GetDynamicValue(benefitDto, "Category");
-            benefit.Category = _unitOfWork.CategoryOfBenefitRepository.GetById((int)Helper.GetDynamicValue(category, "Id")!);
+            benefit.Category = _unitOfWork.CategoryOfBenefitRepository.GetById((int)Helper.GetDynamicValue(benefitDto, "CategoryId")!);
 
             benefit.MarketSegments= new HashSet<MarketSegment>();
             var marketSegmentsFromDto = Helper.GetDynamicValue(benefitDto, "MarketSegments");

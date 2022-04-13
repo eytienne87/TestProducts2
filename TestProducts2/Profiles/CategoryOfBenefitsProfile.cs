@@ -20,11 +20,11 @@ namespace TestProducts2.Profiles
 
             CreateMap<CategoryOfBenefitUpdateDto, CategoryOfBenefit>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
+            CreateMap<CategoryOfBenefitDescriptionUpdateDto, CategoryOfBenefitDescription>();
 
             CreateMap<CategoryOfBenefit, CategoryOfBenefitUpdateDto>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
 
-            CreateMap<CategoryOfBenefitDescriptionUpdateDto, CategoryOfBenefitDescription>();
             CreateMap<CategoryOfBenefitDescription, CategoryOfBenefitDescriptionUpdateDto>();
 
         }
