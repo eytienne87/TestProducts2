@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TestProducts2.Data;
-using TestProducts2.Dtos;
+using TestProducts2.Dtos.Read;
+using TestProducts2.Dtos.Update;
 using TestProducts2.Entities;
-using TestProducts2.Models;
+
 
 namespace TestProducts2.Controllers
 {
@@ -76,7 +77,7 @@ namespace TestProducts2.Controllers
 
             _unitOfWork.CategoryOfBenefitRepository.SaveChanges();
 
-            return NoContent();
+            return Ok(_mapper.Map<CategoryOfBenefitReadDto>(categoryOfBenefitModel));
         }
 
         // PATCH api/CategoryOfBenefits/{id}
@@ -103,7 +104,7 @@ namespace TestProducts2.Controllers
 
             _unitOfWork.CategoryOfBenefitRepository.SaveChanges();
 
-            return NoContent();
+            return Ok(_mapper.Map<CategoryOfBenefitReadDto>(categoryOfBenefitModel));
         }
 
         // DELETE api/CategoryOfBenefits/{id}

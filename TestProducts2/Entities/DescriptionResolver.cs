@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TestProducts2.Profiles;
+using TestProducts2.Common;
 
 namespace TestProducts2.Entities
 {
@@ -20,18 +21,17 @@ namespace TestProducts2.Entities
             _mapper = mapper;
         }
 
-        public ICollection<TDestinationMember> Resolve(object source, object destination, ICollection<TDestinationMember> descriptions, ResolutionContext? context)
+        public ICollection<TDestinationMember> Resolve(object source, object destination, ICollection<TDestinationMember> descriptions, ResolutionContext context)
         {
-            var filteredDescriptions = (HashSet<TSourceMember>)source.GetType().GetProperty("Descriptions").GetValue(source, null);   
+            var resultDescriptions = (ICollection<TSourceMember>?)Helper.GetDynamicValue(source, "Descriptions");
 
-            if(context.Items.TryGetValue("lang", out object lang))
+            if (context.Options.Items.TryGetValue("lang", out object? lang) && lang != null)
             {
-                filteredDescriptions = filteredDescriptions.Where(q => (LanguageClass)q.GetType().GetProperty("Language").GetValue(q, null) == (LanguageClass)context.Items["lang"]).ToHashSet();
+                resultDescriptions = resultDescriptions != null ? (ICollection<TSourceMember>)resultDescriptions.Where(q => (LanguageClass?)Helper.GetDynamicValue(q, "Language") == (LanguageClass)lang).ToHashSet() : null;
             }
-                filteredDescriptions = filteredDescriptions.OrderBy(q => (LanguageClass)q.GetType().GetProperty("Language").GetValue(q, null)).ToHashSet();
+            resultDescriptions = resultDescriptions != null ? (ICollection<TSourceMember>)resultDescriptions.OrderBy(q => (LanguageClass?)Helper.GetDynamicValue(q, "Language")).ToHashSet() : null;
 
-            return _mapper.Map(filteredDescriptions, descriptions);
+            return _mapper.Map(resultDescriptions, descriptions);
         }
-
     }
 }

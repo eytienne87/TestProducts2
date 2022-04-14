@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TestProducts2.Models;
 
-namespace TestProducts2.Data
+
+namespace TestProducts2.Data.Other
 {
     public class CarpetRepository : GenericRepository<Product>
     {

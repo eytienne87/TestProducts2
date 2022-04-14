@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
-using TestProducts2.Dtos;
+using TestProducts2.Dtos.Create;
+using TestProducts2.Dtos.Read;
+using TestProducts2.Dtos.Update;
 using TestProducts2.Entities;
-using TestProducts2.Models;
+
 
 namespace TestProducts2.Profiles
 {

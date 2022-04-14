@@ -1,5 +1,5 @@
 ﻿using TestProducts2.Dtos;
-using TestProducts2.Models;
+using TestProducts2.Dtos.Read;
 
 namespace TestProducts2.Common
 {

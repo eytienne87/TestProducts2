@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using TestProducts2.Entities;
-using TestProducts2.Models;
+
 
 
 namespace TestProducts2.Data

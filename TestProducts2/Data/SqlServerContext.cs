@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TestProducts2.Domain.Models;
 using TestProducts2.Entities;
-using TestProducts2.Models;
+
 
 namespace TestProducts2.Data
 {

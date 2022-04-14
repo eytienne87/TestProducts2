@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using TestProducts2.Dtos;
+using TestProducts2.Dtos.Read;
+using TestProducts2.Dtos.Update;
 using TestProducts2.Entities;
-using TestProducts2.Models;
+
 
 namespace TestProducts2.Profiles
 {
@@ -19,7 +20,7 @@ namespace TestProducts2.Profiles
             CreateMap<BenefitCreateDto, Benefit>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions))
                 .ForMember(dest => dest.MarketSegments, opt => opt.MapFrom(src => src.MarketSegments))
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category));
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => new CategoryOfBenefit { Id = src.CategoryId }));
             CreateMap<BenefitDescriptionCreateDto, BenefitDescription>();
 
             CreateMap<BenefitUpdateDto, Benefit>()

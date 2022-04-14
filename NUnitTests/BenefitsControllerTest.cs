@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Net.Http;
 using TestProducts2.Controllers;
 using TestProducts2.Data;
-using TestProducts2.Dtos;
 using TestProducts2.Entities;
 using TestProducts2.Models;
 using TestProducts2.Profiles;
 using NUnitTests.TestsHelper;
 using System;
 using Microsoft.AspNetCore.Mvc;
+using TestProducts2.Dtos.Read;
 
 namespace NUnitTests
 {

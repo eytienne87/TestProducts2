@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TestProducts2.Data;
-using TestProducts2.Dtos;
+using TestProducts2.Dtos.Read;
+using TestProducts2.Dtos.Update;
 using TestProducts2.Entities;
-using TestProducts2.Models;
+
 
 namespace TestProducts2.Controllers
 {
