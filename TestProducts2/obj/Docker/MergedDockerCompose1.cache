@@ -1,0 +1,79 @@
+networks:
+  myproject:
+    driver: bridge
+    name: test
+services:
+  db:
+    container_name: postgres-server-db
+    environment:
+      POSTGRES_DB: mydbpostgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    image: postgres:latest
+    networks:
+      myproject: {}
+    ports:
+    - published: 5432
+      target: 5432
+    restart: always
+    volumes:
+    - db:/var/lib/postgresql/data:rw
+  sql-server-db:
+    container_name: sql-server-db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: Password123
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    networks:
+      myproject: {}
+    ports:
+    - published: 2300
+      target: 1433
+    restart: always
+    volumes:
+    - db:/var/lib/sqlserver/data:rw
+  testproducts2:
+    build:
+      context: C:\Users\etessier\source\repos\TestProducts2\TestProducts2
+      dockerfile: TestProducts2/Dockerfile
+      labels:
+        com.microsoft.created-by: visual-studio
+        com.microsoft.visual-studio.project-name: TestProducts2
+      target: base
+    container_name: test_products_2
+    depends_on:
+      db:
+        condition: service_started
+      sql-server-db:
+        condition: service_started
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: "true"
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: ''
+    image: testproducts2:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages  "/src/bin/Debug/net6.0/TestProducts2.dll"'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/sh -c "if PID=$$(pidof
+        dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    networks:
+      myproject: {}
+    ports:
+    - published: 5001
+      target: 80
+    - target: 80
+    tty: true
+    volumes:
+    - C:\Users\etessier\source\repos\TestProducts2\TestProducts2\TestProducts2:/app:rw
+    - C:\Users\etessier\vsdbg\vs2017u5:/remote_debugger:rw
+    - C:\Users\etessier\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\etessier\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Users\etessier\.nuget\packages:/root/.nuget/packages:ro
+    - C:\Users\etessier\source\repos\TestProducts2\TestProducts2:/src:rw
+version: '3.4'
+volumes:
+  db:
+    driver: local

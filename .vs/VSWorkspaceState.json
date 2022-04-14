@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Persistence",
+    "\\TestProducts2",
+    "\\TestProducts2\\TestProducts2",
+    "\\TestProducts2\\TestProducts2\\Controllers",
+    "\\TestProducts2\\TestProducts2\\Services",
+    "\\TestProducts2\\TestProducts2\\Services\\Abstractions",
+    "\\TestProducts2\\TestProducts2\\Services\\Implementations"
+  ],
+  "SelectedNode": "\\TestProducts2\\TestProducts2\\Controllers\\BenefitsController.cs",
+  "PreviewInSolutionExplorer": false
+}
