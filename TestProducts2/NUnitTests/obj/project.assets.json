@@ -1932,6 +1932,35 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
+      "API/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "11.0.0",
+          "Infrastructure": "1.0.0",
+          "MappingGenerator": "2022.4.43",
+          "Mapster": "7.3.0",
+          "Microsoft.AspNetCore.JsonPatch": "6.0.3",
+          "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.3",
+          "Microsoft.EntityFrameworkCore": "7.0.0-preview.1.22076.6",
+          "Microsoft.EntityFrameworkCore.InMemory": "6.0.3",
+          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.0-preview.1.22076.6",
+          "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.14.0",
+          "Npgsql": "6.0.3",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "6.0.3",
+          "Npgsql.EntityFrameworkCore.PostgreSQL.Design": "1.1.0",
+          "Swashbuckle.AspNetCore": "6.2.3"
+        },
+        "compile": {
+          "bin/placeholder/API.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/API.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -1955,35 +1984,6 @@
         "runtime": {
           "bin/placeholder/Infrastructure.dll": {}
         }
-      },
-      "TestProducts2/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "dependencies": {
-          "AutoMapper.Extensions.Microsoft.DependencyInjection": "11.0.0",
-          "Infrastructure": "1.0.0",
-          "MappingGenerator": "2022.4.43",
-          "Mapster": "7.3.0",
-          "Microsoft.AspNetCore.JsonPatch": "6.0.3",
-          "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.3",
-          "Microsoft.EntityFrameworkCore": "7.0.0-preview.1.22076.6",
-          "Microsoft.EntityFrameworkCore.InMemory": "6.0.3",
-          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.0-preview.1.22076.6",
-          "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.14.0",
-          "Npgsql": "6.0.3",
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "6.0.3",
-          "Npgsql.EntityFrameworkCore.PostgreSQL.Design": "1.1.0",
-          "Swashbuckle.AspNetCore": "6.2.3"
-        },
-        "compile": {
-          "bin/placeholder/TestProducts2.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/TestProducts2.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
       }
     }
   },
@@ -7031,29 +7031,29 @@
         "system.xml.xmldocument.nuspec"
       ]
     },
+    "API/1.0.0": {
+      "type": "project",
+      "path": "../API/API.csproj",
+      "msbuildProject": "../API/API.csproj"
+    },
     "Domain/1.0.0": {
       "type": "project",
-      "path": "../../Domain/Domain.csproj",
-      "msbuildProject": "../../Domain/Domain.csproj"
+      "path": "../Domain/Domain.csproj",
+      "msbuildProject": "../Domain/Domain.csproj"
     },
     "Infrastructure/1.0.0": {
       "type": "project",
-      "path": "../../Infrastructure/Infrastructure.csproj",
-      "msbuildProject": "../../Infrastructure/Infrastructure.csproj"
-    },
-    "TestProducts2/1.0.0": {
-      "type": "project",
-      "path": "../TestProducts2/TestProducts2.csproj",
-      "msbuildProject": "../TestProducts2/TestProducts2.csproj"
+      "path": "../Infrastructure/Infrastructure.csproj",
+      "msbuildProject": "../Infrastructure/Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "API >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 16.11.0",
       "Moq >= 4.17.2",
       "NUnit >= 3.13.2",
       "NUnit3TestAdapter >= 4.0.0",
-      "TestProducts2 >= 1.0.0",
       "coverlet.collector >= 3.1.0"
     ]
   },
@@ -7084,8 +7084,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\TestProducts2\\TestProducts2.csproj": {
-              "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\TestProducts2\\TestProducts2.csproj"
+            "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\API\\API.csproj": {
+              "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\API\\API.csproj"
             }
           }
         }
@@ -7136,7 +7136,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

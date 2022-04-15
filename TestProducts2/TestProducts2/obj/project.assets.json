@@ -2125,21 +2125,10 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "Domain/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "compile": {
-          "bin/placeholder/Domain.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Domain.dll": {}
-        }
-      },
       "Infrastructure/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "Domain": "1.0.0",
           "Microsoft.EntityFrameworkCore": "6.0.4"
         },
         "compile": {
@@ -7339,11 +7328,6 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "Domain/1.0.0": {
-      "type": "project",
-      "path": "../../Domain/Domain.csproj",
-      "msbuildProject": "../../Domain/Domain.csproj"
-    },
     "Infrastructure/1.0.0": {
       "type": "project",
       "path": "../../Infrastructure/Infrastructure.csproj",
@@ -7489,7 +7473,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

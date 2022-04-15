@@ -4,68 +4,14 @@
     "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\NUnitTests\\NUnitTests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Domain\\Domain.csproj": {
+    "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Domain\\Domain.csproj",
-        "projectName": "Domain",
-        "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\API\\API.csproj",
+        "projectName": "API",
+        "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\API\\API.csproj",
         "packagesPath": "C:\\Users\\etessier\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Domain\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\etessier\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net6.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
-            "projectReferences": {}
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Infrastructure\\Infrastructure.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Infrastructure\\Infrastructure.csproj",
-        "projectName": "Infrastructure",
-        "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Infrastructure\\Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\etessier\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\etessier\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -82,152 +28,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Domain\\Domain.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
-          "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[6.0.4, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\NUnitTests\\NUnitTests.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\NUnitTests\\NUnitTests.csproj",
-        "projectName": "NUnitTests",
-        "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\NUnitTests\\NUnitTests.csproj",
-        "packagesPath": "C:\\Users\\etessier\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\NUnitTests\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\etessier\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net6.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
-            "projectReferences": {
-              "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\TestProducts2\\TestProducts2.csproj": {
-                "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\TestProducts2\\TestProducts2.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
-          "dependencies": {
-            "Microsoft.NET.Test.Sdk": {
-              "target": "Package",
-              "version": "[16.11.0, )"
-            },
-            "Moq": {
-              "target": "Package",
-              "version": "[4.17.2, )"
-            },
-            "NUnit": {
-              "target": "Package",
-              "version": "[3.13.2, )"
-            },
-            "NUnit3TestAdapter": {
-              "target": "Package",
-              "version": "[4.0.0, )"
-            },
-            "coverlet.collector": {
-              "target": "Package",
-              "version": "[3.1.0, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\TestProducts2\\TestProducts2.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\TestProducts2\\TestProducts2.csproj",
-        "projectName": "TestProducts2",
-        "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\TestProducts2\\TestProducts2.csproj",
-        "packagesPath": "C:\\Users\\etessier\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\TestProducts2\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\etessier\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net6.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
-            "projectReferences": {
-              "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Infrastructure\\Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\Infrastructure\\Infrastructure.csproj"
+              "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Infrastructure\\Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Infrastructure\\Infrastructure.csproj"
               }
             }
           }
@@ -319,7 +121,205 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Domain\\Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Domain\\Domain.csproj",
+        "projectName": "Domain",
+        "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\etessier\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\etessier\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Infrastructure\\Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Infrastructure\\Infrastructure.csproj",
+        "projectName": "Infrastructure",
+        "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Infrastructure\\Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\etessier\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\etessier\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\Domain\\Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\NUnitTests\\NUnitTests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\NUnitTests\\NUnitTests.csproj",
+        "projectName": "NUnitTests",
+        "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\NUnitTests\\NUnitTests.csproj",
+        "packagesPath": "C:\\Users\\etessier\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\NUnitTests\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\etessier\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\API\\API.csproj": {
+                "projectPath": "C:\\Users\\etessier\\source\\repos\\TestProducts2\\TestProducts2\\API\\API.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.11.0, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.17.2, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[3.13.2, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
