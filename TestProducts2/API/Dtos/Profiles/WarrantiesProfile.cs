@@ -19,7 +19,7 @@ namespace TestProducts2.Dtos.Profiles
             CreateMap<WarrantyCreateDto, Warranty>()
                 .ForMember(dest => dest.WarrantyTitle, opt => opt.MapFrom(src => new WarrantyTitle { Id = src.WarrantyTitleId }))
                 .ForMember(dest => dest.WarrantyLength, opt => opt.MapFrom(src => new WarrantyLength { Id = src.WarrantyLengthId }))
-                .ForMember(dest => dest.WarrantyNotabene, opt => opt.MapFrom(src => new WarrantyNotabene { Id = src.WarrantyNotabeneId }));
+                .ForMember(dest => dest.WarrantyNotabene, opt => opt.MapFrom(src => src.WarrantyNotabeneId != null ? new WarrantyNotabene { Id = (int)src.WarrantyNotabeneId } : null));
 
             CreateMap<Warranty, WarrantyUpdateDto>()
                 .ForMember(dest => dest.WarrantyTitleId, opt => opt.MapFrom(src => src.WarrantyTitle.Id))
@@ -29,7 +29,7 @@ namespace TestProducts2.Dtos.Profiles
             CreateMap<WarrantyUpdateDto, Warranty>()
                 .ForMember(dest => dest.WarrantyTitle, opt => opt.MapFrom(src => new WarrantyTitle { Id = src.WarrantyTitleId }))
                 .ForMember(dest => dest.WarrantyLength, opt => opt.MapFrom(src => new WarrantyLength { Id = src.WarrantyLengthId }))
-                .ForMember(dest => dest.WarrantyNotabene, opt => opt.MapFrom(src => new WarrantyNotabene { Id = src.WarrantyNotabeneId }));
+                .ForMember(dest => dest.WarrantyNotabene, opt => opt.MapFrom(src => src.WarrantyNotabeneId != null ? new WarrantyNotabene { Id = (int)src.WarrantyNotabeneId } : null));
         }
     }
 }
