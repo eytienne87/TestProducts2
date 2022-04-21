@@ -1,22 +1,23 @@
-﻿using AutoMapper;
+﻿using API.Dtos.Create;
+using API.Dtos.Read;
+using API.Dtos.Update;
+using API.Services.Abstractions;
+using AutoMapper;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 using TestProducts2.Common;
-using TestProducts2.Dtos.Create;
-using TestProducts2.Dtos.Read;
-using TestProducts2.Dtos.Update;
-using TestProducts2.Services.Abstractions;
 
-namespace TestProducts2.Services.Implementations
+namespace API.Services.Implementations
 {
     public class WarrantyTitleService : IWarrantyTitleService
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
 
-        public WarrantyTitleService(IRepositoryManager repositoryManager, IMapper mapper) {
+        public WarrantyTitleService(IRepositoryManager repositoryManager, IMapper mapper)
+        {
 
             _repositoryManager = repositoryManager;
             _mapper = mapper;
@@ -68,7 +69,7 @@ namespace TestProducts2.Services.Implementations
                 throw new Exception($"The title with the identifier {id} could not be found");
             }
 
-            var titleDto = (_mapper.Map<WarrantyTitleReadDto>(title, opt => opt.Items["lang"] = lang));
+            var titleDto = _mapper.Map<WarrantyTitleReadDto>(title, opt => opt.Items["lang"] = lang);
 
             return titleDto;
         }
@@ -99,7 +100,7 @@ namespace TestProducts2.Services.Implementations
         public WarrantyTitleReadDto Update(int id, WarrantyTitleUpdateDto titleDto)
         {
             if (titleDto == null)
-                throw new Exception("The format of the title DTO was invalid");                
+                throw new Exception("The format of the title DTO was invalid");
 
             var title = _repositoryManager.WarrantyTitleRepository.GetById(id);
 

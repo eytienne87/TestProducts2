@@ -1,6 +1,6 @@
 ﻿using Domain.Shared;
 
-namespace TestProducts2.Dtos.Create
+namespace API.Dtos.Create
 {
     public class BenefitDescriptionCreateDto
     {

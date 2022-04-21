@@ -1,15 +1,15 @@
-﻿using AutoMapper;
+﻿using API.Common;
+using API.Dtos.Create;
+using API.Dtos.Read;
+using API.Dtos.Update;
+using API.Services.Abstractions;
+using AutoMapper;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
-using TestProducts2.Common;
-using TestProducts2.Dtos.Create;
-using TestProducts2.Dtos.Read;
-using TestProducts2.Dtos.Update;
-using TestProducts2.Services.Abstractions;
 
-namespace TestProducts2.Services.Implementations
+namespace API.Services.Implementations
 {
     public class ProductService : IProductService
     {
@@ -71,7 +71,7 @@ namespace TestProducts2.Services.Implementations
                 throw new Exception($"The product with the identifier {id} could not be found");
             }
 
-            var productDto = (_mapper.Map<ProductReadDto>(product, opt => opt.Items["lang"] = lang));
+            var productDto = _mapper.Map<ProductReadDto>(product, opt => opt.Items["lang"] = lang);
 
             return productDto;
         }

@@ -3,7 +3,7 @@ using Domain.Models;
 using Domain.Shared;
 using Infrastructure;
 
-namespace TestProducts2.Common
+namespace API.Common
 {
     public class DataSeeder : BaseClass
     {

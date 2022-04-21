@@ -1,4 +1,4 @@
-﻿namespace TestProducts2.Dtos.Update
+﻿namespace API.Dtos.Update
 {
     public class WarrantyUpdateDto
     {

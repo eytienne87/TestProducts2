@@ -1,4 +1,4 @@
-﻿namespace TestProducts2.Dtos.Read
+﻿namespace API.Dtos.Read
 {
     public class ProductReadDto
     {

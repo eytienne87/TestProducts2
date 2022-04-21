@@ -1,11 +1,11 @@
+using API.Common;
+using API.Services.Abstractions;
+using API.Services.Implementations;
 using Domain.Interfaces;
 using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
-using TestProducts2.Common;
-using TestProducts2.Services.Abstractions;
-using TestProducts2.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,7 +1,7 @@
 ﻿using Domain.Shared;
 
 
-namespace TestProducts2.Dtos.Read
+namespace API.Dtos.Read
 {
     public class CategoryOfBenefitDescriptionReadDto
     {

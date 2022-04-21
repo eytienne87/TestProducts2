@@ -1,22 +1,23 @@
-﻿using AutoMapper;
+﻿using API.Dtos.Create;
+using API.Dtos.Read;
+using API.Dtos.Update;
+using API.Services.Abstractions;
+using AutoMapper;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 using TestProducts2.Common;
-using TestProducts2.Dtos.Create;
-using TestProducts2.Dtos.Read;
-using TestProducts2.Dtos.Update;
-using TestProducts2.Services.Abstractions;
 
-namespace TestProducts2.Services.Implementations
+namespace API.Services.Implementations
 {
     public class WarrantyLengthService : IWarrantyLengthService
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
 
-        public WarrantyLengthService(IRepositoryManager repositoryManager, IMapper mapper) {
+        public WarrantyLengthService(IRepositoryManager repositoryManager, IMapper mapper)
+        {
 
             _repositoryManager = repositoryManager;
             _mapper = mapper;
@@ -68,7 +69,7 @@ namespace TestProducts2.Services.Implementations
                 throw new Exception($"The length with the identifier {id} could not be found");
             }
 
-            var lengthDto = (_mapper.Map<WarrantyLengthReadDto>(length, opt => opt.Items["lang"] = lang));
+            var lengthDto = _mapper.Map<WarrantyLengthReadDto>(length, opt => opt.Items["lang"] = lang);
 
             return lengthDto;
         }
@@ -99,7 +100,7 @@ namespace TestProducts2.Services.Implementations
         public WarrantyLengthReadDto Update(int id, WarrantyLengthUpdateDto lengthDto)
         {
             if (lengthDto == null)
-                throw new Exception("The format of the length DTO was invalid");                
+                throw new Exception("The format of the length DTO was invalid");
 
             var length = _repositoryManager.WarrantyLengthRepository.GetById(id);
 

@@ -1,22 +1,23 @@
-﻿using AutoMapper;
+﻿using API.Dtos.Create;
+using API.Dtos.Read;
+using API.Dtos.Update;
+using API.Services.Abstractions;
+using AutoMapper;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 using TestProducts2.Common;
-using TestProducts2.Dtos.Create;
-using TestProducts2.Dtos.Read;
-using TestProducts2.Dtos.Update;
-using TestProducts2.Services.Abstractions;
 
-namespace TestProducts2.Services.Implementations
+namespace API.Services.Implementations
 {
     public class CategoryOfBenefitService : ICategoryOfBenefitService
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
 
-        public CategoryOfBenefitService(IRepositoryManager repositoryManager, IMapper mapper) {
+        public CategoryOfBenefitService(IRepositoryManager repositoryManager, IMapper mapper)
+        {
 
             _repositoryManager = repositoryManager;
             _mapper = mapper;
@@ -68,7 +69,7 @@ namespace TestProducts2.Services.Implementations
                 throw new Exception($"The category with the identifier {id} could not be found");
             }
 
-            var categoryDto = (_mapper.Map<CategoryOfBenefitReadDto>(category, opt => opt.Items["lang"] = lang));
+            var categoryDto = _mapper.Map<CategoryOfBenefitReadDto>(category, opt => opt.Items["lang"] = lang);
 
             return categoryDto;
         }
@@ -99,7 +100,7 @@ namespace TestProducts2.Services.Implementations
         public CategoryOfBenefitReadDto Update(int id, CategoryOfBenefitUpdateDto categoryDto)
         {
             if (categoryDto == null)
-                throw new Exception("The format of the category DTO was invalid");                
+                throw new Exception("The format of the category DTO was invalid");
 
             var category = _repositoryManager.CategoryOfBenefitRepository.GetById(id);
 

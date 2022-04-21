@@ -1,14 +1,14 @@
-﻿using Domain.Models;
+﻿using API.Dtos.Create;
+using API.Dtos.Read;
+using API.Dtos.Update;
+using API.Services.Abstractions;
+using Domain.Models;
 using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using TestProducts2.Common;
-using TestProducts2.Dtos.Create;
-using TestProducts2.Dtos.Read;
-using TestProducts2.Dtos.Update;
-using TestProducts2.Services.Abstractions;
 
-namespace TestProducts2.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

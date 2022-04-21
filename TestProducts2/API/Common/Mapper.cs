@@ -1,7 +1,7 @@
 ﻿using TestProducts2.Dtos;
 using TestProducts2.Dtos.Read;
 
-namespace TestProducts2.Common
+namespace API.Common
 {
     public class Mapper
     {

@@ -1,7 +1,7 @@
 ﻿using Domain.Shared;
 
 
-namespace TestProducts2.Dtos.Update
+namespace API.Dtos.Update
 {
     public class CategoryOfBenefitDescriptionUpdateDto
     {

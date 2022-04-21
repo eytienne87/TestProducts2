@@ -1,22 +1,23 @@
-﻿using AutoMapper;
+﻿using API.Common;
+using API.Dtos.Create;
+using API.Dtos.Read;
+using API.Dtos.Update;
+using API.Services.Abstractions;
+using AutoMapper;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
-using TestProducts2.Common;
-using TestProducts2.Dtos.Create;
-using TestProducts2.Dtos.Read;
-using TestProducts2.Dtos.Update;
-using TestProducts2.Services.Abstractions;
 
-namespace TestProducts2.Services.Implementations
+namespace API.Services.Implementations
 {
     public class BenefitService : IBenefitService
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
 
-        public BenefitService(IRepositoryManager repositoryManager, IMapper mapper) {
+        public BenefitService(IRepositoryManager repositoryManager, IMapper mapper)
+        {
 
             _repositoryManager = repositoryManager;
             _mapper = mapper;
@@ -56,7 +57,8 @@ namespace TestProducts2.Services.Implementations
         {
             var benefits = _repositoryManager.BenefitRepository.GetAll();
 
-            var mappedBenefits = _mapper.Map<IEnumerable<BenefitReadDto>>(benefits, opt => opt.Items["lang"] = lang);
+            //var mappedBenefits = _mapper.Map<IEnumerable<BenefitReadDto>>(benefits, opt => opt.Items["lang"] = lang);
+            var mappedBenefits = _mapper.Map<IEnumerable<BenefitReadDto>>(benefits);
 
             return mappedBenefits;
         }
@@ -70,7 +72,7 @@ namespace TestProducts2.Services.Implementations
                 throw new Exception($"The benefit with the identifier {id} could not be found");
             }
 
-            var benefitDto = (_mapper.Map<BenefitReadDto>(benefit, opt => opt.Items["lang"] = lang));
+            var benefitDto = _mapper.Map<BenefitReadDto>(benefit, opt => opt.Items["lang"] = lang);
 
             return benefitDto;
         }
@@ -103,7 +105,7 @@ namespace TestProducts2.Services.Implementations
         public BenefitReadDto Update(int id, BenefitUpdateDto benefitDto)
         {
             if (benefitDto == null)
-                throw new Exception("The format of the benefit DTO was invalid");                
+                throw new Exception("The format of the benefit DTO was invalid");
 
             var benefit = _repositoryManager.BenefitRepository.GetById(id);
 

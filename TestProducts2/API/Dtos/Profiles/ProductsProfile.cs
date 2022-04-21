@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿using API.Dtos.Create;
+using API.Dtos.Read;
+using API.Dtos.Update;
+using AutoMapper;
 using Domain.Models;
-using TestProducts2.Dtos.Create;
-using TestProducts2.Dtos.Read;
-using TestProducts2.Dtos.Update;
 
 
-namespace TestProducts2.Dtos.Profiles
+namespace API.Dtos.Profiles
 {
     public class ProductsProfile : Profile
     {

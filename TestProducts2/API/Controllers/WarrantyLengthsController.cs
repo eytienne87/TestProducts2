@@ -1,23 +1,23 @@
-﻿using Domain.Shared;
+﻿using API.Dtos.Create;
+using API.Dtos.Read;
+using API.Dtos.Update;
+using API.Services.Abstractions;
+using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using TestProducts2.Dtos.Create;
-using TestProducts2.Dtos.Read;
-using TestProducts2.Dtos.Update;
-using TestProducts2.Services.Abstractions;
 
-namespace TestProducts2.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class WarrantyLengthsController : Controller
-        {
-            private readonly IServiceManager _serviceManager;
+    {
+        private readonly IServiceManager _serviceManager;
 
         public WarrantyLengthsController(IServiceManager serviceManager)
-            {
-                _serviceManager = serviceManager;
-            }
+        {
+            _serviceManager = serviceManager;
+        }
 
         // GET: api/WarrantyLengths
         [HttpGet]

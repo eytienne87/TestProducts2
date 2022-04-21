@@ -1,4 +1,4 @@
-﻿namespace TestProducts2.Services.Abstractions
+﻿namespace API.Services.Abstractions
 {
     public interface IServiceManager
     {

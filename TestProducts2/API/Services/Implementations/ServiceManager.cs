@@ -1,8 +1,9 @@
-﻿using AutoMapper;
+﻿using API.Services.Abstractions;
+using AutoMapper;
 using Domain.Interfaces;
-using TestProducts2.Services.Abstractions;
+using TestProducts2.Services.Implementations;
 
-namespace TestProducts2.Services.Implementations
+namespace API.Services.Implementations
 {
     public class ServiceManager : IServiceManager
     {

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace TestProducts2.Common
+namespace API.Common
 {
     public static class Helper
     {

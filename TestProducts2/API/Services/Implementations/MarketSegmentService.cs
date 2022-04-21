@@ -1,22 +1,23 @@
-﻿using AutoMapper;
+﻿using API.Dtos.Create;
+using API.Dtos.Read;
+using API.Dtos.Update;
+using API.Services.Abstractions;
+using AutoMapper;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 using TestProducts2.Common;
-using TestProducts2.Dtos.Create;
-using TestProducts2.Dtos.Read;
-using TestProducts2.Dtos.Update;
-using TestProducts2.Services.Abstractions;
 
-namespace TestProducts2.Services.Implementations
+namespace API.Services.Implementations
 {
     public class MarketSegmentService : IMarketSegmentService
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
 
-        public MarketSegmentService(IRepositoryManager repositoryManager, IMapper mapper) {
+        public MarketSegmentService(IRepositoryManager repositoryManager, IMapper mapper)
+        {
 
             _repositoryManager = repositoryManager;
             _mapper = mapper;
@@ -68,7 +69,7 @@ namespace TestProducts2.Services.Implementations
                 throw new Exception($"The marketSegment with the identifier {id} could not be found");
             }
 
-            var marketSegmentDto = (_mapper.Map<MarketSegmentReadDto>(marketSegment, opt => opt.Items["lang"] = lang));
+            var marketSegmentDto = _mapper.Map<MarketSegmentReadDto>(marketSegment, opt => opt.Items["lang"] = lang);
 
             return marketSegmentDto;
         }
@@ -99,7 +100,7 @@ namespace TestProducts2.Services.Implementations
         public MarketSegmentReadDto Update(int id, MarketSegmentUpdateDto marketSegmentDto)
         {
             if (marketSegmentDto == null)
-                throw new Exception("The format of the marketSegment DTO was invalid");                
+                throw new Exception("The format of the marketSegment DTO was invalid");
 
             var marketSegment = _repositoryManager.MarketSegmentRepository.GetById(id);
 

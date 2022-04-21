@@ -1,4 +1,4 @@
-﻿namespace TestProducts2.Dtos.Create
+﻿namespace API.Dtos.Create
 {
     public class WarrantyTitleCreateDto
     {

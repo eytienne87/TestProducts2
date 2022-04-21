@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Interfaces;
 
-namespace TestProducts2.Services.Implementations
+namespace API.Services.Implementations
 {
     public class BaseService
     {
