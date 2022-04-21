@@ -7,7 +7,6 @@ using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
-using TestProducts2.Common;
 
 namespace API.Services.Implementations
 {

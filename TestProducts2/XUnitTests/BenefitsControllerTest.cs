@@ -1,3 +1,8 @@
+using API.Controllers;
+using API.Dtos.Profiles;
+using API.Dtos.Read;
+using API.Services.Abstractions;
+using API.Services.Implementations;
 using AutoMapper;
 using Domain.Interfaces;
 using Domain.Models;
@@ -5,10 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnitTests.TestsHelper;
 using System.Collections.Generic;
-using TestProducts2.Controllers;
-using TestProducts2.Dtos.Profiles;
-using TestProducts2.Services.Abstractions;
-using TestProducts2.Services.Implementations;
 using Xunit;
 
 namespace XUnitTests
@@ -50,11 +51,11 @@ namespace XUnitTests
 
             var list = result.Result as OkObjectResult;
 
-            Assert.IsType<List<Benefit>>(list.Value);
+            Assert.IsType<List<BenefitReadDto>>(list.Value);
 
-            var listBenefits = list.Value as List<Benefit>;
+            var listBenefits = list.Value as List<BenefitReadDto>;
 
-            Assert.Equal(5, listBenefits.Count);
+            Assert.True(listBenefits.Count > 0);
         }
     }
 }

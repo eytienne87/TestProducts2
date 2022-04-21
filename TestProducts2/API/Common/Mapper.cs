@@ -1,7 +1,4 @@
-﻿using TestProducts2.Dtos;
-using TestProducts2.Dtos.Read;
-
-namespace API.Common
+﻿namespace API.Common
 {
     public class Mapper
     {

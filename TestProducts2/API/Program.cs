@@ -23,6 +23,7 @@ builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers().AddNewtonsoftJson(s => 
     s.SerializerSettings.ContractResolver = new DefaultContractResolver
     {

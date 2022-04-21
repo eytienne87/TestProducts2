@@ -15,7 +15,13 @@ namespace API.Dtos.Resolvers
 
         public DescriptionResolver()
         {
-            _mapper = new MapperConfiguration(cfg => cfg.AddProfile<ProductsProfile>()).CreateMapper();
+            _mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<BenefitsProfile>();
+                cfg.AddProfile<MarketSegmentsProfile>();
+                cfg.AddProfile<CategoryOfBenefitsProfile>();
+            }).CreateMapper();
+
             var contextAccessor = new HttpContextAccessor();
             if (contextAccessor != null && contextAccessor.HttpContext != null)
             {

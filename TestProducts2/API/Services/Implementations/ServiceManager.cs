@@ -1,7 +1,6 @@
 ﻿using API.Services.Abstractions;
 using AutoMapper;
 using Domain.Interfaces;
-using TestProducts2.Services.Implementations;
 
 namespace API.Services.Implementations
 {

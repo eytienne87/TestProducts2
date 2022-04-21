@@ -2,11 +2,9 @@
 using API.Dtos.Read;
 using API.Dtos.Update;
 using API.Services.Abstractions;
-using Domain.Models;
 using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using TestProducts2.Common;
 
 namespace API.Controllers
 {
