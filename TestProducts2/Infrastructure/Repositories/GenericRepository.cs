@@ -61,7 +61,7 @@ namespace Infrastructure.Repositories
 
         public T? GetById(int Id)
         {
-            return table.Find(Id);
+            return table.FirstOrDefault(q => q.Id == Id);
         }
 
         public bool SaveChanges()

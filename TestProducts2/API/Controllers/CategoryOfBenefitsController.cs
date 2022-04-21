@@ -21,16 +21,16 @@ namespace API.Controllers
 
         // GET: api/CategoryOfBenefits
         [HttpGet]
-        public ActionResult<IEnumerable<CategoryOfBenefitReadDto>> GetAll([FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
+        public ActionResult<IEnumerable<CategoryOfBenefitReadDto>> GetAll()
         {
-            return Ok(_serviceManager.CategoryOfBenefitService.GetAll(lang));
+            return Ok(_serviceManager.CategoryOfBenefitService.GetAll());
         }
 
         // GET api/CategoryOfBenefits/{id}
         [HttpGet("{id}")]
-        public ActionResult<CategoryOfBenefitReadDto> GetById(int id, [FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
+        public ActionResult<CategoryOfBenefitReadDto> GetById(int id)
         {
-            return Ok(_serviceManager.CategoryOfBenefitService.GetById(id, lang));
+            return Ok(_serviceManager.CategoryOfBenefitService.GetById(id));
         }
 
         //POST api/CategoryOfBenefits

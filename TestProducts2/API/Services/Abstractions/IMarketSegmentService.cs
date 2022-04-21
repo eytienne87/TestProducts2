@@ -8,8 +8,8 @@ namespace API.Services.Abstractions
 {
     public interface IMarketSegmentService
     {
-        public IEnumerable<MarketSegmentReadDto> GetAll(LanguageClass? lang);
-        public MarketSegmentReadDto GetById(int id, LanguageClass? lang);
+        public IEnumerable<MarketSegmentReadDto> GetAll();
+        public MarketSegmentReadDto GetById(int id);
         public MarketSegmentReadDto Create(MarketSegmentCreateDto marketSegmentCreateDto);
         public MarketSegmentReadDto Update(int id, MarketSegmentUpdateDto marketSegmentUpdateDto);
         public MarketSegmentReadDto PartialUpdate(int id, JsonPatchDocument<MarketSegmentUpdateDto> patchDoc);

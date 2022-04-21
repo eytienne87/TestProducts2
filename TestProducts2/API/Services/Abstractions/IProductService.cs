@@ -8,8 +8,8 @@ namespace API.Services.Abstractions
 {
     public interface IProductService
     {
-        public IEnumerable<ProductReadDto> GetAll(LanguageClass? lang);
-        public ProductReadDto GetById(int id, LanguageClass? lang);
+        public IEnumerable<ProductReadDto> GetAll();
+        public ProductReadDto GetById(int id);
         public ProductReadDto Create(ProductCreateDto productCreateDto);
         public ProductReadDto Update(int id, ProductUpdateDto productUpdateDto);
         public ProductReadDto PartialUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc);

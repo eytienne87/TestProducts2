@@ -53,16 +53,16 @@ namespace API.Services.Implementations
         }
 
 
-        public IEnumerable<ProductReadDto> GetAll(LanguageClass? lang)
+        public IEnumerable<ProductReadDto> GetAll()
         {
             var products = _repositoryManager.ProductRepository.GetAll();
 
-            var mappedProducts = _mapper.Map<IEnumerable<ProductReadDto>>(products, opt => opt.Items["lang"] = lang);
+            var mappedProducts = _mapper.Map<IEnumerable<ProductReadDto>>(products);
 
             return mappedProducts;
         }
 
-        public ProductReadDto GetById(int id, LanguageClass? lang)
+        public ProductReadDto GetById(int id)
         {
             var product = _repositoryManager.ProductRepository.GetById(id);
 
@@ -71,7 +71,7 @@ namespace API.Services.Implementations
                 throw new Exception($"The product with the identifier {id} could not be found");
             }
 
-            var productDto = _mapper.Map<ProductReadDto>(product, opt => opt.Items["lang"] = lang);
+            var productDto = _mapper.Map<ProductReadDto>(product);
 
             return productDto;
         }

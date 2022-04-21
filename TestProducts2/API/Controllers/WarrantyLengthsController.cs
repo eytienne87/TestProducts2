@@ -21,16 +21,16 @@ namespace API.Controllers
 
         // GET: api/WarrantyLengths
         [HttpGet]
-        public ActionResult<IEnumerable<WarrantyLengthReadDto>> GetAll([FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
+        public ActionResult<IEnumerable<WarrantyLengthReadDto>> GetAll()
         {
-            return Ok(_serviceManager.WarrantyLengthService.GetAll(lang));
+            return Ok(_serviceManager.WarrantyLengthService.GetAll());
         }
 
         // GET api/WarrantyLengths/{id}
         [HttpGet("{id}")]
-        public ActionResult<WarrantyLengthReadDto> GetById(int id, [FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
+        public ActionResult<WarrantyLengthReadDto> GetById(int id)
         {
-            return Ok(_serviceManager.WarrantyLengthService.GetById(id, lang));
+            return Ok(_serviceManager.WarrantyLengthService.GetById(id));
         }
 
         //POST api/WarrantyLengths

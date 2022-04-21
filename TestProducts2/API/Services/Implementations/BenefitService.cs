@@ -53,7 +53,7 @@ namespace API.Services.Implementations
         }
 
 
-        public IEnumerable<BenefitReadDto> GetAll(LanguageClass? lang)
+        public IEnumerable<BenefitReadDto> GetAll()
         {
             var benefits = _repositoryManager.BenefitRepository.GetAll();
 
@@ -63,16 +63,18 @@ namespace API.Services.Implementations
             return mappedBenefits;
         }
 
-        public BenefitReadDto GetById(int id, LanguageClass? lang)
+        public BenefitReadDto? GetById(int id)
         {
             var benefit = _repositoryManager.BenefitRepository.GetById(id);
 
             if (benefit == null)
             {
-                throw new Exception($"The benefit with the identifier {id} could not be found");
+                //throw new Exception($"The benefit with the identifier {id} could not be found");
+                Console.WriteLine($"The benefit with the identifier {id} could not be found");
+                return null;
             }
 
-            var benefitDto = _mapper.Map<BenefitReadDto>(benefit, opt => opt.Items["lang"] = lang);
+            var benefitDto = _mapper.Map<BenefitReadDto>(benefit);
 
             return benefitDto;
         }
@@ -129,7 +131,8 @@ namespace API.Services.Implementations
 
         private void SetBenefitNavigations(Benefit benefit, object benefitDto)
         {
-            benefit.Category = _repositoryManager.CategoryOfBenefitRepository.GetById((int)Helper.GetDynamicValue(benefitDto, "CategoryId")!);
+            //benefit.Category = _repositoryManager.CategoryOfBenefitRepository.GetById((int)Helper.GetDynamicValue(benefitDto, "CategoryId")!);
+            benefit.Category = _repositoryManager.CategoryOfBenefitRepository.GetById(1);
 
             benefit.MarketSegments = new HashSet<MarketSegment>();
             var marketSegmentsFromDto = Helper.GetDynamicValue(benefitDto, "MarketSegments");

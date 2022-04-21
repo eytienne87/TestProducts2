@@ -1,14 +1,3 @@
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using NUnit.Framework;
-using NUnitTests.TestsHelper;
-using System.Collections.Generic;
-using System.Net.Http;
-using TestProducts2.Controllers;
-using TestProducts2.Dtos.Profiles;
-using TestProducts2.Dtos.Read;
-
 namespace NUnitTests
 {
     //[TestFixture]

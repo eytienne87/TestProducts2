@@ -50,16 +50,16 @@ namespace API.Services.Implementations
         }
 
 
-        public IEnumerable<WarrantyLengthReadDto> GetAll(LanguageClass? lang)
+        public IEnumerable<WarrantyLengthReadDto> GetAll()
         {
             var lengths = _repositoryManager.WarrantyLengthRepository.GetAll();
 
-            var mappedWarrantyLengths = _mapper.Map<IEnumerable<WarrantyLengthReadDto>>(lengths, opt => opt.Items["lang"] = lang);
+            var mappedWarrantyLengths = _mapper.Map<IEnumerable<WarrantyLengthReadDto>>(lengths);
 
             return mappedWarrantyLengths;
         }
 
-        public WarrantyLengthReadDto GetById(int id, LanguageClass? lang)
+        public WarrantyLengthReadDto GetById(int id)
         {
             var length = _repositoryManager.WarrantyLengthRepository.GetById(id);
 
@@ -68,7 +68,7 @@ namespace API.Services.Implementations
                 throw new Exception($"The length with the identifier {id} could not be found");
             }
 
-            var lengthDto = _mapper.Map<WarrantyLengthReadDto>(length, opt => opt.Items["lang"] = lang);
+            var lengthDto = _mapper.Map<WarrantyLengthReadDto>(length);
 
             return lengthDto;
         }

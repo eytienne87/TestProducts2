@@ -8,8 +8,8 @@ namespace API.Services.Abstractions
 {
     public interface ICategoryOfBenefitService
     {
-        public IEnumerable<CategoryOfBenefitReadDto> GetAll(LanguageClass? lang);
-        public CategoryOfBenefitReadDto GetById(int id, LanguageClass? lang);
+        public IEnumerable<CategoryOfBenefitReadDto> GetAll();
+        public CategoryOfBenefitReadDto GetById(int id);
         public CategoryOfBenefitReadDto Create(CategoryOfBenefitCreateDto categoryOfBenefitCreateDto);
         public CategoryOfBenefitReadDto Update(int id, CategoryOfBenefitUpdateDto categoryOfBenefitUpdateDto);
         public CategoryOfBenefitReadDto PartialUpdate(int id, JsonPatchDocument<CategoryOfBenefitUpdateDto> patchDoc);

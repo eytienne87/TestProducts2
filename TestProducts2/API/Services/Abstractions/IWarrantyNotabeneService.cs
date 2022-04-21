@@ -8,8 +8,8 @@ namespace API.Services.Abstractions
 {
     public interface IWarrantyNotabeneService
     {
-        public IEnumerable<WarrantyNotabeneReadDto> GetAll(LanguageClass? lang);
-        public WarrantyNotabeneReadDto GetById(int id, LanguageClass? lang);
+        public IEnumerable<WarrantyNotabeneReadDto> GetAll();
+        public WarrantyNotabeneReadDto GetById(int id);
         public WarrantyNotabeneReadDto Create(WarrantyNotabeneCreateDto warrantyNotabeneCreateDto);
         public WarrantyNotabeneReadDto Update(int id, WarrantyNotabeneUpdateDto warrantyNotabeneUpdateDto);
         public WarrantyNotabeneReadDto PartialUpdate(int id, JsonPatchDocument<WarrantyNotabeneUpdateDto> patchDoc);

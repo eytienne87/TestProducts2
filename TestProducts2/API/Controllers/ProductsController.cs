@@ -21,16 +21,16 @@ namespace API.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public ActionResult<IEnumerable<ProductReadDto>> GetAll([FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
+        public ActionResult<IEnumerable<ProductReadDto>> GetAll()
         {
-            return Ok(_serviceManager.ProductService.GetAll(lang));
+            return Ok(_serviceManager.ProductService.GetAll());
         }
 
         // GET api/Products/{id}
         [HttpGet("{id}")]
-        public ActionResult<ProductReadDto> GetById(int id, [FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
+        public ActionResult<ProductReadDto> GetById(int id)
         {
-            return Ok(_serviceManager.ProductService.GetById(id, lang));
+            return Ok(_serviceManager.ProductService.GetById(id));
         }
 
         //POST api/Products

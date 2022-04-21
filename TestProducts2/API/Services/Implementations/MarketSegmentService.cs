@@ -50,16 +50,16 @@ namespace API.Services.Implementations
         }
 
 
-        public IEnumerable<MarketSegmentReadDto> GetAll(LanguageClass? lang)
+        public IEnumerable<MarketSegmentReadDto> GetAll()
         {
             var marketSegments = _repositoryManager.MarketSegmentRepository.GetAll();
 
-            var mappedMarketSegments = _mapper.Map<IEnumerable<MarketSegmentReadDto>>(marketSegments, opt => opt.Items["lang"] = lang);
+            var mappedMarketSegments = _mapper.Map<IEnumerable<MarketSegmentReadDto>>(marketSegments);
 
             return mappedMarketSegments;
         }
 
-        public MarketSegmentReadDto GetById(int id, LanguageClass? lang)
+        public MarketSegmentReadDto GetById(int id)
         {
             var marketSegment = _repositoryManager.MarketSegmentRepository.GetById(id);
 
@@ -68,7 +68,7 @@ namespace API.Services.Implementations
                 throw new Exception($"The marketSegment with the identifier {id} could not be found");
             }
 
-            var marketSegmentDto = _mapper.Map<MarketSegmentReadDto>(marketSegment, opt => opt.Items["lang"] = lang);
+            var marketSegmentDto = _mapper.Map<MarketSegmentReadDto>(marketSegment);
 
             return marketSegmentDto;
         }

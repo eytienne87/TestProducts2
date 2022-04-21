@@ -50,16 +50,16 @@ namespace API.Services.Implementations
         }
 
 
-        public IEnumerable<CategoryOfBenefitReadDto> GetAll(LanguageClass? lang)
+        public IEnumerable<CategoryOfBenefitReadDto> GetAll()
         {
             var categorys = _repositoryManager.CategoryOfBenefitRepository.GetAll();
 
-            var mappedCategoryOfBenefits = _mapper.Map<IEnumerable<CategoryOfBenefitReadDto>>(categorys, opt => opt.Items["lang"] = lang);
+            var mappedCategoryOfBenefits = _mapper.Map<IEnumerable<CategoryOfBenefitReadDto>>(categorys);
 
             return mappedCategoryOfBenefits;
         }
 
-        public CategoryOfBenefitReadDto GetById(int id, LanguageClass? lang)
+        public CategoryOfBenefitReadDto GetById(int id)
         {
             var category = _repositoryManager.CategoryOfBenefitRepository.GetById(id);
 
@@ -68,7 +68,7 @@ namespace API.Services.Implementations
                 throw new Exception($"The category with the identifier {id} could not be found");
             }
 
-            var categoryDto = _mapper.Map<CategoryOfBenefitReadDto>(category, opt => opt.Items["lang"] = lang);
+            var categoryDto = _mapper.Map<CategoryOfBenefitReadDto>(category);
 
             return categoryDto;
         }

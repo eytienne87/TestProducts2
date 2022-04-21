@@ -50,16 +50,16 @@ namespace API.Services.Implementations
         }
 
 
-        public IEnumerable<WarrantyTitleReadDto> GetAll(LanguageClass? lang)
+        public IEnumerable<WarrantyTitleReadDto> GetAll()
         {
             var titles = _repositoryManager.WarrantyTitleRepository.GetAll();
 
-            var mappedWarrantyTitles = _mapper.Map<IEnumerable<WarrantyTitleReadDto>>(titles, opt => opt.Items["lang"] = lang);
+            var mappedWarrantyTitles = _mapper.Map<IEnumerable<WarrantyTitleReadDto>>(titles);
 
             return mappedWarrantyTitles;
         }
 
-        public WarrantyTitleReadDto GetById(int id, LanguageClass? lang)
+        public WarrantyTitleReadDto GetById(int id)
         {
             var title = _repositoryManager.WarrantyTitleRepository.GetById(id);
 
@@ -68,7 +68,7 @@ namespace API.Services.Implementations
                 throw new Exception($"The title with the identifier {id} could not be found");
             }
 
-            var titleDto = _mapper.Map<WarrantyTitleReadDto>(title, opt => opt.Items["lang"] = lang);
+            var titleDto = _mapper.Map<WarrantyTitleReadDto>(title);
 
             return titleDto;
         }

@@ -8,8 +8,8 @@ namespace API.Services.Abstractions
 {
     public interface IWarrantyLengthService
     {
-        public IEnumerable<WarrantyLengthReadDto> GetAll(LanguageClass? lang);
-        public WarrantyLengthReadDto GetById(int id, LanguageClass? lang);
+        public IEnumerable<WarrantyLengthReadDto> GetAll();
+        public WarrantyLengthReadDto GetById(int id);
         public WarrantyLengthReadDto Create(WarrantyLengthCreateDto warrantyLengthCreateDto);
         public WarrantyLengthReadDto Update(int id, WarrantyLengthUpdateDto warrantyLengthUpdateDto);
         public WarrantyLengthReadDto PartialUpdate(int id, JsonPatchDocument<WarrantyLengthUpdateDto> patchDoc);

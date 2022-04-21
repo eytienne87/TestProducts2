@@ -10,7 +10,7 @@ namespace API.Dtos.Resolvers
         where TSourceMember : class
     {
         private readonly IMapper _mapper;
-        private readonly string _language;
+        private readonly LanguageClass? _language = null;
 
 
         public DescriptionResolver()
@@ -25,11 +25,7 @@ namespace API.Dtos.Resolvers
             var contextAccessor = new HttpContextAccessor();
             if (contextAccessor != null && contextAccessor.HttpContext != null)
             {
-                _language = contextAccessor.HttpContext.Request.Headers["Accept-Language"];
-            }
-            else
-            {
-                _language = "en";
+                _language = GetLanguage(contextAccessor.HttpContext.Request.Headers["Accept-Language"]);
             }
         }
 
@@ -38,11 +34,7 @@ namespace API.Dtos.Resolvers
             _mapper = mapper;
             if (contextAccessor != null && contextAccessor.HttpContext != null)
             {
-                _language = contextAccessor.HttpContext.Request.Headers["Accept-Language"];
-            }
-            else
-            {
-                _language = "en";
+                _language = GetLanguage(contextAccessor.HttpContext.Request.Headers["Accept-Language"]);
             }
         }
 
@@ -50,13 +42,30 @@ namespace API.Dtos.Resolvers
         {
             var resultDescriptions = (ICollection<TSourceMember>?)Helper.GetDynamicValue(source, "Descriptions");
 
-            if (context.Options.Items.TryGetValue("lang", out object? lang) && lang != null)
+            //if (context.Options.Items.TryGetValue("lang", out object? lang) && lang != null)
+            if (_language != null)
             {
-                resultDescriptions = resultDescriptions != null ? (ICollection<TSourceMember>)resultDescriptions.Where(q => (LanguageClass?)Helper.GetDynamicValue(q, "Language") == (LanguageClass)lang).ToHashSet() : null;
+                resultDescriptions = resultDescriptions != null ? (ICollection<TSourceMember>)resultDescriptions.Where(q => (LanguageClass?)Helper.GetDynamicValue(q, "Language") == _language).ToHashSet() : null;
             }
             resultDescriptions = resultDescriptions != null ? (ICollection<TSourceMember>)resultDescriptions.OrderBy(q => (LanguageClass?)Helper.GetDynamicValue(q, "Language")).ToHashSet() : null;
 
             return _mapper.Map(resultDescriptions, descriptions);
+        }
+        private LanguageClass? GetLanguage(string language)
+        {
+            if (language.ToLower().Contains("fr") && language.ToLower().Contains("en"))
+            {
+                return null;
+            }
+            if (language.ToLower().Contains("en"))
+            {
+                return LanguageClass.en;
+            }
+            if (language.ToLower().Contains("fr"))
+            {
+                return LanguageClass.fr;
+            }
+            return null;
         }
     }
 }

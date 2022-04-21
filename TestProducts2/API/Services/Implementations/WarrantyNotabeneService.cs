@@ -50,16 +50,16 @@ namespace API.Services.Implementations
         }
 
 
-        public IEnumerable<WarrantyNotabeneReadDto> GetAll(LanguageClass? lang)
+        public IEnumerable<WarrantyNotabeneReadDto> GetAll()
         {
             var notabenes = _repositoryManager.WarrantyNotabeneRepository.GetAll();
 
-            var mappedWarrantyNotabenes = _mapper.Map<IEnumerable<WarrantyNotabeneReadDto>>(notabenes, opt => opt.Items["lang"] = lang);
+            var mappedWarrantyNotabenes = _mapper.Map<IEnumerable<WarrantyNotabeneReadDto>>(notabenes);
 
             return mappedWarrantyNotabenes;
         }
 
-        public WarrantyNotabeneReadDto GetById(int id, LanguageClass? lang)
+        public WarrantyNotabeneReadDto GetById(int id)
         {
             var notabene = _repositoryManager.WarrantyNotabeneRepository.GetById(id);
 
@@ -68,7 +68,7 @@ namespace API.Services.Implementations
                 throw new Exception($"The notabene with the identifier {id} could not be found");
             }
 
-            var notabeneDto = _mapper.Map<WarrantyNotabeneReadDto>(notabene, opt => opt.Items["lang"] = lang);
+            var notabeneDto = _mapper.Map<WarrantyNotabeneReadDto>(notabene);
 
             return notabeneDto;
         }

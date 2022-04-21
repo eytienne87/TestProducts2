@@ -21,16 +21,16 @@ namespace API.Controllers
 
         // GET: api/WarrantyNotabenes
         [HttpGet]
-        public ActionResult<IEnumerable<WarrantyNotabeneReadDto>> GetAll([FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
+        public ActionResult<IEnumerable<WarrantyNotabeneReadDto>> GetAll()
         {
-            return Ok(_serviceManager.WarrantyNotabeneService.GetAll(lang));
+            return Ok(_serviceManager.WarrantyNotabeneService.GetAll());
         }
 
         // GET api/WarrantyNotabenes/{id}
         [HttpGet("{id}")]
-        public ActionResult<WarrantyNotabeneReadDto> GetById(int id, [FromHeader(Name = "Accept-Language")] LanguageClass? lang = null)
+        public ActionResult<WarrantyNotabeneReadDto> GetById(int id)
         {
-            return Ok(_serviceManager.WarrantyNotabeneService.GetById(id, lang));
+            return Ok(_serviceManager.WarrantyNotabeneService.GetById(id));
         }
 
         //POST api/WarrantyNotabenes
