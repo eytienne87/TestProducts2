@@ -137,17 +137,51 @@ namespace XUnitTests
             Assert.Empty(_testHelper.ServiceManager.BenefitService.GetAll());
         }       
         
-        [Theory]
-        [InlineData(1, 10)]
-        public void UpdateTest(int validId, int invalidId)
-        {
-            //Arrange
-            BenefitUpdateDto benefitDto = GenerateUpdateDto();
+        //[Theory]
+        //[InlineData(1, 10)]
+        //public void UpdateTest(int validId, int invalidId)
+        //{
+        //    //Arrange
+        //    BenefitUpdateDto benefitDto = GenerateUpdateDto();
 
-            //Act
+        //    //Act
+        //    var result = _controller.Update(validId, benefitDto);
+
+        //    //Assert
+        //    Assert.IsType<OkObjectResult>(result.Result);
+        //    var okObjectResult = result.Result as OkObjectResult;
+
+        //    Assert.IsType<BenefitReadDto>(okObjectResult.Value);
+        //    var benefitReadDto = okObjectResult.Value as BenefitReadDto;
+
+        //    Assert.Equal(benefitDto.ProductType, benefitReadDto.ProductType);
+
+        //    var invalidResult = _controller.Update(invalidId, benefitDto);
+        //    Assert.IsType<NotFoundResult>(invalidResult.Result);
+        //    //Arrange
+        //    var incompleteBenefit = new BenefitUpdateDto()
+        //    {
+        //        CategoryId = 1
+        //    };
+
+        //    //Act
+        //    _controller.ModelState.AddModelError("Product Type", "Product Type is a required filed");
+
+        //    //Assert
+        //    var badResponse = _controller.Update(validId, incompleteBenefit);
+        //    Assert.IsType<BadRequestObjectResult>(badResponse.Result);
+
+        //    var nullResponse = _controller.Create(null);
+        //    Assert.IsType<BadRequestObjectResult>(nullResponse.Result);
+        //}        
+        
+        [Theory]
+        [InlineData(1)]
+        public void UpdateTest_ValidId_ValidDto_ReturnsOkObject(int validId)
+        {
+            BenefitUpdateDto benefitDto = GenerateUpdateDto();
             var result = _controller.Update(validId, benefitDto);
 
-            //Assert
             Assert.IsType<OkObjectResult>(result.Result);
             var okObjectResult = result.Result as OkObjectResult;
 
@@ -155,24 +189,34 @@ namespace XUnitTests
             var benefitReadDto = okObjectResult.Value as BenefitReadDto;
 
             Assert.Equal(benefitDto.ProductType, benefitReadDto.ProductType);
-
-            var invalidResult = _controller.Update(invalidId, benefitDto);
-            Assert.IsType<NotFoundResult>(invalidResult.Result);
-            //Arrange
-            var incompleteBenefit = new BenefitUpdateDto()
-            {
-                CategoryId = 1
-            };
-
-            //Act
+        } 
+        
+        [Theory]
+        [InlineData(1)]
+        public void UpdateTest_InvalidDto_ReturnsBadRequest(int validId)
+        {
+            var incompleteBenefit = new BenefitUpdateDto() { CategoryId = 1 };
             _controller.ModelState.AddModelError("Product Type", "Product Type is a required filed");
 
-            //Assert
             var badResponse = _controller.Update(validId, incompleteBenefit);
             Assert.IsType<BadRequestObjectResult>(badResponse.Result);
-
-            var nullResponse = _controller.Create(null);
+        } 
+        
+        [Theory]
+        [InlineData(1)]
+        public void UpdateTest_Null_ReturnsBadRequest(int validId)
+        {
+            var nullResponse = _controller.Update(validId, null);
             Assert.IsType<BadRequestObjectResult>(nullResponse.Result);
+        } 
+        
+        [Theory]
+        [InlineData(10)]
+        public void UpdateTest_InvalidId_ReturnsNotFound(int invalidId)
+        {
+            BenefitUpdateDto benefitDto = GenerateUpdateDto();
+            var invalidResult = _controller.Update(invalidId, benefitDto);
+            Assert.IsType<NotFoundResult>(invalidResult.Result);
         }
 
         private BenefitCreateDto GenerateCreateDto() {
