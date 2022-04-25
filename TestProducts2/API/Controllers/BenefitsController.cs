@@ -42,6 +42,12 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult<BenefitReadDto> Create(BenefitCreateDto benefitDto)
         {
+            if (benefitDto == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             return Ok(_serviceManager.BenefitService.Create(benefitDto));
         }
 
@@ -63,6 +69,12 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
+            var benefitReadDto = _serviceManager.BenefitService.GetById(id);
+            if (benefitReadDto == null)
+            {
+                return NotFound();
+            }
+
             _serviceManager.BenefitService.Delete(id);
             return NoContent();
         }

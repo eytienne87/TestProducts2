@@ -2,6 +2,7 @@
 using API.Dtos.Profiles;
 using AutoMapper;
 using Domain.Shared;
+using System.Reflection;
 
 namespace API.Dtos.Resolvers
 {
@@ -17,9 +18,7 @@ namespace API.Dtos.Resolvers
         {
             _mapper = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<BenefitsProfile>();
-                cfg.AddProfile<MarketSegmentsProfile>();
-                cfg.AddProfile<CategoryOfBenefitsProfile>();
+                cfg.AddMaps(Assembly.Load("API"));
             }).CreateMapper();
 
             var contextAccessor = new HttpContextAccessor();
@@ -53,6 +52,11 @@ namespace API.Dtos.Resolvers
         }
         private LanguageClass? GetLanguage(string language)
         {
+            if (language == null)
+            {
+                return null;
+            }
+            
             if (language.ToLower().Contains("fr") && language.ToLower().Contains("en"))
             {
                 return null;

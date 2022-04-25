@@ -1,8 +1,9 @@
 ﻿using Domain.Interfaces;
 using Domain.Models;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Data.Repositories
 {
     public class ProductRepository : IProductRepository
     {

@@ -2,8 +2,8 @@ using API.Common;
 using API.Services.Abstractions;
 using API.Services.Implementations;
 using Domain.Interfaces;
-using Infrastructure;
-using Infrastructure.Repositories;
+using Infrastructure.Data;
+using Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 

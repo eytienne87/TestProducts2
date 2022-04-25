@@ -1,7 +1,7 @@
 ﻿using Domain.Interfaces;
 using Domain.Models;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Data.Repositories
 {
     public sealed class RepositoryManager : IRepositoryManager
     {

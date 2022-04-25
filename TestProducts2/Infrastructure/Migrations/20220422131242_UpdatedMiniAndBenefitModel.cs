@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
-    public partial class AddProductTypeToWarranty : Migration
+    public partial class UpdatedMiniAndBenefitModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -37,6 +37,23 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MarketSegments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Minis",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProductType = table.Column<string>(type: "text", nullable: false),
+                    StyleCode = table.Column<string>(type: "text", nullable: false),
+                    StyleName = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Minis", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -294,6 +311,30 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BenefitMini",
+                columns: table => new
+                {
+                    BenefitsId = table.Column<int>(type: "integer", nullable: false),
+                    MinisId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BenefitMini", x => new { x.BenefitsId, x.MinisId });
+                    table.ForeignKey(
+                        name: "FK_BenefitMini_Benefits_BenefitsId",
+                        column: x => x.BenefitsId,
+                        principalTable: "Benefits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BenefitMini_Minis_MinisId",
+                        column: x => x.MinisId,
+                        principalTable: "Minis",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BenefitProduct",
                 columns: table => new
                 {
@@ -347,6 +388,11 @@ namespace Infrastructure.Migrations
                 column: "MarketSegmentsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BenefitMini_MinisId",
+                table: "BenefitMini",
+                column: "MinisId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BenefitProduct_ProductsId",
                 table: "BenefitProduct",
                 column: "ProductsId");
@@ -386,6 +432,9 @@ namespace Infrastructure.Migrations
                 name: "BenefitMarketSegment");
 
             migrationBuilder.DropTable(
+                name: "BenefitMini");
+
+            migrationBuilder.DropTable(
                 name: "BenefitProduct");
 
             migrationBuilder.DropTable(
@@ -405,6 +454,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "WarrantyTitleDescription");
+
+            migrationBuilder.DropTable(
+                name: "Minis");
 
             migrationBuilder.DropTable(
                 name: "Benefits");

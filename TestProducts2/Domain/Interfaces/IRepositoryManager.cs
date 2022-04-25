@@ -6,13 +6,13 @@ namespace Domain.Interfaces
     {
         //IProductRepository ProductRepository { get; }
         IRepository<Benefit> BenefitRepository { get; }
+        IRepository<CategoryOfBenefit> CategoryOfBenefitRepository { get; }
+        IRepository<MarketSegment> MarketSegmentRepository { get; }
         IRepository<Product> ProductRepository { get; }
         IRepository<Warranty> WarrantyRepository { get; }
-        IRepository<WarrantyTitle> WarrantyTitleRepository { get; }
         IRepository<WarrantyLength> WarrantyLengthRepository { get; }
         IRepository<WarrantyNotabene> WarrantyNotabeneRepository { get; }
-        IRepository<MarketSegment> MarketSegmentRepository { get; }
-        IRepository<CategoryOfBenefit> CategoryOfBenefitRepository { get; }
+        IRepository<WarrantyTitle> WarrantyTitleRepository { get; }
         IUnitOfWork UnitOfWork { get; }
     }
 }

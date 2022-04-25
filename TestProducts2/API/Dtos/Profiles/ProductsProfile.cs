@@ -27,6 +27,9 @@ namespace API.Dtos.Profiles
             CreateMap<ProductUpdateDto, Product>()
                 .ForMember(dest => dest.Benefits, opt => opt.MapFrom(src => src.Benefits))
                 .ForMember(dest => dest.Warranties, opt => opt.MapFrom(src => src.Warranties));
+
+            CreateMap<Product, ProductMiniReadDto>()
+                 .ForMember(dest => dest.Benefits, opt => opt.MapFrom(src => src.Benefits));
         }
     }
 }

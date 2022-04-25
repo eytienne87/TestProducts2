@@ -1,7 +1,7 @@
 ﻿using Domain.Base;
 using Domain.Models;
 using Domain.Shared;
-using Infrastructure;
+using Infrastructure.Data;
 
 namespace API.Common
 {
@@ -52,7 +52,7 @@ namespace API.Common
                                             new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Gouvernement"  }
                                         },
                                     },
-                                },
+                                }, 
                                 Category = new CategoryOfBenefit {
                                     Descriptions = new HashSet<CategoryOfBenefitDescription>()
                                     {

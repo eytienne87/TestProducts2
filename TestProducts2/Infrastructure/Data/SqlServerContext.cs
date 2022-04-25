@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure
+namespace Infrastructure.Data
 {
     public class SqlServerContext : DbContext
     {
@@ -9,23 +9,19 @@ namespace Infrastructure
         {
         }
 
-        public DbSet<Product> Products { get; set; } = default!;
         public DbSet<Benefit> Benefits { get; set; } = default!;
         public DbSet<CategoryOfBenefit> CategoryOfBenefits { get; set; } = default!;
+        public DbSet<MarketSegment> MarketSegments { get; set; } = default!;
+        public DbSet<Product> Products { get; set; } = default!;
         public DbSet<Warranty> Warranties { get; set; } = default!;
-        public DbSet<WarrantyTitle> WarrantyTitles { get; set; } = default!;
         public DbSet<WarrantyLength> WarrantyLengths { get; set; } = default!;
         public DbSet<WarrantyNotabene> WarrantyNotabenes { get; set; } = default!;
-        public DbSet<MarketSegment> MarketSegments { get; set; } = default!;
+        public DbSet<WarrantyTitle> WarrantyTitles { get; set; } = default!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // ----- Autoinclude -----
-
-            //Products
-            modelBuilder.Entity<Product>().Navigation(p => p.Benefits).AutoInclude();
-            modelBuilder.Entity<Product>().Navigation(p => p.Warranties).AutoInclude();
 
             //Benefits
             modelBuilder.Entity<Benefit>().Navigation(b => b.Descriptions).AutoInclude();
@@ -35,13 +31,17 @@ namespace Infrastructure
             //Category of Benefits
             modelBuilder.Entity<CategoryOfBenefit>().Navigation(cb => cb.Descriptions).AutoInclude();
 
+            //Market Segment
+            modelBuilder.Entity<MarketSegment>().Navigation(ms => ms.Descriptions).AutoInclude();
+
+            //Products
+            modelBuilder.Entity<Product>().Navigation(p => p.Benefits).AutoInclude();
+            modelBuilder.Entity<Product>().Navigation(p => p.Warranties).AutoInclude();
+
             //Warranties
             modelBuilder.Entity<Warranty>().Navigation(w => w.WarrantyTitle).AutoInclude();
             modelBuilder.Entity<Warranty>().Navigation(w => w.WarrantyLength).AutoInclude();
             modelBuilder.Entity<Warranty>().Navigation(w => w.WarrantyNotabene).AutoInclude();
-
-            //Warranty Title
-            modelBuilder.Entity<WarrantyTitle>().Navigation(wt => wt.Descriptions).AutoInclude();
 
             //Warranty Length
             modelBuilder.Entity<WarrantyLength>().Navigation(wt => wt.Descriptions).AutoInclude();
@@ -49,14 +49,20 @@ namespace Infrastructure
             //Warranty Notabene
             modelBuilder.Entity<WarrantyNotabene>().Navigation(wt => wt.Descriptions).AutoInclude();
 
-            //Market Segment
-            modelBuilder.Entity<MarketSegment>().Navigation(ms => ms.Descriptions).AutoInclude();
+            //Warranty Title
+            modelBuilder.Entity<WarrantyTitle>().Navigation(wt => wt.Descriptions).AutoInclude();
 
 
             // ----- Unique Keys -----
 
             //BenefitDescription
             modelBuilder.Entity<BenefitDescription>().HasKey(bd => new { bd.BenefitId, bd.Language });
+
+            //CategoryOfBenefitDescription
+            modelBuilder.Entity<CategoryOfBenefitDescription>().HasKey(bc => new { bc.CategoryOfBenefitId, bc.Language });
+
+            //MarketSegmentDescription
+            modelBuilder.Entity<MarketSegmentDescription>().HasKey(ms => new { ms.MarketSegmentId, ms.Language });
 
             //WarrantyTitleDescription
             modelBuilder.Entity<WarrantyTitleDescription>().HasKey(wt => new { wt.WarrantyTitleId, wt.Language });
@@ -66,13 +72,6 @@ namespace Infrastructure
 
             //WarrantyNotabeneDescription
             modelBuilder.Entity<WarrantyNotabeneDescription>().HasKey(wn => new { wn.WarrantyNotabeneId, wn.Language });
-
-            //MarketSegmentDescription
-            modelBuilder.Entity<MarketSegmentDescription>().HasKey(ms => new { ms.MarketSegmentId, ms.Language });
-
-            //CategoryOfBenefitDescription
-            modelBuilder.Entity<CategoryOfBenefitDescription>().HasKey(bc => new { bc.CategoryOfBenefitId, bc.Language });
-
         }
 
         //public override int SaveChanges()

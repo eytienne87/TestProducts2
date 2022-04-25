@@ -4,6 +4,7 @@ using API.Dtos.Read;
 using API.Dtos.Update;
 using API.Services.Abstractions;
 using AutoMapper;
+using Domain.Base;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
@@ -131,13 +132,15 @@ namespace API.Services.Implementations
 
         private void SetBenefitNavigations(Benefit benefit, object benefitDto)
         {
-            //benefit.Category = _repositoryManager.CategoryOfBenefitRepository.GetById((int)Helper.GetDynamicValue(benefitDto, "CategoryId")!);
-            benefit.Category = _repositoryManager.CategoryOfBenefitRepository.GetById(1);
+            benefit.Category = _repositoryManager.CategoryOfBenefitRepository.GetById((int)Helper.GetDynamicValue(benefitDto, "CategoryId")!);
 
             benefit.MarketSegments = new HashSet<MarketSegment>();
             var marketSegmentsFromDto = Helper.GetDynamicValue(benefitDto, "MarketSegments");
-
             SetBenefitMarketSegments(benefit, marketSegmentsFromDto);
+            //Type typeMarketSegment = Helper.GetDynamicValue(benefitDto, "MarketSegments").GetType().GetGenericArguments().Single();
+            //benefit.MarketSegments = ((HashSet<typeof(typeMarketSegment)>)Helper.GetDynamicValue(benefitDto, "MarketSegments")!)
+            //    .Where(x => _repositoryManager.MarketSegmentRepository.GetById(x.Id) != null)
+            //    .Select(x => _repositoryManager.MarketSegmentRepository.GetById(x.Id)) as ICollection<MarketSegment> ?? new HashSet<MarketSegment>();
         }
 
         private void SetBenefitMarketSegments(Benefit benefit, dynamic? marketSegments)
