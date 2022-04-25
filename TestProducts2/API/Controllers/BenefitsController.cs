@@ -53,8 +53,17 @@ namespace API.Controllers
 
         // PUT api/Benefits/{id}
         [HttpPut("{id}")]
-        public ActionResult Update(int id, BenefitUpdateDto benefitDto)
+        public ActionResult<BenefitReadDto> Update(int id, BenefitUpdateDto benefitDto)
         {
+            if (benefitDto == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (_serviceManager.BenefitService.GetById(id) == null)
+                return NotFound();
+
             return Ok(_serviceManager.BenefitService.Update(id, benefitDto));
         }
 

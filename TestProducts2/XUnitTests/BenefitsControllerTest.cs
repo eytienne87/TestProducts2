@@ -2,6 +2,7 @@ using API.Controllers;
 using API.Dtos.Create;
 using API.Dtos.Profiles;
 using API.Dtos.Read;
+using API.Dtos.Update;
 using API.Services.Abstractions;
 using API.Services.Implementations;
 using AutoMapper;
@@ -78,7 +79,7 @@ namespace XUnitTests
         public void CreateTest()
         {
             //Arrange
-            BenefitCreateDto completeBenefit = GenerateBenefit();
+            BenefitCreateDto completeBenefit = GenerateCreateDto();
 
             //Act
             var result = _controller.Create(completeBenefit);
@@ -134,9 +135,47 @@ namespace XUnitTests
             Assert.IsType<NoContentResult>(noContentResult);
             //Assert.Equal(0, _testHelper.ServiceManager.BenefitService.GetAll().Count());
             Assert.Empty(_testHelper.ServiceManager.BenefitService.GetAll());
+        }       
+        
+        [Theory]
+        [InlineData(1, 10)]
+        public void UpdateTest(int validId, int invalidId)
+        {
+            //Arrange
+            BenefitUpdateDto benefitDto = GenerateUpdateDto();
+
+            //Act
+            var result = _controller.Update(validId, benefitDto);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result.Result);
+            var okObjectResult = result.Result as OkObjectResult;
+
+            Assert.IsType<BenefitReadDto>(okObjectResult.Value);
+            var benefitReadDto = okObjectResult.Value as BenefitReadDto;
+
+            Assert.Equal(benefitDto.ProductType, benefitReadDto.ProductType);
+
+            var invalidResult = _controller.Update(invalidId, benefitDto);
+            Assert.IsType<NotFoundResult>(invalidResult.Result);
+            //Arrange
+            var incompleteBenefit = new BenefitUpdateDto()
+            {
+                CategoryId = 1
+            };
+
+            //Act
+            _controller.ModelState.AddModelError("Product Type", "Product Type is a required filed");
+
+            //Assert
+            var badResponse = _controller.Update(validId, incompleteBenefit);
+            Assert.IsType<BadRequestObjectResult>(badResponse.Result);
+
+            var nullResponse = _controller.Create(null);
+            Assert.IsType<BadRequestObjectResult>(nullResponse.Result);
         }
 
-        private BenefitCreateDto GenerateBenefit() {
+        private BenefitCreateDto GenerateCreateDto() {
 
             return new BenefitCreateDto
             {
@@ -161,6 +200,38 @@ namespace XUnitTests
                                         {
                                             new MarketSegmentDescriptionCreateDto { Language = LanguageClass.en, Description = "Government"  },
                                             new MarketSegmentDescriptionCreateDto { Language = LanguageClass.fr, Description = "Gouvernement"  }
+                                        },
+                                    },
+                                },
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Today.AddDays(1)
+            };
+        }       
+        private BenefitUpdateDto GenerateUpdateDto() {
+
+            return new BenefitUpdateDto
+            {
+                ProductType = "1",
+                CategoryId = 1,
+                Descriptions = new HashSet<BenefitDescriptionUpdateDto>()
+                                {
+                                    new BenefitDescriptionUpdateDto() { Language = LanguageClass.en, Description = "Really Convenient and easy to assemble" },
+                                    new BenefitDescriptionUpdateDto() { Language = LanguageClass.fr, Description = "Très pratique et facile à assembler" }
+                                },
+                MarketSegments = new HashSet<MarketSegmentUpdateDto>()
+                                {
+                                    new MarketSegmentUpdateDto() {
+                                        Descriptions = new HashSet<MarketSegmentDescriptionUpdateDto>()
+                                        {
+                                            new MarketSegmentDescriptionUpdateDto { Language = LanguageClass.en, Description = "Residential"  },
+                                            new MarketSegmentDescriptionUpdateDto { Language = LanguageClass.fr, Description = "Résidentiel"  }
+                                        },
+                                    },
+                                    new MarketSegmentUpdateDto() {
+                                        Descriptions = new HashSet<MarketSegmentDescriptionUpdateDto>()
+                                        {
+                                            new MarketSegmentDescriptionUpdateDto { Language = LanguageClass.en, Description = "Government"  },
+                                            new MarketSegmentDescriptionUpdateDto { Language = LanguageClass.fr, Description = "Gouvernement"  }
                                         },
                                     },
                                 },
