@@ -124,14 +124,16 @@ namespace XUnitTests
 
             //Assert
             Assert.IsType<NotFoundResult>(notFoundResult);
-            Assert.Equal(1, _testHelper.ServiceManager.BenefitService.GetAll().Count());
+            //Assert.Equal(1, _testHelper.ServiceManager.BenefitService.GetAll().Count());
+            Assert.Single(_testHelper.ServiceManager.BenefitService.GetAll());
 
             //Act
             var noContentResult = _controller.Delete(validId);
 
             //Assert
             Assert.IsType<NoContentResult>(noContentResult);
-            Assert.Equal(0, _testHelper.ServiceManager.BenefitService.GetAll().Count());
+            //Assert.Equal(0, _testHelper.ServiceManager.BenefitService.GetAll().Count());
+            Assert.Empty(_testHelper.ServiceManager.BenefitService.GetAll());
         }
 
         private BenefitCreateDto GenerateBenefit() {
