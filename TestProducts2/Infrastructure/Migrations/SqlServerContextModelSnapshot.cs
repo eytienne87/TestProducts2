@@ -37,21 +37,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("BenefitMarketSegment");
                 });
 
-            modelBuilder.Entity("BenefitMini", b =>
-                {
-                    b.Property<int>("BenefitsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MinisId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("BenefitsId", "MinisId");
-
-                    b.HasIndex("MinisId");
-
-                    b.ToTable("BenefitMini");
-                });
-
             modelBuilder.Entity("BenefitProduct", b =>
                 {
                     b.Property<int>("BenefitsId")
@@ -65,6 +50,46 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ProductsId");
 
                     b.ToTable("BenefitProduct");
+                });
+
+            modelBuilder.Entity("Domain.Models.AbrasionResistance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ProductType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AbrasionResistance");
+                });
+
+            modelBuilder.Entity("Domain.Models.AbrasionResistanceDescription", b =>
+                {
+                    b.Property<int>("AbrasionResistanceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("AbrasionResistanceId", "Language");
+
+                    b.ToTable("AbrasionResistanceDescription");
                 });
 
             modelBuilder.Entity("Domain.Models.Benefit", b =>
@@ -188,37 +213,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("MarketSegmentDescription");
                 });
 
-            modelBuilder.Entity("Domain.Models.Mini", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("ProductType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("StyleCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("StyleName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Minis");
-                });
-
             modelBuilder.Entity("Domain.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -227,6 +221,9 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AbrasionId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -246,6 +243,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AbrasionId");
 
                     b.ToTable("Products");
                 });
@@ -430,21 +429,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BenefitMini", b =>
-                {
-                    b.HasOne("Domain.Models.Benefit", null)
-                        .WithMany()
-                        .HasForeignKey("BenefitsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Mini", null)
-                        .WithMany()
-                        .HasForeignKey("MinisId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BenefitProduct", b =>
                 {
                     b.HasOne("Domain.Models.Benefit", null)
@@ -456,6 +440,15 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Models.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Models.AbrasionResistanceDescription", b =>
+                {
+                    b.HasOne("Domain.Models.AbrasionResistance", null)
+                        .WithMany("Descriptions")
+                        .HasForeignKey("AbrasionResistanceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -494,6 +487,15 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("MarketSegmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Models.Product", b =>
+                {
+                    b.HasOne("Domain.Models.AbrasionResistance", "Abrasion")
+                        .WithMany("Products")
+                        .HasForeignKey("AbrasionId");
+
+                    b.Navigation("Abrasion");
                 });
 
             modelBuilder.Entity("Domain.Models.Warranty", b =>
@@ -561,6 +563,13 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("WarrantiesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Models.AbrasionResistance", b =>
+                {
+                    b.Navigation("Descriptions");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Domain.Models.Benefit", b =>

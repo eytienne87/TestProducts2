@@ -9,6 +9,7 @@ namespace Infrastructure.Data
         {
         }
 
+        public DbSet<AbrasionResistance> AbrasionResistance { get; set; } = default!;
         public DbSet<Benefit> Benefits { get; set; } = default!;
         public DbSet<CategoryOfBenefit> CategoryOfBenefits { get; set; } = default!;
         public DbSet<MarketSegment> MarketSegments { get; set; } = default!;
@@ -23,6 +24,9 @@ namespace Infrastructure.Data
         {
             // ----- Autoinclude -----
 
+            //Abrasion Resistance
+            modelBuilder.Entity<AbrasionResistance>().Navigation(b => b.Descriptions).AutoInclude();       
+            
             //Benefits
             modelBuilder.Entity<Benefit>().Navigation(b => b.Descriptions).AutoInclude();
             modelBuilder.Entity<Benefit>().Navigation(b => b.Category).AutoInclude();
@@ -35,6 +39,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<MarketSegment>().Navigation(ms => ms.Descriptions).AutoInclude();
 
             //Products
+            modelBuilder.Entity<Product>().Navigation(p => p.Abrasion).AutoInclude();
             modelBuilder.Entity<Product>().Navigation(p => p.Benefits).AutoInclude();
             modelBuilder.Entity<Product>().Navigation(p => p.Warranties).AutoInclude();
 
@@ -55,6 +60,9 @@ namespace Infrastructure.Data
 
             // ----- Unique Keys -----
 
+            //AbrasionResistanceDescription
+            modelBuilder.Entity<AbrasionResistanceDescription>().HasKey(ad => new { ad.AbrasionResistanceId, ad.Language });
+            
             //BenefitDescription
             modelBuilder.Entity<BenefitDescription>().HasKey(bd => new { bd.BenefitId, bd.Language });
 

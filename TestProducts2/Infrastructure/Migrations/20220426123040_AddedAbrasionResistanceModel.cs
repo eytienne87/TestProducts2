@@ -6,10 +6,25 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
-    public partial class UpdatedMiniAndBenefitModel : Migration
+    public partial class AddedAbrasionResistanceModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AbrasionResistance",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProductType = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbrasionResistance", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "CategoryOfBenefits",
                 columns: table => new
@@ -37,40 +52,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MarketSegments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Minis",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProductType = table.Column<string>(type: "text", nullable: false),
-                    StyleCode = table.Column<string>(type: "text", nullable: false),
-                    StyleName = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Minis", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProductType = table.Column<string>(type: "text", nullable: false),
-                    StyleCode = table.Column<string>(type: "text", nullable: false),
-                    StyleName = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,6 +96,48 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WarrantyTitles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AbrasionResistanceDescription",
+                columns: table => new
+                {
+                    AbrasionResistanceId = table.Column<int>(type: "integer", nullable: false),
+                    Language = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbrasionResistanceDescription", x => new { x.AbrasionResistanceId, x.Language });
+                    table.ForeignKey(
+                        name: "FK_AbrasionResistanceDescription_AbrasionResistance_AbrasionRe~",
+                        column: x => x.AbrasionResistanceId,
+                        principalTable: "AbrasionResistance",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProductType = table.Column<string>(type: "text", nullable: false),
+                    StyleCode = table.Column<string>(type: "text", nullable: false),
+                    StyleName = table.Column<string>(type: "text", nullable: false),
+                    AbrasionId = table.Column<int>(type: "integer", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_AbrasionResistance_AbrasionId",
+                        column: x => x.AbrasionId,
+                        principalTable: "AbrasionResistance",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -311,30 +334,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BenefitMini",
-                columns: table => new
-                {
-                    BenefitsId = table.Column<int>(type: "integer", nullable: false),
-                    MinisId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BenefitMini", x => new { x.BenefitsId, x.MinisId });
-                    table.ForeignKey(
-                        name: "FK_BenefitMini_Benefits_BenefitsId",
-                        column: x => x.BenefitsId,
-                        principalTable: "Benefits",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BenefitMini_Minis_MinisId",
-                        column: x => x.MinisId,
-                        principalTable: "Minis",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "BenefitProduct",
                 columns: table => new
                 {
@@ -388,11 +387,6 @@ namespace Infrastructure.Migrations
                 column: "MarketSegmentsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BenefitMini_MinisId",
-                table: "BenefitMini",
-                column: "MinisId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_BenefitProduct_ProductsId",
                 table: "BenefitProduct",
                 column: "ProductsId");
@@ -401,6 +395,11 @@ namespace Infrastructure.Migrations
                 name: "IX_Benefits_CategoryId",
                 table: "Benefits",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_AbrasionId",
+                table: "Products",
+                column: "AbrasionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductWarranty_WarrantiesId",
@@ -426,13 +425,13 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AbrasionResistanceDescription");
+
+            migrationBuilder.DropTable(
                 name: "BenefitDescription");
 
             migrationBuilder.DropTable(
                 name: "BenefitMarketSegment");
-
-            migrationBuilder.DropTable(
-                name: "BenefitMini");
 
             migrationBuilder.DropTable(
                 name: "BenefitProduct");
@@ -456,9 +455,6 @@ namespace Infrastructure.Migrations
                 name: "WarrantyTitleDescription");
 
             migrationBuilder.DropTable(
-                name: "Minis");
-
-            migrationBuilder.DropTable(
                 name: "Benefits");
 
             migrationBuilder.DropTable(
@@ -472,6 +468,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "CategoryOfBenefits");
+
+            migrationBuilder.DropTable(
+                name: "AbrasionResistance");
 
             migrationBuilder.DropTable(
                 name: "WarrantyLengths");

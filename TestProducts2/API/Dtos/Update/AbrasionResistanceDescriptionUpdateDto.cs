@@ -1,8 +1,8 @@
 ﻿using Domain.Shared;
 
-namespace API.Dtos.Read
+namespace API.Dtos.Update
 {
-    public class BenefitDescriptionReadDto
+    public class AbrasionResistanceDescriptionUpdateDto
     {
         public LanguageClass Language { get; set; }
         public string Description { get; set; } = string.Empty;

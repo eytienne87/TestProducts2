@@ -9,5 +9,6 @@ namespace Domain.Models
         public string StyleName { get; set; } = string.Empty;
         public virtual HashSet<Benefit> Benefits { get; set; } = new HashSet<Benefit>();
         public virtual HashSet<Warranty> Warranties { get; set; } = new HashSet<Warranty>();
+        public virtual AbrasionResistance? Abrasion { get; set; } 
     }
 }

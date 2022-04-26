@@ -69,7 +69,7 @@ namespace API.Controllers
 
         // PATCH api/Benefits/{id}
         [HttpPatch("{id}")]
-        public ActionResult PartialUpdate(int id, JsonPatchDocument<BenefitUpdateDto> patchDoc)
+        public ActionResult<BenefitReadDto> PartialUpdate(int id, JsonPatchDocument<BenefitUpdateDto> patchDoc)
         {
             return Ok(_serviceManager.BenefitService.PartialUpdate(id, patchDoc));
         }

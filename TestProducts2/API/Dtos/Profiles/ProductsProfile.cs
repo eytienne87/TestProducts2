@@ -13,12 +13,14 @@ namespace API.Dtos.Profiles
         {
             CreateMap<Product, ProductReadDto>()
                 .ForMember(dest => dest.Benefits, opt => opt.MapFrom(src => src.Benefits))
-                .ForMember(dest => dest.Warranties, opt => opt.MapFrom(src => src.Warranties));
+                .ForMember(dest => dest.Warranties, opt => opt.MapFrom(src => src.Warranties))
+                .ForMember(dest => dest.Abrasion, opt => opt.MapFrom(src => src.Abrasion));
             CreateMap<ProductReadDto, Product>();
 
             CreateMap<ProductCreateDto, Product>()
                 .ForMember(dest => dest.Benefits, opt => opt.MapFrom(src => src.Benefits))
-                .ForMember(dest => dest.Warranties, opt => opt.MapFrom(src => src.Warranties));
+                .ForMember(dest => dest.Warranties, opt => opt.MapFrom(src => src.Warranties))
+                .ForMember(dest => dest.Abrasion, opt => opt.MapFrom(src => new AbrasionResistance { Id = src.AbrasionId }));
 
             CreateMap<Product, ProductUpdateDto>()
                 .ForMember(dest => dest.Benefits, opt => opt.MapFrom(src => src.Benefits))
@@ -26,7 +28,8 @@ namespace API.Dtos.Profiles
 
             CreateMap<ProductUpdateDto, Product>()
                 .ForMember(dest => dest.Benefits, opt => opt.MapFrom(src => src.Benefits))
-                .ForMember(dest => dest.Warranties, opt => opt.MapFrom(src => src.Warranties));
+                .ForMember(dest => dest.Warranties, opt => opt.MapFrom(src => src.Warranties))
+                .ForMember(dest => dest.Abrasion, opt => opt.MapFrom(src => new AbrasionResistance { Id = src.AbrasionId }));
 
             CreateMap<Product, ProductMiniReadDto>()
                  .ForMember(dest => dest.Benefits, opt => opt.MapFrom(src => src.Benefits));

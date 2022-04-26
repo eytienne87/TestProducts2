@@ -4,7 +4,8 @@ namespace Domain.Interfaces
 {
     public interface IRepositoryManager
     {
-        //IProductRepository ProductRepository { get; }
+        
+        IRepository<AbrasionResistance> AbrasionResistanceRepository { get; }
         IRepository<Benefit> BenefitRepository { get; }
         IRepository<CategoryOfBenefit> CategoryOfBenefitRepository { get; }
         IRepository<MarketSegment> MarketSegmentRepository { get; }

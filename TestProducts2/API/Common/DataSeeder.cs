@@ -25,6 +25,17 @@ namespace API.Common
                         ProductType = "Redwood Laminate",
                         StyleCode = "1234",
                         StyleName = "Wood",
+                        Abrasion = new AbrasionResistance
+                        {
+                            ProductType = "Redwood Laminate",
+                            Descriptions = new HashSet<AbrasionResistanceDescription>()
+                            {
+                                new AbrasionResistanceDescription { Language = LanguageClass.en, Description = "Very resistant" },
+                                new AbrasionResistanceDescription { Language = LanguageClass.fr, Description = "Très résistant" }
+                            },
+                            CreatedDate = DateTime.Now,
+                            UpdatedDate = DateTime.Today.AddDays(1)
+                        },
                         Benefits = new HashSet<Benefit>()
                         {
                             new Benefit {
@@ -52,7 +63,7 @@ namespace API.Common
                                             new MarketSegmentDescription { Language = LanguageClass.fr, Description = "Gouvernement"  }
                                         },
                                     },
-                                }, 
+                                },
                                 Category = new CategoryOfBenefit {
                                     Descriptions = new HashSet<CategoryOfBenefitDescription>()
                                     {

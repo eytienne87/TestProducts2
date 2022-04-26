@@ -9,6 +9,7 @@ using AutoMapper;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
@@ -34,10 +35,7 @@ namespace XUnitTests
         [Fact]
         public void GetAllTest()
         {
-            //Arrange
-            //Act
             var result = _controller.GetAll();
-            //Assert
             Assert.IsType<OkObjectResult>(result.Result);
 
             var list = result.Result as OkObjectResult;
@@ -217,6 +215,24 @@ namespace XUnitTests
             BenefitUpdateDto benefitDto = GenerateUpdateDto();
             var invalidResult = _controller.Update(invalidId, benefitDto);
             Assert.IsType<NotFoundResult>(invalidResult.Result);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        public void PartialUpdateTest_ValidId_ValidPatchDoc_ReturnsOkObJect(int validId) 
+        {
+            JsonPatchDocument<BenefitUpdateDto> patchDoc = new JsonPatchDocument<BenefitUpdateDto>();
+            patchDoc.Replace(e => e.ProductType, "a patched product type");
+
+            var result = _controller.PartialUpdate(validId, patchDoc);
+
+            Assert.IsType<OkObjectResult>(result.Result);
+            var okObjectResult = result.Result as OkObjectResult;
+
+            //Assert.IsType<BenefitReadDto>(okObjectResult.Value);
+            //var benefitReadDto = okObjectResult.Value as BenefitReadDto;
+
+            //Assert.Equal(benefitDto.ProductType, benefitReadDto.ProductType);
         }
 
         private BenefitCreateDto GenerateCreateDto() {

@@ -126,6 +126,8 @@ namespace API.Services.Implementations
 
         private void SetProductNavigations(Product product, object productDto)
         {
+            product.Abrasion = _repositoryManager.AbrasionResistanceRepository.GetById((int)Helper.GetDynamicValue(productDto, "AbrasionId")!);
+
             product.Benefits = new HashSet<Benefit>();
             var benefitsFromDto = Helper.GetDynamicValue(productDto, "Benefits");
             SetProductBenefits(product, benefitsFromDto);

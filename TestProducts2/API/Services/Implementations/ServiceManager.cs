@@ -6,6 +6,7 @@ namespace API.Services.Implementations
 {
     public class ServiceManager : IServiceManager
     {
+        private readonly Lazy<IAbrasionResistanceService> _abrasionResistanceService;
         private readonly Lazy<IBenefitService> _benefitService;
         private readonly Lazy<ICategoryOfBenefitService> _categoryOfBenefitService;
         private readonly Lazy<IMarketSegmentService> _marketSegmentService;
@@ -17,6 +18,7 @@ namespace API.Services.Implementations
 
         public ServiceManager(IRepositoryManager repositoryManager, IMapper mapper)
         {
+            _abrasionResistanceService = new Lazy<IAbrasionResistanceService>(() => new AbrasionResistanceService(repositoryManager, mapper));
             _benefitService = new Lazy<IBenefitService>(() => new BenefitService(repositoryManager, mapper));
             _categoryOfBenefitService = new Lazy<ICategoryOfBenefitService>(() => new CategoryOfBenefitService(repositoryManager, mapper));
             _marketSegmentService = new Lazy<IMarketSegmentService>(() => new MarketSegmentService(repositoryManager, mapper));
@@ -27,6 +29,7 @@ namespace API.Services.Implementations
             _warrantyNotabeneService = new Lazy<IWarrantyNotabeneService>(() => new WarrantyNotabeneService(repositoryManager, mapper));
         }
 
+        public IAbrasionResistanceService AbrasionResistanceService => _abrasionResistanceService.Value;
         public IBenefitService BenefitService => _benefitService.Value;
         public ICategoryOfBenefitService CategoryOfBenefitService => _categoryOfBenefitService.Value;
         public IMarketSegmentService MarketSegmentService => _marketSegmentService.Value;

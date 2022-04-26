@@ -5,7 +5,7 @@ namespace Infrastructure.Data.Repositories
 {
     public sealed class RepositoryManager : IRepositoryManager
     {
-        //private readonly Lazy<IProductRepository> _productRepository;
+        private readonly Lazy<IRepository<AbrasionResistance>> _abrasionResistanceRepository;
         private readonly Lazy<IRepository<Benefit>> _benefitRepository;
         private readonly Lazy<IRepository<CategoryOfBenefit>> _categoryOfBenefitRepository;
         private readonly Lazy<IRepository<MarketSegment>> _marketSegmentRepository;
@@ -19,11 +19,11 @@ namespace Infrastructure.Data.Repositories
 
         public RepositoryManager(SqlServerContext sqlServerContext)
         {
-            _productRepository = new Lazy<IRepository<Product>>(() => new GenericRepository<Product>(sqlServerContext));
-            //_productRepository = new Lazy<IProductRepository>(() => new ProductRepository(sqlServerContext));
+            _abrasionResistanceRepository = new Lazy<IRepository<AbrasionResistance>>(() => new GenericRepository<AbrasionResistance>(sqlServerContext));
             _benefitRepository = new Lazy<IRepository<Benefit>>(() => new GenericRepository<Benefit>(sqlServerContext));
             _categoryOfBenefitRepository = new Lazy<IRepository<CategoryOfBenefit>>(() => new GenericRepository<CategoryOfBenefit>(sqlServerContext));
             _marketSegmentRepository = new Lazy<IRepository<MarketSegment>>(() => new GenericRepository<MarketSegment>(sqlServerContext));
+            _productRepository = new Lazy<IRepository<Product>>(() => new GenericRepository<Product>(sqlServerContext));
             _warrantyRepository = new Lazy<IRepository<Warranty>>(() => new GenericRepository<Warranty>(sqlServerContext));
             _warrantyTitleRepository = new Lazy<IRepository<WarrantyTitle>>(() => new GenericRepository<WarrantyTitle>(sqlServerContext));
             _warrantyLengthRepository = new Lazy<IRepository<WarrantyLength>>(() => new GenericRepository<WarrantyLength>(sqlServerContext));
@@ -31,6 +31,7 @@ namespace Infrastructure.Data.Repositories
             _unitOfWork = new Lazy<IUnitOfWork>(() => new UnitOfWork(sqlServerContext));
         }
 
+        public IRepository<AbrasionResistance> AbrasionResistanceRepository => _abrasionResistanceRepository.Value;
         public IRepository<Benefit> BenefitRepository => _benefitRepository.Value;
         public IRepository<CategoryOfBenefit> CategoryOfBenefitRepository => _categoryOfBenefitRepository.Value;
         public IRepository<MarketSegment> MarketSegmentRepository => _marketSegmentRepository.Value;

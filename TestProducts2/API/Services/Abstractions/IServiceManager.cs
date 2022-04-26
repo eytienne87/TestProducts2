@@ -2,6 +2,7 @@
 {
     public interface IServiceManager
     {
+        IAbrasionResistanceService AbrasionResistanceService { get; }
         IBenefitService BenefitService { get; }
         ICategoryOfBenefitService CategoryOfBenefitService { get; }
         IMarketSegmentService MarketSegmentService { get; }
