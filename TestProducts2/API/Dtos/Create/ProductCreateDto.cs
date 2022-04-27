@@ -1,12 +1,14 @@
-﻿namespace API.Dtos.Create
+﻿using Domain.Base;
+
+namespace API.Dtos.Create
 {
-    public class ProductCreateDto
+    public class ProductCreateDto : BaseClass
     {
         public string ProductType { get; set; } = string.Empty;
         public string StyleCode { get; set; } = string.Empty;
         public string StyleName { get; set; } = string.Empty;
-        public ICollection<BenefitCreateDto>? Benefits { get; set; }
-        public ICollection<WarrantyCreateDto>? Warranties { get; set; }
+        public HashSet<BenefitCreateDto>? Benefits { get; set; }
+        public HashSet<WarrantyCreateDto>? Warranties { get; set; }
         public AbrasionResistanceCreateDto? Abrasion { get; set; }
         public int AbrasionId { get; set; }
     }

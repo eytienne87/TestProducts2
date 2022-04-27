@@ -62,7 +62,7 @@ namespace API.Services.Implementations
             return mappedProducts;
         }
 
-        public ProductReadDto GetById(int id)
+        public ProductReadDto? GetById(int id)
         {
             var product = _repositoryManager.ProductRepository.GetById(id);
 

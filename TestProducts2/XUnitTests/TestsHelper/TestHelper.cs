@@ -6,6 +6,8 @@ using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Reflection;
 
 namespace XUnitTests.TestsHelper
@@ -21,12 +23,10 @@ namespace XUnitTests.TestsHelper
             builder.UseInMemoryDatabase(databaseName: "TestDbInMemory");
 
             var dbContextOptions = builder.Options;
-
+            
             _context = new SqlServerContext(dbContextOptions);
-
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
-
             ServiceManager = GetServiceManager();
         }
 

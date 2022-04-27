@@ -30,26 +30,46 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public ActionResult<ProductReadDto> GetById(int id)
         {
-            return Ok(_serviceManager.ProductService.GetById(id));
+            var productReadDto = _serviceManager.ProductService.GetById(id);
+            if (productReadDto == null)
+            {
+                return NotFound();
+            }
+            return Ok(productReadDto);
         }
 
         //POST api/Products
         [HttpPost]
         public ActionResult<ProductReadDto> Create(ProductCreateDto productDto)
         {
+            if (productDto == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             return Ok(_serviceManager.ProductService.Create(productDto));
         }
 
         // PUT api/Products/{id}
         [HttpPut("{id}")]
-        public ActionResult Update(int id, ProductUpdateDto productDto)
+        public ActionResult<ProductReadDto> Update(int id, ProductUpdateDto productDto)
         {
+            if (productDto == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (_serviceManager.ProductService.GetById(id) == null)
+                return NotFound();
+
             return Ok(_serviceManager.ProductService.Update(id, productDto));
         }
 
         // PATCH api/Products/{id}
         [HttpPatch("{id}")]
-        public ActionResult PartialUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc)
+        public ActionResult<ProductReadDto> PartialUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc)
         {
             return Ok(_serviceManager.ProductService.PartialUpdate(id, patchDoc));
         }
@@ -58,6 +78,12 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
+            var productReadDto = _serviceManager.ProductService.GetById(id);
+            if (productReadDto == null)
+            {
+                return NotFound();
+            }
+
             _serviceManager.ProductService.Delete(id);
             return NoContent();
         }

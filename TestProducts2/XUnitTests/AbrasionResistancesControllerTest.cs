@@ -1,17 +1,10 @@
 using API.Controllers;
 using API.Dtos.Create;
-using API.Dtos.Profiles;
 using API.Dtos.Read;
 using API.Dtos.Update;
-using API.Services.Abstractions;
-using API.Services.Implementations;
-using AutoMapper;
-using Domain.Interfaces;
-using Domain.Models;
 using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +23,7 @@ namespace XUnitTests
             _testHelper = new TestHelper();
             _testHelper.TestSeedData();
             _controller = new AbrasionResistancesController(_testHelper.ServiceManager);
+            
         }
 
         [Fact]
@@ -117,22 +111,16 @@ namespace XUnitTests
         [InlineData(1, 10)]
         public void DeleteTest(int validId, int invalidId)
         {
-            //Arrange
-
-            //Act
             var notFoundResult = _controller.Delete(invalidId);
 
-            //Assert
             Assert.IsType<NotFoundResult>(notFoundResult);
-            //Assert.Equal(1, _testHelper.ServiceManager.AbrasionResistanceService.GetAll().Count());
+
             Assert.Single(_testHelper.ServiceManager.AbrasionResistanceService.GetAll());
 
-            //Act
             var noContentResult = _controller.Delete(validId);
 
-            //Assert
             Assert.IsType<NoContentResult>(noContentResult);
-            //Assert.Equal(0, _testHelper.ServiceManager.AbrasionResistanceService.GetAll().Count());
+
             Assert.Empty(_testHelper.ServiceManager.AbrasionResistanceService.GetAll());
         }
 
@@ -274,7 +262,6 @@ namespace XUnitTests
                 UpdatedDate = DateTime.Today.AddDays(1)
             };
         }
-        
     } 
 }
     

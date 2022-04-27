@@ -51,13 +51,9 @@ namespace XUnitTests
         [InlineData(1, 10)]
         public void GetByIdTest(int validId, int invalidId)
         {
-            //Arrange
-
-            //Act
             var validResult = _controller.GetById(validId);
             var invalidResult = _controller.GetById(invalidId);
 
-            //Assert
             Assert.IsType<OkObjectResult>(validResult.Result);
             var validItem = validResult.Result as OkObjectResult;
 
