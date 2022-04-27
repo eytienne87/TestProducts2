@@ -1,12 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Infrastructure.Migrations
 {
-    public partial class AddedAbrasionResistanceModel : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,11 +13,11 @@ namespace Infrastructure.Migrations
                 name: "AbrasionResistance",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProductType = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,10 +28,10 @@ namespace Infrastructure.Migrations
                 name: "CategoryOfBenefits",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,11 +42,11 @@ namespace Infrastructure.Migrations
                 name: "MarketSegments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UrlName = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UrlName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -58,10 +57,10 @@ namespace Infrastructure.Migrations
                 name: "WarrantyLengths",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,11 +71,11 @@ namespace Infrastructure.Migrations
                 name: "WarrantyNotabenes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProductType = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,11 +86,11 @@ namespace Infrastructure.Migrations
                 name: "WarrantyTitles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProductType = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -102,15 +101,15 @@ namespace Infrastructure.Migrations
                 name: "AbrasionResistanceDescription",
                 columns: table => new
                 {
-                    AbrasionResistanceId = table.Column<int>(type: "integer", nullable: false),
-                    Language = table.Column<int>(type: "integer", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    AbrasionResistanceId = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AbrasionResistanceDescription", x => new { x.AbrasionResistanceId, x.Language });
                     table.ForeignKey(
-                        name: "FK_AbrasionResistanceDescription_AbrasionResistance_AbrasionRe~",
+                        name: "FK_AbrasionResistanceDescription_AbrasionResistance_AbrasionResistanceId",
                         column: x => x.AbrasionResistanceId,
                         principalTable: "AbrasionResistance",
                         principalColumn: "Id",
@@ -121,14 +120,14 @@ namespace Infrastructure.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProductType = table.Column<string>(type: "text", nullable: false),
-                    StyleCode = table.Column<string>(type: "text", nullable: false),
-                    StyleName = table.Column<string>(type: "text", nullable: false),
-                    AbrasionId = table.Column<int>(type: "integer", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StyleCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StyleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AbrasionId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,12 +143,12 @@ namespace Infrastructure.Migrations
                 name: "Benefits",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProductType = table.Column<string>(type: "text", nullable: false),
-                    CategoryId = table.Column<int>(type: "integer", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -165,15 +164,15 @@ namespace Infrastructure.Migrations
                 name: "CategoryOfBenefitDescription",
                 columns: table => new
                 {
-                    CategoryOfBenefitId = table.Column<int>(type: "integer", nullable: false),
-                    Language = table.Column<int>(type: "integer", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    CategoryOfBenefitId = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CategoryOfBenefitDescription", x => new { x.CategoryOfBenefitId, x.Language });
                     table.ForeignKey(
-                        name: "FK_CategoryOfBenefitDescription_CategoryOfBenefits_CategoryOfB~",
+                        name: "FK_CategoryOfBenefitDescription_CategoryOfBenefits_CategoryOfBenefitId",
                         column: x => x.CategoryOfBenefitId,
                         principalTable: "CategoryOfBenefits",
                         principalColumn: "Id",
@@ -184,9 +183,9 @@ namespace Infrastructure.Migrations
                 name: "MarketSegmentDescription",
                 columns: table => new
                 {
-                    MarketSegmentId = table.Column<int>(type: "integer", nullable: false),
-                    Language = table.Column<int>(type: "integer", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    MarketSegmentId = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -203,9 +202,9 @@ namespace Infrastructure.Migrations
                 name: "WarrantyLengthDescription",
                 columns: table => new
                 {
-                    WarrantyLengthId = table.Column<int>(type: "integer", nullable: false),
-                    Language = table.Column<int>(type: "integer", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    WarrantyLengthId = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,15 +221,15 @@ namespace Infrastructure.Migrations
                 name: "WarrantyNotabeneDescription",
                 columns: table => new
                 {
-                    WarrantyNotabeneId = table.Column<int>(type: "integer", nullable: false),
-                    Language = table.Column<int>(type: "integer", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    WarrantyNotabeneId = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WarrantyNotabeneDescription", x => new { x.WarrantyNotabeneId, x.Language });
                     table.ForeignKey(
-                        name: "FK_WarrantyNotabeneDescription_WarrantyNotabenes_WarrantyNotab~",
+                        name: "FK_WarrantyNotabeneDescription_WarrantyNotabenes_WarrantyNotabeneId",
                         column: x => x.WarrantyNotabeneId,
                         principalTable: "WarrantyNotabenes",
                         principalColumn: "Id",
@@ -241,13 +240,13 @@ namespace Infrastructure.Migrations
                 name: "Warranties",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    WarrantyTitleId = table.Column<int>(type: "integer", nullable: false),
-                    WarrantyLengthId = table.Column<int>(type: "integer", nullable: false),
-                    WarrantyNotabeneId = table.Column<int>(type: "integer", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WarrantyTitleId = table.Column<int>(type: "int", nullable: false),
+                    WarrantyLengthId = table.Column<int>(type: "int", nullable: false),
+                    WarrantyNotabeneId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -275,9 +274,9 @@ namespace Infrastructure.Migrations
                 name: "WarrantyTitleDescription",
                 columns: table => new
                 {
-                    WarrantyTitleId = table.Column<int>(type: "integer", nullable: false),
-                    Language = table.Column<int>(type: "integer", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    WarrantyTitleId = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -294,9 +293,9 @@ namespace Infrastructure.Migrations
                 name: "BenefitDescription",
                 columns: table => new
                 {
-                    BenefitId = table.Column<int>(type: "integer", nullable: false),
-                    Language = table.Column<int>(type: "integer", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    BenefitId = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -313,8 +312,8 @@ namespace Infrastructure.Migrations
                 name: "BenefitMarketSegment",
                 columns: table => new
                 {
-                    BenefitsId = table.Column<int>(type: "integer", nullable: false),
-                    MarketSegmentsId = table.Column<int>(type: "integer", nullable: false)
+                    BenefitsId = table.Column<int>(type: "int", nullable: false),
+                    MarketSegmentsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -337,8 +336,8 @@ namespace Infrastructure.Migrations
                 name: "BenefitProduct",
                 columns: table => new
                 {
-                    BenefitsId = table.Column<int>(type: "integer", nullable: false),
-                    ProductsId = table.Column<int>(type: "integer", nullable: false)
+                    BenefitsId = table.Column<int>(type: "int", nullable: false),
+                    ProductsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -361,8 +360,8 @@ namespace Infrastructure.Migrations
                 name: "ProductWarranty",
                 columns: table => new
                 {
-                    ProductsId = table.Column<int>(type: "integer", nullable: false),
-                    WarrantiesId = table.Column<int>(type: "integer", nullable: false)
+                    ProductsId = table.Column<int>(type: "int", nullable: false),
+                    WarrantiesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
