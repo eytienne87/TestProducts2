@@ -45,8 +45,7 @@ namespace XUnitTests
 
             var listAbrasionResistances = list.Value as List<AbrasionResistanceReadDto>;
 
-            //Assert.True(listAbrasionResistances.Any());
-            Assert.True(true);
+            Assert.True(listAbrasionResistances.Any());
         }
 
         [Theory]

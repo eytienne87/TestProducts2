@@ -55,11 +55,11 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public ActionResult<BenefitReadDto> Update(int id, BenefitUpdateDto benefitDto)
         {
-            if (benefitDto == null)
-                return BadRequest(ModelState);
+            //if (benefitDto == null)
+            //    return BadRequest(ModelState);
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            //if (!ModelState.IsValid)
+            //    return BadRequest(ModelState);
 
             if (_serviceManager.BenefitService.GetById(id) == null)
                 return NotFound();
