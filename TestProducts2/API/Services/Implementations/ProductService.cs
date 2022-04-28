@@ -4,9 +4,9 @@ using API.Dtos.Read;
 using API.Dtos.Update;
 using API.Services.Abstractions;
 using AutoMapper;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
-using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace API.Services.Implementations
@@ -26,7 +26,7 @@ namespace API.Services.Implementations
         public ProductReadDto Create(ProductCreateDto productDto)
         {
             if (productDto == null)
-                throw new Exception("The format of the product DTO was invalid");
+                throw new BadRequestException("The format of the product DTO was invalid");
 
             var product = _mapper.Map<Product>(productDto);
 
@@ -43,7 +43,7 @@ namespace API.Services.Implementations
             var product = _repositoryManager.ProductRepository.GetById(id);
             if (product == null)
             {
-                throw new Exception($"The product with the identifier {id} could not be found");
+                throw new NotFoundException($"The product with the identifier {id} could not be found");
             }
 
             _repositoryManager.ProductRepository.Delete(product);
@@ -56,7 +56,6 @@ namespace API.Services.Implementations
         public IEnumerable<ProductReadDto> GetAll()
         {
             var products = _repositoryManager.ProductRepository.GetAll();
-
             var mappedProducts = _mapper.Map<IEnumerable<ProductReadDto>>(products);
 
             return mappedProducts;
@@ -67,11 +66,7 @@ namespace API.Services.Implementations
             var product = _repositoryManager.ProductRepository.GetById(id);
 
             if (product == null)
-            {
-                //throw new Exception($"The benefit with the identifier {id} could not be found");
-                Console.WriteLine($"The product with the identifier {id} could not be found");
-                return null;
-            }
+                throw new NotFoundException($"The product with the identifier {id} could not be found");
 
             var productDto = _mapper.Map<ProductReadDto>(product);
 
@@ -80,12 +75,13 @@ namespace API.Services.Implementations
 
         public ProductReadDto PartialUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc)
         {
+            if (patchDoc == null)
+                throw new BadRequestException("The Patch Document provided was invalid");
+
             var product = _repositoryManager.ProductRepository.GetById(id);
 
             if (product == null)
-            {
-                throw new Exception($"The product with the identifier {id} could not be found");
-            }
+                throw new NotFoundException($"The product with the identifier {id} could not be found");
 
             var productToPatch = _mapper.Map<ProductUpdateDto>(product);
             patchDoc.ApplyTo(productToPatch);
@@ -106,14 +102,12 @@ namespace API.Services.Implementations
         public ProductReadDto Update(int id, ProductUpdateDto productDto)
         {
             if (productDto == null)
-                throw new Exception("The format of the product DTO was invalid");
+                throw new BadRequestException("The Product DTO provided was invalid");
 
             var product = _repositoryManager.ProductRepository.GetById(id);
 
             if (product == null)
-            {
-                throw new Exception($"The product with the identifier {id} could not be found");
-            }
+                throw new NotFoundException($"The product with the identifier {id} could not be found");
 
             productDto.Id = product.Id;
             _mapper.Map(productDto, product);
@@ -146,10 +140,10 @@ namespace API.Services.Implementations
 
             foreach (var benefit in benefitsFromDto)
             {
-                var benefitmodel = _repositoryManager.BenefitRepository.GetById((int)Helper.GetDynamicValue(benefit, "Id")!);
-                if (benefitmodel != null)
+                var benefitModel = _repositoryManager.BenefitRepository.GetById((int)Helper.GetDynamicValue(benefit, "Id"));
+                if (benefitModel != null)
                 {
-                    product.Benefits.Add(benefitmodel);
+                    product.Benefits.Add(benefitModel);
                 }
             }
         }

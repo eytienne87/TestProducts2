@@ -4,11 +4,9 @@ using API.Dtos.Read;
 using API.Dtos.Update;
 using API.Services.Abstractions;
 using AutoMapper;
-using Domain.Base;
 using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
-using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace API.Services.Implementations
@@ -28,7 +26,7 @@ namespace API.Services.Implementations
         public BenefitReadDto Create(BenefitCreateDto benefitDto)
         {
             if (benefitDto == null)
-                throw new Exception("The format of the benefit DTO was invalid");
+                throw new BadRequestException("The format of the benefit DTO was invalid");
 
             var benefit = _mapper.Map<Benefit>(benefitDto);
 
@@ -45,7 +43,7 @@ namespace API.Services.Implementations
             var benefit = _repositoryManager.BenefitRepository.GetById(id);
             if (benefit == null)
             {
-                throw new Exception($"The benefit with the identifier {id} could not be found");
+                throw new NotFoundException($"The benefit with the identifier {id} could not be found");
             }
 
             _repositoryManager.BenefitRepository.Delete(benefit);
@@ -58,8 +56,6 @@ namespace API.Services.Implementations
         public IEnumerable<BenefitReadDto> GetAll()
         {
             var benefits = _repositoryManager.BenefitRepository.GetAll();
-
-            //var mappedBenefits = _mapper.Map<IEnumerable<BenefitReadDto>>(benefits, opt => opt.Items["lang"] = lang);
             var mappedBenefits = _mapper.Map<IEnumerable<BenefitReadDto>>(benefits);
 
             return mappedBenefits;
@@ -70,11 +66,7 @@ namespace API.Services.Implementations
             var benefit = _repositoryManager.BenefitRepository.GetById(id);
 
             if (benefit == null)
-            {
-                throw new NotFoundIdException(id);
-                //Console.WriteLine($"The benefit with the identifier {id} could not be found");
-                //return null;
-            }
+                throw new NotFoundException($"The benefit with the identifier {id} could not be found");
 
             var benefitDto = _mapper.Map<BenefitReadDto>(benefit);
 
@@ -83,12 +75,13 @@ namespace API.Services.Implementations
 
         public BenefitReadDto PartialUpdate(int id, JsonPatchDocument<BenefitUpdateDto> patchDoc)
         {
+            if (patchDoc == null)
+                throw new BadRequestException("The Patch Document provided was invalid");
+
             var benefit = _repositoryManager.BenefitRepository.GetById(id);
 
             if (benefit == null)
-            {
-                throw new Exception($"The benefit with the identifier {id} could not be found");
-            }
+                throw new NotFoundException($"The benefit with the identifier {id} could not be found");
 
             var benefitToPatch = _mapper.Map<BenefitUpdateDto>(benefit);
             patchDoc.ApplyTo(benefitToPatch);
@@ -109,14 +102,12 @@ namespace API.Services.Implementations
         public BenefitReadDto Update(int id, BenefitUpdateDto benefitDto)
         {
             if (benefitDto == null)
-                throw new Exception("The format of the benefit DTO was invalid");
+                throw new BadRequestException("The Benefit DTO provided was invalid");
 
             var benefit = _repositoryManager.BenefitRepository.GetById(id);
 
             if (benefit == null)
-            {
-                throw new Exception($"The benefit with the identifier {id} could not be found");
-            }
+                throw new NotFoundException($"The benefit with the identifier {id} could not be found");
 
             benefitDto.Id = benefit.Id;
             _mapper.Map(benefitDto, benefit);
@@ -138,10 +129,6 @@ namespace API.Services.Implementations
             benefit.MarketSegments = new HashSet<MarketSegment>();
             var marketSegmentsFromDto = Helper.GetDynamicValue(benefitDto, "MarketSegments");
             SetBenefitMarketSegments(benefit, marketSegmentsFromDto);
-            //Type typeMarketSegment = Helper.GetDynamicValue(benefitDto, "MarketSegments").GetType().GetGenericArguments().Single();
-            //benefit.MarketSegments = ((HashSet<typeof(typeMarketSegment)>)Helper.GetDynamicValue(benefitDto, "MarketSegments")!)
-            //    .Where(x => _repositoryManager.MarketSegmentRepository.GetById(x.Id) != null)
-            //    .Select(x => _repositoryManager.MarketSegmentRepository.GetById(x.Id)) as ICollection<MarketSegment> ?? new HashSet<MarketSegment>();
         }
 
         private void SetBenefitMarketSegments(Benefit benefit, dynamic? marketSegments)

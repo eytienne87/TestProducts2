@@ -1,4 +1,5 @@
 ﻿using Domain.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Dtos.Create
 {

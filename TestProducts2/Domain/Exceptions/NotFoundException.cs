@@ -1,8 +1,8 @@
 ﻿namespace Domain.Exceptions
 {
-    public abstract class NotFoundException : Exception
+    public sealed class NotFoundException : Exception
     {
-        protected NotFoundException(string message)
+        public NotFoundException(string message)
             : base(message)
         {
         }

@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var connectionString = builder.Configuration.GetConnectionString("SqlConnection");
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -42,7 +44,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddTransient<ExceptionMiddleware>();
+builder.Services.AddTransient<ExceptionMiddleware>();
+
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();

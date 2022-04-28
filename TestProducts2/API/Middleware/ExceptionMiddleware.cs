@@ -3,21 +3,22 @@ using System.Text.Json;
 
 namespace API.Middleware
 {
-    public class ExceptionMiddleware
+    public class ExceptionMiddleware : IMiddleware
     {
-        private readonly RequestDelegate _next;
-        public ExceptionMiddleware(RequestDelegate next)
+        private readonly ILogger<ExceptionMiddleware> _logger;
+        public ExceptionMiddleware(ILogger<ExceptionMiddleware> logger)
         {
-            _next = next;
+            _logger = logger;
         }
-        public async Task InvokeAsync(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
         {
             try
             {
-                await _next(httpContext);
+                await next(httpContext);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
@@ -32,7 +33,7 @@ namespace API.Middleware
             };
             var response = new
             {
-                error = exception.Message
+                Error = exception.Message
             };
             await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
