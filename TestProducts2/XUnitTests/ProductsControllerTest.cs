@@ -40,23 +40,25 @@ namespace XUnitTests
         }
 
         [Theory]
-        [InlineData(1, 10)]
-        public void GetByIdTest(int validId, int invalidId)
+        [InlineData(10)]
+        public void GetByIdTest_ReturnsNotFound(int invalidId)
+        {
+            var invalidResult = _controller.GetById(invalidId);
+
+            Assert.IsType<NotFoundResult>(invalidResult.Result);
+        }     
+        
+        [Theory]
+        [InlineData(1)]
+        public void GetByIdTest_ReturnsOkObject(int validId)
         {
             var validResult = _controller.GetById(validId);
-            var invalidResult = _controller.GetById(invalidId);
 
             Assert.IsType<OkObjectResult>(validResult.Result);
             var validItem = validResult.Result as OkObjectResult;
 
-            Assert.IsType<NotFoundResult>(invalidResult.Result);
-            //var invalidItem = invalidResult.Result as OkObjectResult;
-
             Assert.IsType<ProductReadDto>(validItem.Value);
             var productReadDto = validItem.Value as ProductReadDto;
-
-            //Assert.IsType<ProductReadDto>(invalidItem.Value);
-            //var invalidModel = invalidItem.Value as ProductReadDto;
 
             Assert.Equal(validId, productReadDto.Id);
         }
@@ -64,35 +66,26 @@ namespace XUnitTests
         [Fact]
         public void CreateTest()
         {
-            //Arrange
             ProductCreateDto completeProduct = GenerateCreateDto();
 
-            //Act
             var result = _controller.Create(completeProduct);
 
-            //Assert
             Assert.IsType<OkObjectResult>(result.Result);
 
-           
             var castedResult = result.Result as OkObjectResult;
             Assert.IsType<ProductReadDto>(castedResult.Value);
 
           
             var ProductReadDto = castedResult.Value as ProductReadDto;
             Assert.Equal(completeProduct.ProductType, ProductReadDto.ProductType);
-            //Assert.Equal(completeProduct.Category, ProductReadDto.CategoryId);
 
-
-            //Arrange
             var incompleteProduct = new ProductCreateDto()
             {
                 AbrasionId = 1
             };
 
-            //Act
             _controller.ModelState.AddModelError("Product Type", "Product Type is a required filed");
 
-            //Assert
             var badResponse = _controller.Create(incompleteProduct);
             Assert.IsType<BadRequestObjectResult>(badResponse.Result);
             
