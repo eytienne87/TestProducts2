@@ -68,7 +68,9 @@ namespace API.Services.Implementations
 
             if (product == null)
             {
-                throw new Exception($"The product with the identifier {id} could not be found");
+                //throw new Exception($"The benefit with the identifier {id} could not be found");
+                Console.WriteLine($"The product with the identifier {id} could not be found");
+                return null;
             }
 
             var productDto = _mapper.Map<ProductReadDto>(product);
