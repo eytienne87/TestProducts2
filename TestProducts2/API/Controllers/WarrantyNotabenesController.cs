@@ -2,7 +2,6 @@
 using API.Dtos.Read;
 using API.Dtos.Update;
 using API.Services.Abstractions;
-using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
