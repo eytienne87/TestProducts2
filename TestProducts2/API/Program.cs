@@ -1,4 +1,5 @@
 using API.Common;
+using API.Middleware;
 using API.Services.Abstractions;
 using API.Services.Implementations;
 using Domain.Interfaces;
@@ -8,9 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 var connectionString = builder.Configuration.GetConnectionString("SqlConnection");
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -43,14 +42,21 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//builder.Services.AddTransient<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCors(MyAllowSpecificOrigins);
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
-//Seed
-//if (args.Length == 1 && args[0].ToLower() == "seeddata")
-    SeedData(app);
-
+SeedData(app);
 void SeedData(IHost app)
 {
     var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
@@ -62,18 +68,12 @@ void SeedData(IHost app)
     }
 }
 
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
-//app.UseHttpsRedirection();
-app.UseCors(MyAllowSpecificOrigins);
-
-app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

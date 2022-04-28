@@ -5,6 +5,7 @@ using API.Dtos.Update;
 using API.Services.Abstractions;
 using AutoMapper;
 using Domain.Base;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
 using Domain.Shared;
@@ -70,9 +71,9 @@ namespace API.Services.Implementations
 
             if (benefit == null)
             {
-                //throw new Exception($"The benefit with the identifier {id} could not be found");
-                Console.WriteLine($"The benefit with the identifier {id} could not be found");
-                return null;
+                throw new NotFoundIdException(id);
+                //Console.WriteLine($"The benefit with the identifier {id} could not be found");
+                //return null;
             }
 
             var benefitDto = _mapper.Map<BenefitReadDto>(benefit);

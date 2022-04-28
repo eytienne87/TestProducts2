@@ -31,10 +31,7 @@ namespace API.Controllers
         public ActionResult<BenefitReadDto> GetById(int id)
         {
             var benefitReadDto = _serviceManager.BenefitService.GetById(id);
-            if (benefitReadDto == null)
-            { 
-                return NotFound();
-            }
+            //throw new Exception();
             return Ok(benefitReadDto);
         }
 
