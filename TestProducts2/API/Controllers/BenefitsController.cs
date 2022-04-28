@@ -39,12 +39,6 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult<BenefitReadDto> Create(BenefitCreateDto benefitDto)
         {
-            //if (benefitDto == null)
-            //    return BadRequest(ModelState);
-
-            //if (!ModelState.IsValid)
-            //    return BadRequest(ModelState);
-
             return Ok(_serviceManager.BenefitService.Create(benefitDto));
         }
 
@@ -52,15 +46,6 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public ActionResult<BenefitReadDto> Update(int id, BenefitUpdateDto benefitDto)
         {
-            if (benefitDto == null)
-                return BadRequest(ModelState);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (_serviceManager.BenefitService.GetById(id) == null)
-                return NotFound();
-
             return Ok(_serviceManager.BenefitService.Update(id, benefitDto));
         }
 

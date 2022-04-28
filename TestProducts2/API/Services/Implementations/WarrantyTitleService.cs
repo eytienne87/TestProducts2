@@ -3,9 +3,9 @@ using API.Dtos.Read;
 using API.Dtos.Update;
 using API.Services.Abstractions;
 using AutoMapper;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
-using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace API.Services.Implementations
@@ -17,33 +17,30 @@ namespace API.Services.Implementations
 
         public WarrantyTitleService(IRepositoryManager repositoryManager, IMapper mapper)
         {
-
             _repositoryManager = repositoryManager;
             _mapper = mapper;
         }
 
-        public WarrantyTitleReadDto Create(WarrantyTitleCreateDto titleDto)
+        public WarrantyTitleReadDto Create(WarrantyTitleCreateDto warrantyTitleDto)
         {
-            if (titleDto == null)
-                throw new Exception("The format of the title DTO was invalid");
+            if (warrantyTitleDto == null)
+                throw new BadRequestException("The format of the warrantyTitle DTO was invalid");
 
-            var title = _mapper.Map<WarrantyTitle>(titleDto);
+            var warrantyTitle = _mapper.Map<WarrantyTitle>(warrantyTitleDto);
 
-            _repositoryManager.WarrantyTitleRepository.Create(title);
+            _repositoryManager.WarrantyTitleRepository.Create(warrantyTitle);
             _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<WarrantyTitleReadDto>(title);
+            return _mapper.Map<WarrantyTitleReadDto>(warrantyTitle);
         }
 
         public void Delete(int id)
         {
-            var model = _repositoryManager.WarrantyTitleRepository.GetById(id);
-            if (model == null)
-            {
-                throw new Exception($"The title with the identifier {id} could not be found");
-            }
+            var warrantyTitle = _repositoryManager.WarrantyTitleRepository.GetById(id);
+            if (warrantyTitle == null)
+                throw new NotFoundException($"The warrantyTitle with the identifier {id} could not be found");
 
-            _repositoryManager.WarrantyTitleRepository.Delete(model);
+            _repositoryManager.WarrantyTitleRepository.Delete(warrantyTitle);
             _repositoryManager.UnitOfWork.SaveChanges();
 
             return;
@@ -52,69 +49,66 @@ namespace API.Services.Implementations
 
         public IEnumerable<WarrantyTitleReadDto> GetAll()
         {
-            var titles = _repositoryManager.WarrantyTitleRepository.GetAll();
-
-            var mappedWarrantyTitles = _mapper.Map<IEnumerable<WarrantyTitleReadDto>>(titles);
+            var warrantyTitles = _repositoryManager.WarrantyTitleRepository.GetAll();
+            var mappedWarrantyTitles = _mapper.Map<IEnumerable<WarrantyTitleReadDto>>(warrantyTitles);
 
             return mappedWarrantyTitles;
         }
 
-        public WarrantyTitleReadDto GetById(int id)
+        public WarrantyTitleReadDto? GetById(int id)
         {
-            var title = _repositoryManager.WarrantyTitleRepository.GetById(id);
+            var warrantyTitle = _repositoryManager.WarrantyTitleRepository.GetById(id);
 
-            if (title == null)
-            {
-                throw new Exception($"The title with the identifier {id} could not be found");
-            }
+            if (warrantyTitle == null)
+                throw new NotFoundException($"The warrantyTitle with the identifier {id} could not be found");
 
-            var titleDto = _mapper.Map<WarrantyTitleReadDto>(title);
+            var warrantyTitleDto = _mapper.Map<WarrantyTitleReadDto>(warrantyTitle);
 
-            return titleDto;
+            return warrantyTitleDto;
         }
 
         public WarrantyTitleReadDto PartialUpdate(int id, JsonPatchDocument<WarrantyTitleUpdateDto> patchDoc)
         {
-            var title = _repositoryManager.WarrantyTitleRepository.GetById(id);
+            if (patchDoc == null)
+                throw new BadRequestException("The Patch Document provided was invalid");
 
-            if (title == null)
-            {
-                throw new Exception($"The title with the identifier {id} could not be found");
-            }
+            var warrantyTitle = _repositoryManager.WarrantyTitleRepository.GetById(id);
 
-            var titleToPatch = _mapper.Map<WarrantyTitleUpdateDto>(title);
-            patchDoc.ApplyTo(titleToPatch);
+            if (warrantyTitle == null)
+                throw new NotFoundException($"The warrantyTitle with the identifier {id} could not be found");
 
-            titleToPatch.Id = title.Id;
-            _mapper.Map(titleToPatch, title);
+            var warrantyTitleToPatch = _mapper.Map<WarrantyTitleUpdateDto>(warrantyTitle);
+            patchDoc.ApplyTo(warrantyTitleToPatch);
 
-            _repositoryManager.WarrantyTitleRepository.Update(title);
+            warrantyTitleToPatch.Id = warrantyTitle.Id;
+            _mapper.Map(warrantyTitleToPatch, warrantyTitle);
+
+            _repositoryManager.WarrantyTitleRepository.Update(warrantyTitle);
 
             _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<WarrantyTitleReadDto>(title);
+            return _mapper.Map<WarrantyTitleReadDto>(warrantyTitle);
         }
 
 
-        public WarrantyTitleReadDto Update(int id, WarrantyTitleUpdateDto titleDto)
+        public WarrantyTitleReadDto Update(int id, WarrantyTitleUpdateDto warrantyTitleDto)
         {
-            if (titleDto == null)
-                throw new Exception("The format of the title DTO was invalid");
+            if (warrantyTitleDto == null)
+                throw new BadRequestException("The WarrantyTitle DTO provided was invalid");
 
-            var title = _repositoryManager.WarrantyTitleRepository.GetById(id);
+            var warrantyTitle = _repositoryManager.WarrantyTitleRepository.GetById(id);
 
-            if (title == null)
-            {
-                throw new Exception($"The title with the identifier {id} could not be found");
-            }
+            if (warrantyTitle == null)
+                throw new NotFoundException($"The warrantyTitle with the identifier {id} could not be found");
 
-            titleDto.Id = title.Id;
-            _mapper.Map(titleDto, title);
+            warrantyTitleDto.Id = warrantyTitle.Id;
+            _mapper.Map(warrantyTitleDto, warrantyTitle);
 
-            _repositoryManager.WarrantyTitleRepository.Update(title);
+            _repositoryManager.WarrantyTitleRepository.Update(warrantyTitle);
             _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<WarrantyTitleReadDto>(title);
+            return _mapper.Map<WarrantyTitleReadDto>(warrantyTitle);
         }
+
     }
 }

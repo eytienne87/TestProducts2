@@ -3,9 +3,9 @@ using API.Dtos.Read;
 using API.Dtos.Update;
 using API.Services.Abstractions;
 using AutoMapper;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
-using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace API.Services.Implementations
@@ -17,33 +17,30 @@ namespace API.Services.Implementations
 
         public MarketSegmentService(IRepositoryManager repositoryManager, IMapper mapper)
         {
-
             _repositoryManager = repositoryManager;
             _mapper = mapper;
         }
 
-        public MarketSegmentReadDto Create(MarketSegmentCreateDto marketSegmentDto)
+        public MarketSegmentReadDto Create(MarketSegmentCreateDto segmentDto)
         {
-            if (marketSegmentDto == null)
-                throw new Exception("The format of the marketSegment DTO was invalid");
+            if (segmentDto == null)
+                throw new BadRequestException("The format of the segment DTO was invalid");
 
-            var marketSegment = _mapper.Map<MarketSegment>(marketSegmentDto);
+            var segment = _mapper.Map<MarketSegment>(segmentDto);
 
-            _repositoryManager.MarketSegmentRepository.Create(marketSegment);
+            _repositoryManager.MarketSegmentRepository.Create(segment);
             _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<MarketSegmentReadDto>(marketSegment);
+            return _mapper.Map<MarketSegmentReadDto>(segment);
         }
 
         public void Delete(int id)
         {
-            var model = _repositoryManager.MarketSegmentRepository.GetById(id);
-            if (model == null)
-            {
-                throw new Exception($"The marketSegment with the identifier {id} could not be found");
-            }
+            var segment = _repositoryManager.MarketSegmentRepository.GetById(id);
+            if (segment == null)
+                throw new NotFoundException($"The segment with the identifier {id} could not be found");
 
-            _repositoryManager.MarketSegmentRepository.Delete(model);
+            _repositoryManager.MarketSegmentRepository.Delete(segment);
             _repositoryManager.UnitOfWork.SaveChanges();
 
             return;
@@ -52,69 +49,66 @@ namespace API.Services.Implementations
 
         public IEnumerable<MarketSegmentReadDto> GetAll()
         {
-            var marketSegments = _repositoryManager.MarketSegmentRepository.GetAll();
-
-            var mappedMarketSegments = _mapper.Map<IEnumerable<MarketSegmentReadDto>>(marketSegments);
+            var segments = _repositoryManager.MarketSegmentRepository.GetAll();
+            var mappedMarketSegments = _mapper.Map<IEnumerable<MarketSegmentReadDto>>(segments);
 
             return mappedMarketSegments;
         }
 
-        public MarketSegmentReadDto GetById(int id)
+        public MarketSegmentReadDto? GetById(int id)
         {
-            var marketSegment = _repositoryManager.MarketSegmentRepository.GetById(id);
+            var segment = _repositoryManager.MarketSegmentRepository.GetById(id);
 
-            if (marketSegment == null)
-            {
-                throw new Exception($"The marketSegment with the identifier {id} could not be found");
-            }
+            if (segment == null)
+                throw new NotFoundException($"The segment with the identifier {id} could not be found");
 
-            var marketSegmentDto = _mapper.Map<MarketSegmentReadDto>(marketSegment);
+            var segmentDto = _mapper.Map<MarketSegmentReadDto>(segment);
 
-            return marketSegmentDto;
+            return segmentDto;
         }
 
         public MarketSegmentReadDto PartialUpdate(int id, JsonPatchDocument<MarketSegmentUpdateDto> patchDoc)
         {
-            var marketSegment = _repositoryManager.MarketSegmentRepository.GetById(id);
+            if (patchDoc == null)
+                throw new BadRequestException("The Patch Document provided was invalid");
 
-            if (marketSegment == null)
-            {
-                throw new Exception($"The marketSegment with the identifier {id} could not be found");
-            }
+            var segment = _repositoryManager.MarketSegmentRepository.GetById(id);
 
-            var marketSegmentToPatch = _mapper.Map<MarketSegmentUpdateDto>(marketSegment);
-            patchDoc.ApplyTo(marketSegmentToPatch);
+            if (segment == null)
+                throw new NotFoundException($"The segment with the identifier {id} could not be found");
 
-            marketSegmentToPatch.Id = marketSegment.Id;
-            _mapper.Map(marketSegmentToPatch, marketSegment);
+            var segmentToPatch = _mapper.Map<MarketSegmentUpdateDto>(segment);
+            patchDoc.ApplyTo(segmentToPatch);
 
-            _repositoryManager.MarketSegmentRepository.Update(marketSegment);
+            segmentToPatch.Id = segment.Id;
+            _mapper.Map(segmentToPatch, segment);
+
+            _repositoryManager.MarketSegmentRepository.Update(segment);
 
             _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<MarketSegmentReadDto>(marketSegment);
+            return _mapper.Map<MarketSegmentReadDto>(segment);
         }
 
 
-        public MarketSegmentReadDto Update(int id, MarketSegmentUpdateDto marketSegmentDto)
+        public MarketSegmentReadDto Update(int id, MarketSegmentUpdateDto segmentDto)
         {
-            if (marketSegmentDto == null)
-                throw new Exception("The format of the marketSegment DTO was invalid");
+            if (segmentDto == null)
+                throw new BadRequestException("The MarketSegment DTO provided was invalid");
 
-            var marketSegment = _repositoryManager.MarketSegmentRepository.GetById(id);
+            var segment = _repositoryManager.MarketSegmentRepository.GetById(id);
 
-            if (marketSegment == null)
-            {
-                throw new Exception($"The marketSegment with the identifier {id} could not be found");
-            }
+            if (segment == null)
+                throw new NotFoundException($"The segment with the identifier {id} could not be found");
 
-            marketSegmentDto.Id = marketSegment.Id;
-            _mapper.Map(marketSegmentDto, marketSegment);
+            segmentDto.Id = segment.Id;
+            _mapper.Map(segmentDto, segment);
 
-            _repositoryManager.MarketSegmentRepository.Update(marketSegment);
+            _repositoryManager.MarketSegmentRepository.Update(segment);
             _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<MarketSegmentReadDto>(marketSegment);
+            return _mapper.Map<MarketSegmentReadDto>(segment);
         }
+
     }
 }

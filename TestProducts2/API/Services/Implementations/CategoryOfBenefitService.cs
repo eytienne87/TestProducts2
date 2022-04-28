@@ -3,9 +3,9 @@ using API.Dtos.Read;
 using API.Dtos.Update;
 using API.Services.Abstractions;
 using AutoMapper;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
-using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace API.Services.Implementations
@@ -17,7 +17,6 @@ namespace API.Services.Implementations
 
         public CategoryOfBenefitService(IRepositoryManager repositoryManager, IMapper mapper)
         {
-
             _repositoryManager = repositoryManager;
             _mapper = mapper;
         }
@@ -25,7 +24,7 @@ namespace API.Services.Implementations
         public CategoryOfBenefitReadDto Create(CategoryOfBenefitCreateDto categoryDto)
         {
             if (categoryDto == null)
-                throw new Exception("The format of the category DTO was invalid");
+                throw new BadRequestException("The format of the category DTO was invalid");
 
             var category = _mapper.Map<CategoryOfBenefit>(categoryDto);
 
@@ -37,13 +36,11 @@ namespace API.Services.Implementations
 
         public void Delete(int id)
         {
-            var model = _repositoryManager.CategoryOfBenefitRepository.GetById(id);
-            if (model == null)
-            {
-                throw new Exception($"The category with the identifier {id} could not be found");
-            }
+            var category = _repositoryManager.CategoryOfBenefitRepository.GetById(id);
+            if (category == null)
+                throw new NotFoundException($"The category with the identifier {id} could not be found");
 
-            _repositoryManager.CategoryOfBenefitRepository.Delete(model);
+            _repositoryManager.CategoryOfBenefitRepository.Delete(category);
             _repositoryManager.UnitOfWork.SaveChanges();
 
             return;
@@ -52,21 +49,18 @@ namespace API.Services.Implementations
 
         public IEnumerable<CategoryOfBenefitReadDto> GetAll()
         {
-            var categorys = _repositoryManager.CategoryOfBenefitRepository.GetAll();
-
-            var mappedCategoryOfBenefits = _mapper.Map<IEnumerable<CategoryOfBenefitReadDto>>(categorys);
+            var categories = _repositoryManager.CategoryOfBenefitRepository.GetAll();
+            var mappedCategoryOfBenefits = _mapper.Map<IEnumerable<CategoryOfBenefitReadDto>>(categories);
 
             return mappedCategoryOfBenefits;
         }
 
-        public CategoryOfBenefitReadDto GetById(int id)
+        public CategoryOfBenefitReadDto? GetById(int id)
         {
             var category = _repositoryManager.CategoryOfBenefitRepository.GetById(id);
 
             if (category == null)
-            {
-                throw new Exception($"The category with the identifier {id} could not be found");
-            }
+                throw new NotFoundException($"The category with the identifier {id} could not be found");
 
             var categoryDto = _mapper.Map<CategoryOfBenefitReadDto>(category);
 
@@ -75,12 +69,13 @@ namespace API.Services.Implementations
 
         public CategoryOfBenefitReadDto PartialUpdate(int id, JsonPatchDocument<CategoryOfBenefitUpdateDto> patchDoc)
         {
+            if (patchDoc == null)
+                throw new BadRequestException("The Patch Document provided was invalid");
+
             var category = _repositoryManager.CategoryOfBenefitRepository.GetById(id);
 
             if (category == null)
-            {
-                throw new Exception($"The category with the identifier {id} could not be found");
-            }
+                throw new NotFoundException($"The category with the identifier {id} could not be found");
 
             var categoryToPatch = _mapper.Map<CategoryOfBenefitUpdateDto>(category);
             patchDoc.ApplyTo(categoryToPatch);
@@ -99,14 +94,12 @@ namespace API.Services.Implementations
         public CategoryOfBenefitReadDto Update(int id, CategoryOfBenefitUpdateDto categoryDto)
         {
             if (categoryDto == null)
-                throw new Exception("The format of the category DTO was invalid");
+                throw new BadRequestException("The CategoryOfBenefit DTO provided was invalid");
 
             var category = _repositoryManager.CategoryOfBenefitRepository.GetById(id);
 
             if (category == null)
-            {
-                throw new Exception($"The category with the identifier {id} could not be found");
-            }
+                throw new NotFoundException($"The category with the identifier {id} could not be found");
 
             categoryDto.Id = category.Id;
             _mapper.Map(categoryDto, category);
@@ -116,5 +109,6 @@ namespace API.Services.Implementations
 
             return _mapper.Map<CategoryOfBenefitReadDto>(category);
         }
+
     }
 }

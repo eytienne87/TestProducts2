@@ -3,9 +3,9 @@ using API.Dtos.Read;
 using API.Dtos.Update;
 using API.Services.Abstractions;
 using AutoMapper;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
-using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace API.Services.Implementations
@@ -17,33 +17,30 @@ namespace API.Services.Implementations
 
         public WarrantyNotabeneService(IRepositoryManager repositoryManager, IMapper mapper)
         {
-
             _repositoryManager = repositoryManager;
             _mapper = mapper;
         }
 
-        public WarrantyNotabeneReadDto Create(WarrantyNotabeneCreateDto notabeneDto)
+        public WarrantyNotabeneReadDto Create(WarrantyNotabeneCreateDto warrantyNotabeneDto)
         {
-            if (notabeneDto == null)
-                throw new Exception("The format of the notabene DTO was invalid");
+            if (warrantyNotabeneDto == null)
+                throw new BadRequestException("The format of the warrantyNotabene DTO was invalid");
 
-            var notabene = _mapper.Map<WarrantyNotabene>(notabeneDto);
+            var warrantyNotabene = _mapper.Map<WarrantyNotabene>(warrantyNotabeneDto);
 
-            _repositoryManager.WarrantyNotabeneRepository.Create(notabene);
+            _repositoryManager.WarrantyNotabeneRepository.Create(warrantyNotabene);
             _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<WarrantyNotabeneReadDto>(notabene);
+            return _mapper.Map<WarrantyNotabeneReadDto>(warrantyNotabene);
         }
 
         public void Delete(int id)
         {
-            var model = _repositoryManager.WarrantyNotabeneRepository.GetById(id);
-            if (model == null)
-            {
-                throw new Exception($"The notabene with the identifier {id} could not be found");
-            }
+            var warrantyNotabene = _repositoryManager.WarrantyNotabeneRepository.GetById(id);
+            if (warrantyNotabene == null)
+                throw new NotFoundException($"The warrantyNotabene with the identifier {id} could not be found");
 
-            _repositoryManager.WarrantyNotabeneRepository.Delete(model);
+            _repositoryManager.WarrantyNotabeneRepository.Delete(warrantyNotabene);
             _repositoryManager.UnitOfWork.SaveChanges();
 
             return;
@@ -52,69 +49,66 @@ namespace API.Services.Implementations
 
         public IEnumerable<WarrantyNotabeneReadDto> GetAll()
         {
-            var notabenes = _repositoryManager.WarrantyNotabeneRepository.GetAll();
-
-            var mappedWarrantyNotabenes = _mapper.Map<IEnumerable<WarrantyNotabeneReadDto>>(notabenes);
+            var warrantyNotabenes = _repositoryManager.WarrantyNotabeneRepository.GetAll();
+            var mappedWarrantyNotabenes = _mapper.Map<IEnumerable<WarrantyNotabeneReadDto>>(warrantyNotabenes);
 
             return mappedWarrantyNotabenes;
         }
 
-        public WarrantyNotabeneReadDto GetById(int id)
+        public WarrantyNotabeneReadDto? GetById(int id)
         {
-            var notabene = _repositoryManager.WarrantyNotabeneRepository.GetById(id);
+            var warrantyNotabene = _repositoryManager.WarrantyNotabeneRepository.GetById(id);
 
-            if (notabene == null)
-            {
-                throw new Exception($"The notabene with the identifier {id} could not be found");
-            }
+            if (warrantyNotabene == null)
+                throw new NotFoundException($"The warrantyNotabene with the identifier {id} could not be found");
 
-            var notabeneDto = _mapper.Map<WarrantyNotabeneReadDto>(notabene);
+            var warrantyNotabeneDto = _mapper.Map<WarrantyNotabeneReadDto>(warrantyNotabene);
 
-            return notabeneDto;
+            return warrantyNotabeneDto;
         }
 
         public WarrantyNotabeneReadDto PartialUpdate(int id, JsonPatchDocument<WarrantyNotabeneUpdateDto> patchDoc)
         {
-            var notabene = _repositoryManager.WarrantyNotabeneRepository.GetById(id);
+            if (patchDoc == null)
+                throw new BadRequestException("The Patch Document provided was invalid");
 
-            if (notabene == null)
-            {
-                throw new Exception($"The notabene with the identifier {id} could not be found");
-            }
+            var warrantyNotabene = _repositoryManager.WarrantyNotabeneRepository.GetById(id);
 
-            var notabeneToPatch = _mapper.Map<WarrantyNotabeneUpdateDto>(notabene);
-            patchDoc.ApplyTo(notabeneToPatch);
+            if (warrantyNotabene == null)
+                throw new NotFoundException($"The warrantyNotabene with the identifier {id} could not be found");
 
-            notabeneToPatch.Id = notabene.Id;
-            _mapper.Map(notabeneToPatch, notabene);
+            var warrantyNotabeneToPatch = _mapper.Map<WarrantyNotabeneUpdateDto>(warrantyNotabene);
+            patchDoc.ApplyTo(warrantyNotabeneToPatch);
 
-            _repositoryManager.WarrantyNotabeneRepository.Update(notabene);
+            warrantyNotabeneToPatch.Id = warrantyNotabene.Id;
+            _mapper.Map(warrantyNotabeneToPatch, warrantyNotabene);
+
+            _repositoryManager.WarrantyNotabeneRepository.Update(warrantyNotabene);
 
             _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<WarrantyNotabeneReadDto>(notabene);
+            return _mapper.Map<WarrantyNotabeneReadDto>(warrantyNotabene);
         }
 
 
-        public WarrantyNotabeneReadDto Update(int id, WarrantyNotabeneUpdateDto notabeneDto)
+        public WarrantyNotabeneReadDto Update(int id, WarrantyNotabeneUpdateDto warrantyNotabeneDto)
         {
-            if (notabeneDto == null)
-                throw new Exception("The format of the notabene DTO was invalid");
+            if (warrantyNotabeneDto == null)
+                throw new BadRequestException("The WarrantyNotabene DTO provided was invalid");
 
-            var notabene = _repositoryManager.WarrantyNotabeneRepository.GetById(id);
+            var warrantyNotabene = _repositoryManager.WarrantyNotabeneRepository.GetById(id);
 
-            if (notabene == null)
-            {
-                throw new Exception($"The notabene with the identifier {id} could not be found");
-            }
+            if (warrantyNotabene == null)
+                throw new NotFoundException($"The warrantyNotabene with the identifier {id} could not be found");
 
-            notabeneDto.Id = notabene.Id;
-            _mapper.Map(notabeneDto, notabene);
+            warrantyNotabeneDto.Id = warrantyNotabene.Id;
+            _mapper.Map(warrantyNotabeneDto, warrantyNotabene);
 
-            _repositoryManager.WarrantyNotabeneRepository.Update(notabene);
+            _repositoryManager.WarrantyNotabeneRepository.Update(warrantyNotabene);
             _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<WarrantyNotabeneReadDto>(notabene);
+            return _mapper.Map<WarrantyNotabeneReadDto>(warrantyNotabene);
         }
+
     }
 }

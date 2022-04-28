@@ -31,10 +31,6 @@ namespace API.Controllers
         public ActionResult<ProductReadDto> GetById(int id)
         {
             var productReadDto = _serviceManager.ProductService.GetById(id);
-            if (productReadDto == null)
-            {
-                return NotFound();
-            }
             return Ok(productReadDto);
         }
 
@@ -42,12 +38,6 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult<ProductReadDto> Create(ProductCreateDto productDto)
         {
-            if (productDto == null)
-                return BadRequest(ModelState);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             return Ok(_serviceManager.ProductService.Create(productDto));
         }
 
@@ -55,15 +45,6 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public ActionResult<ProductReadDto> Update(int id, ProductUpdateDto productDto)
         {
-            if (productDto == null)
-                return BadRequest(ModelState);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (_serviceManager.ProductService.GetById(id) == null)
-                return NotFound();
-
             return Ok(_serviceManager.ProductService.Update(id, productDto));
         }
 
@@ -78,12 +59,6 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var productReadDto = _serviceManager.ProductService.GetById(id);
-            if (productReadDto == null)
-            {
-                return NotFound();
-            }
-
             _serviceManager.ProductService.Delete(id);
             return NoContent();
         }
