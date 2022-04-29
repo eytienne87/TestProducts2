@@ -23,6 +23,12 @@ namespace Infrastructure.Data.Repositories
             }
             return query;
         }
+
+        public IEnumerable<ColorName> GetAll()
+        {
+            return _context.ColorNames.ToList();
+        }
+
         public bool SaveChanges()
         {
             return _context.SaveChanges() >= 0;

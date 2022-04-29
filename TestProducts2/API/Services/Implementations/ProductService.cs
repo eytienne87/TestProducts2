@@ -57,7 +57,7 @@ namespace API.Services.Implementations
         {
             var products = _repositoryManager.ProductRepository.GetAll();
             var mappedProducts = _mapper.Map<IEnumerable<ProductReadDto>>(products);
-            SetProductReadDto();
+            SetProductReadDto(mappedProducts);
 
             return mappedProducts;
         }
@@ -184,11 +184,14 @@ namespace API.Services.Implementations
                 }
             }
         }
-        private void SetProductReadDto(IEnumerable<ProductReadDto> productReadDtos )
+        private void SetProductReadDto(IEnumerable<ProductReadDto> productReadDtos)
         {
             foreach (var dto in productReadDtos)
             {
-                dto.ColorNames = _repositoryManager.ColorNameRepository.Get(c => c);
+                //var colorNames = _repositoryManager.ColorNameRepository.Get() as ICollection<ColorName>;
+                var colorNames = _repositoryManager.ColorNameRepository.GetAll();
+                var colorNameDtos = _mapper.Map<IEnumerable<ColorNameReadDto>>(colorNames).ToHashSet();
+                dto.ColorNames = colorNameDtos;
             }
         }
     }
