@@ -57,6 +57,7 @@ namespace API.Services.Implementations
         {
             var products = _repositoryManager.ProductRepository.GetAll();
             var mappedProducts = _mapper.Map<IEnumerable<ProductReadDto>>(products);
+            SetProductReadDto();
 
             return mappedProducts;
         }
@@ -132,7 +133,6 @@ namespace API.Services.Implementations
             var warrantiesFromDto = Helper.GetDynamicValue(productDto, "Warranties");
             SetProductWarranties(product, warrantiesFromDto);
         }
-
         private void SetProductBenefits(Product product, dynamic? benefitsFromDto)
         {
             if (benefitsFromDto == null)
@@ -182,6 +182,13 @@ namespace API.Services.Implementations
                         WarrantyNotabene = warrantyNotabeneModel
                     });
                 }
+            }
+        }
+        private void SetProductReadDto(IEnumerable<ProductReadDto> productReadDtos )
+        {
+            foreach (var dto in productReadDtos)
+            {
+                dto.ColorNames = _repositoryManager.ColorNameRepository.Get(c => c);
             }
         }
     }
