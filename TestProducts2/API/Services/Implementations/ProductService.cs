@@ -188,8 +188,8 @@ namespace API.Services.Implementations
         {
             foreach (var dto in productReadDtos)
             {
-                //var colorNames = _repositoryManager.ColorNameRepository.Get() as ICollection<ColorName>;
-                var colorNames = _repositoryManager.ColorNameRepository.GetAll();
+                //var colorNames = _repositoryManager.ColorNameRepository.GetAll()
+                var colorNames = _repositoryManager.ColorNameRepository.Get(null);
                 var colorNameDtos = _mapper.Map<IEnumerable<ColorNameReadDto>>(colorNames).ToHashSet();
                 dto.ColorNames = colorNameDtos;
             }
