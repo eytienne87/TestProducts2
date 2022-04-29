@@ -7,18 +7,41 @@ namespace API.Common
 {
     public class DataSeeder : BaseClass
     {
-        private readonly SqlServerContext _context;
+        private readonly SqlServerContext _sqlContext;
+        private readonly PostgresContext _postgresContext;
 
-        public DataSeeder(SqlServerContext context)
+        public DataSeeder(SqlServerContext sqlContext, PostgresContext postgresContext)
         {
-            _context = context;
+            _sqlContext = sqlContext;
+            _postgresContext = postgresContext;
         }
 
         public void Seed()
         {
-            if (!_context.Products.Any())
+            if (!_postgresContext.ColorNames.Any())
             {
-                var products = new HashSet<Product>()
+                var colorNames = new HashSet<ColorName>()
+                {
+                    new ColorName()
+                    {
+                        ProductType = "1, 2 & b",
+                        StyleCode = "1234",
+                        ColorCode = "#FF5733",
+                    },
+                    new ColorName()
+                    {
+                        ProductType = "1, 2 & c",
+                        StyleCode = "5678",
+                        ColorCode = "#3633FF",
+                    },
+                };
+                _postgresContext.ColorNames.AddRange(colorNames);
+                _postgresContext.SaveChanges();
+            }
+
+            if (!_sqlContext.Products.Any())
+                {
+                    var products = new HashSet<Product>()
                 {
                     new Product()
                     {
@@ -151,9 +174,9 @@ namespace API.Common
                         UpdatedDate = DateTime.Today.AddDays(1)
                     },
                 };
-                _context.Products.AddRange(products);
-                _context.SaveChanges();
-            }
+                    _sqlContext.Products.AddRange(products);
+                    _sqlContext.SaveChanges();
+                }
         }
     }
 }

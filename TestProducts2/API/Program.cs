@@ -12,14 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-var connectionString = builder.Configuration.GetConnectionString("SqlConnection");
+var sqlConnectionString = builder.Configuration.GetConnectionString("SqlConnection");
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Add services to the container.
-builder.Services.AddDbContext<SqlServerContext>(opt => opt.UseSqlServer(connectionString));
+builder.Services.AddDbContext<SqlServerContext>(opt => opt.UseSqlServer(sqlConnectionString));
+builder.Services.AddDbContext<PostgresContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection") ?? ""));
 builder.Services.AddTransient<DataSeeder>();
 //builder.Services.AddDbContext<SqlServerContext>(opt => opt.UseInMemoryDatabase("InMem"));
-//builder.Services.AddDbContext<SqlServerContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection") ?? ""));
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
