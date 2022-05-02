@@ -15,7 +15,7 @@ namespace Infrastructure.Data.Repositories
         private readonly Lazy<IRepository<WarrantyLength>> _warrantyLengthRepository;
         private readonly Lazy<IRepository<WarrantyNotabene>> _warrantyNotabeneRepository;
         private readonly Lazy<IUnitOfWork> _unitOfWork;
-        private readonly Lazy<IColorNameRepository> _colorNameRepository;
+        private readonly Lazy<IRepository<ColorName>> _colorNameRepository;
 
 
         public RepositoryManager(SqlServerContext sqlServerContext, PostgresContext postgresContext)
@@ -30,7 +30,7 @@ namespace Infrastructure.Data.Repositories
             _warrantyLengthRepository = new Lazy<IRepository<WarrantyLength>>(() => new GenericRepository<WarrantyLength>(sqlServerContext));
             _warrantyNotabeneRepository = new Lazy<IRepository<WarrantyNotabene>>(() => new GenericRepository<WarrantyNotabene>(sqlServerContext));
             _unitOfWork = new Lazy<IUnitOfWork>(() => new UnitOfWork(sqlServerContext));
-            _colorNameRepository = new Lazy<IColorNameRepository>(() => new ColorNameRepository(postgresContext));
+            _colorNameRepository = new Lazy<IRepository<ColorName>>(() => new GenericRepository<ColorName>(postgresContext));
         }
 
         public IRepository<AbrasionResistance> AbrasionResistanceRepository => _abrasionResistanceRepository.Value;
@@ -44,7 +44,7 @@ namespace Infrastructure.Data.Repositories
         public IRepository<WarrantyNotabene> WarrantyNotabeneRepository => _warrantyNotabeneRepository.Value;
         public IUnitOfWork UnitOfWork => _unitOfWork.Value;
 
-        public IColorNameRepository ColorNameRepository => _colorNameRepository.Value;
+        public IRepository<ColorName> ColorNameRepository => _colorNameRepository.Value;
 
         //public IProductRepository ProductRepository
         //{

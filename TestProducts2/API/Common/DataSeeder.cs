@@ -24,15 +24,19 @@ namespace API.Common
                 {
                     new ColorName()
                     {
-                        ProductType = "1, 2 & b",
+                        ProductType = "Redwood Laminate",
                         StyleCode = "1234",
                         ColorCode = "#FF5733",
+                        CreatedDate = DateTime.Now,
+                        UpdatedDate = DateTime.Today.AddDays(1)
                     },
                     new ColorName()
                     {
                         ProductType = "1, 2 & c",
                         StyleCode = "5678",
                         ColorCode = "#3633FF",
+                        CreatedDate = DateTime.Now,
+                        UpdatedDate = DateTime.Today.AddDays(1)
                     },
                 };
                 _postgresContext.ColorNames.AddRange(colorNames);

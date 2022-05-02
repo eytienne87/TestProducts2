@@ -15,6 +15,6 @@ namespace Domain.Interfaces
         IRepository<WarrantyNotabene> WarrantyNotabeneRepository { get; }
         IRepository<WarrantyTitle> WarrantyTitleRepository { get; }
         IUnitOfWork UnitOfWork { get; }
-        IColorNameRepository ColorNameRepository { get; }   
+        IRepository<ColorName> ColorNameRepository { get; }   
     }
 }

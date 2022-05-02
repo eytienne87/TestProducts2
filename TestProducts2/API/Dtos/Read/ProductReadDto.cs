@@ -9,6 +9,6 @@
         public AbrasionResistanceReadDto? Abrasion { get; set; }
         public ICollection<BenefitReadDto>? Benefits { get; set; }
         public ICollection<WarrantyReadDto>? Warranties { get; set; }
-        public ICollection<ColorNameReadDto>? ColorNames { get; set; }
+        public ColorNameReadDto? ColorName { get; set; }
     }
 }

@@ -56,10 +56,13 @@ namespace API.Services.Implementations
         public IEnumerable<ProductReadDto> GetAll()
         {
             var products = _repositoryManager.ProductRepository.GetAll();
-            var mappedProducts = _mapper.Map<IEnumerable<ProductReadDto>>(products);
-            SetProductReadDto(mappedProducts);
+            var productReadDtos = _mapper.Map<IEnumerable<ProductReadDto>>(products);
+            foreach (var dto in productReadDtos)
+            {
+                dto.ColorName = SetProductReadDto(dto);
+            }
 
-            return mappedProducts;
+            return productReadDtos;
         }
 
         public ProductReadDto? GetById(int id)
@@ -184,15 +187,11 @@ namespace API.Services.Implementations
                 }
             }
         }
-        private void SetProductReadDto(IEnumerable<ProductReadDto> productReadDtos)
+        private ColorNameReadDto SetProductReadDto(ProductReadDto productReadDto)
         {
-            foreach (var dto in productReadDtos)
-            {
-                //var colorNames = _repositoryManager.ColorNameRepository.GetAll()
-                var colorNames = _repositoryManager.ColorNameRepository.Get(null);
-                var colorNameDtos = _mapper.Map<IEnumerable<ColorNameReadDto>>(colorNames).ToHashSet();
-                dto.ColorNames = colorNameDtos;
-            }
+            var colorName = _repositoryManager.ColorNameRepository.Get(c => c.ProductType == productReadDto.ProductType).FirstOrDefault();
+            var colorNameDto = _mapper.Map<ColorNameReadDto>(colorName);
+            return colorNameDto;
         }
     }
 }

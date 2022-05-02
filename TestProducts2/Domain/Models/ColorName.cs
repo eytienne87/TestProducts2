@@ -1,6 +1,8 @@
-﻿namespace Domain.Models
+﻿using Domain.Base;
+
+namespace Domain.Models
 {
-    public class ColorName
+    public class ColorName : BaseClass
     {
         public string ProductType { get; set; } = string.Empty;
         public string StyleCode { get; set; } = string.Empty;
