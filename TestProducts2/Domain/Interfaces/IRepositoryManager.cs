@@ -4,7 +4,6 @@ namespace Domain.Interfaces
 {
     public interface IRepositoryManager
     {
-        
         IRepository<AbrasionResistance> AbrasionResistanceRepository { get; }
         IRepository<Benefit> BenefitRepository { get; }
         IRepository<CategoryOfBenefit> CategoryOfBenefitRepository { get; }

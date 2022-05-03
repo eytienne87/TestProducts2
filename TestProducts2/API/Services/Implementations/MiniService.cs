@@ -18,7 +18,7 @@ namespace API.Services.Implementations
 
         public IEnumerable<ProductMiniReadDto> GetAll()
         {
-            var minis = _repositoryManager.ProductRepository.GetAll();
+            var minis = _repositoryManager.ProductRepository.GetAllAsync();
             var mappedMinis = _mapper.Map<IEnumerable<ProductMiniReadDto>>(minis);
 
             return mappedMinis;

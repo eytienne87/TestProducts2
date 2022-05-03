@@ -20,70 +20,47 @@ namespace API.Controllers
 
         // GET: api/AbrasionResistances
         [HttpGet]
-        public ActionResult<IEnumerable<AbrasionResistanceReadDto>> GetAll()
+        public async Task<ActionResult<IEnumerable<AbrasionResistanceReadDto>>> GetAll()
         {
-            return Ok(_serviceManager.AbrasionResistanceService.GetAll());
+            var abrasions = await _serviceManager.AbrasionResistanceService.GetAllAsync();
+            return Ok(abrasions);
         }
 
         // GET api/AbrasionResistances/{id}
         [HttpGet("{id}")]
-        public ActionResult<AbrasionResistanceReadDto> GetById(int id)
+        public async Task<ActionResult<AbrasionResistanceReadDto>> GetById(int id)
         {
-            var abrasionReadDto = _serviceManager.AbrasionResistanceService.GetById(id);
-            if (abrasionReadDto == null)
-            {
-                return NotFound();
-            }
+            var abrasionReadDto = await _serviceManager.AbrasionResistanceService.GetByIdAsync(id);
+
             return Ok(abrasionReadDto);
         }
 
         //POST api/AbrasionResistances
         [HttpPost]
-        public ActionResult<AbrasionResistanceReadDto> Create(AbrasionResistanceCreateDto abrasionDto)
+        public async Task<ActionResult<AbrasionResistanceReadDto>> Create(AbrasionResistanceCreateDto abrasionDto)
         {
-            if (abrasionDto == null)
-                return BadRequest(ModelState);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            return Ok(_serviceManager.AbrasionResistanceService.Create(abrasionDto));
+            return Ok(await _serviceManager.AbrasionResistanceService.CreateAsync(abrasionDto));
         }
 
         // PUT api/AbrasionResistances/{id}
         [HttpPut("{id}")]
-        public ActionResult<AbrasionResistanceReadDto> Update(int id, AbrasionResistanceUpdateDto abrasionDto)
+        public async Task<ActionResult<AbrasionResistanceReadDto>> Update(int id, AbrasionResistanceUpdateDto abrasionDto)
         {
-            if (abrasionDto == null)
-                return BadRequest(ModelState);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (_serviceManager.AbrasionResistanceService.GetById(id) == null)
-                return NotFound();
-
-            return Ok(_serviceManager.AbrasionResistanceService.Update(id, abrasionDto));
+            return Ok(await _serviceManager.AbrasionResistanceService.UpdateAsync(id, abrasionDto));
         }
 
         // PATCH api/AbrasionResistances/{id}
         [HttpPatch("{id}")]
-        public ActionResult<AbrasionResistanceReadDto> PartialUpdate(int id, JsonPatchDocument<AbrasionResistanceUpdateDto> patchDoc)
+        public async Task<ActionResult<AbrasionResistanceReadDto>> PartialUpdate(int id, JsonPatchDocument<AbrasionResistanceUpdateDto> patchDoc)
         {
-            return Ok(_serviceManager.AbrasionResistanceService.PartialUpdate(id, patchDoc));
+            return Ok(await _serviceManager.AbrasionResistanceService.PartialUpdateAsync(id, patchDoc));
         }
 
         // DELETE api/AbrasionResistances/{id}
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var abrasionReadDto = _serviceManager.AbrasionResistanceService.GetById(id);
-            if (abrasionReadDto == null)
-            {
-                return NotFound();
-            }
-
-            _serviceManager.AbrasionResistanceService.Delete(id);
+            await _serviceManager.AbrasionResistanceService.DeleteAsync(id);
             return NoContent();
         }
     }

@@ -21,93 +21,93 @@ namespace API.Services.Implementations
             _mapper = mapper;
         }
 
-        public WarrantyLengthReadDto Create(WarrantyLengthCreateDto warrantyLengthDto)
+        public async Task<WarrantyLengthReadDto> CreateAsync(WarrantyLengthCreateDto lengthDto)
         {
-            if (warrantyLengthDto == null)
-                throw new BadRequestException("The format of the warrantyLength DTO was invalid");
+            if (lengthDto == null)
+                throw new BadRequestException("The format of the length DTO was invalid");
 
-            var warrantyLength = _mapper.Map<WarrantyLength>(warrantyLengthDto);
+            var length = _mapper.Map<WarrantyLength>(lengthDto);
 
-            _repositoryManager.WarrantyLengthRepository.Create(warrantyLength);
-            _repositoryManager.UnitOfWork.SaveChanges();
+            _repositoryManager.WarrantyLengthRepository.Create(length);
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<WarrantyLengthReadDto>(warrantyLength);
+            return _mapper.Map<WarrantyLengthReadDto>(length);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var warrantyLength = _repositoryManager.WarrantyLengthRepository.GetById(id);
-            if (warrantyLength == null)
-                throw new NotFoundException($"The warrantyLength with the identifier {id} could not be found");
+            var length = await _repositoryManager.WarrantyLengthRepository.GetByIdAsync(id);
+            if (length == null)
+                throw new NotFoundException($"The length with the identifier {id} could not be found");
 
-            _repositoryManager.WarrantyLengthRepository.Delete(warrantyLength);
-            _repositoryManager.UnitOfWork.SaveChanges();
+            _repositoryManager.WarrantyLengthRepository.Delete(length);
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
 
             return;
         }
 
 
-        public IEnumerable<WarrantyLengthReadDto> GetAll()
+        public async Task<IEnumerable<WarrantyLengthReadDto>> GetAllAsync()
         {
-            var warrantyLengths = _repositoryManager.WarrantyLengthRepository.GetAll();
-            var mappedWarrantyLengths = _mapper.Map<IEnumerable<WarrantyLengthReadDto>>(warrantyLengths);
+            var lengths = await _repositoryManager.WarrantyLengthRepository.GetAllAsync();
+            var mappedWarrantyLengths = _mapper.Map<IEnumerable<WarrantyLengthReadDto>>(lengths);
 
             return mappedWarrantyLengths;
         }
 
-        public WarrantyLengthReadDto? GetById(int id)
+        public async Task<WarrantyLengthReadDto>? GetByIdAsync(int id)
         {
-            var warrantyLength = _repositoryManager.WarrantyLengthRepository.GetById(id);
+            var length = await _repositoryManager.WarrantyLengthRepository.GetByIdAsync(id);
 
-            if (warrantyLength == null)
-                throw new NotFoundException($"The warrantyLength with the identifier {id} could not be found");
+            if (length == null)
+                throw new NotFoundException($"The length with the identifier {id} could not be found");
 
-            var warrantyLengthDto = _mapper.Map<WarrantyLengthReadDto>(warrantyLength);
+            var lengthDto = _mapper.Map<WarrantyLengthReadDto>(length);
 
-            return warrantyLengthDto;
+            return lengthDto;
         }
 
-        public WarrantyLengthReadDto PartialUpdate(int id, JsonPatchDocument<WarrantyLengthUpdateDto> patchDoc)
+        public async Task<WarrantyLengthReadDto> PartialUpdateAsync(int id, JsonPatchDocument<WarrantyLengthUpdateDto> patchDoc)
         {
             if (patchDoc == null)
                 throw new BadRequestException("The Patch Document provided was invalid");
 
-            var warrantyLength = _repositoryManager.WarrantyLengthRepository.GetById(id);
+            var length = await _repositoryManager.WarrantyLengthRepository.GetByIdAsync(id);
 
-            if (warrantyLength == null)
-                throw new NotFoundException($"The warrantyLength with the identifier {id} could not be found");
+            if (length == null)
+                throw new NotFoundException($"The length with the identifier {id} could not be found");
 
-            var warrantyLengthToPatch = _mapper.Map<WarrantyLengthUpdateDto>(warrantyLength);
-            patchDoc.ApplyTo(warrantyLengthToPatch);
+            var lengthToPatch = _mapper.Map<WarrantyLengthUpdateDto>(length);
+            patchDoc.ApplyTo(lengthToPatch);
 
-            warrantyLengthToPatch.Id = warrantyLength.Id;
-            _mapper.Map(warrantyLengthToPatch, warrantyLength);
+            lengthToPatch.Id = length.Id;
+            _mapper.Map(lengthToPatch, length);
 
-            _repositoryManager.WarrantyLengthRepository.Update(warrantyLength);
+            _repositoryManager.WarrantyLengthRepository.Update(length);
 
-            _repositoryManager.UnitOfWork.SaveChanges();
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<WarrantyLengthReadDto>(warrantyLength);
+            return _mapper.Map<WarrantyLengthReadDto>(length);
         }
 
 
-        public WarrantyLengthReadDto Update(int id, WarrantyLengthUpdateDto warrantyLengthDto)
+        public async Task<WarrantyLengthReadDto> UpdateAsync(int id, WarrantyLengthUpdateDto lengthDto)
         {
-            if (warrantyLengthDto == null)
+            if (lengthDto == null)
                 throw new BadRequestException("The WarrantyLength DTO provided was invalid");
 
-            var warrantyLength = _repositoryManager.WarrantyLengthRepository.GetById(id);
+            var length = await _repositoryManager.WarrantyLengthRepository.GetByIdAsync(id);
 
-            if (warrantyLength == null)
-                throw new NotFoundException($"The warrantyLength with the identifier {id} could not be found");
+            if (length == null)
+                throw new NotFoundException($"The length with the identifier {id} could not be found");
 
-            warrantyLengthDto.Id = warrantyLength.Id;
-            _mapper.Map(warrantyLengthDto, warrantyLength);
+            lengthDto.Id = length.Id;
+            _mapper.Map(lengthDto, length);
 
-            _repositoryManager.WarrantyLengthRepository.Update(warrantyLength);
-            _repositoryManager.UnitOfWork.SaveChanges();
+            _repositoryManager.WarrantyLengthRepository.Update(length);
+            await _repositoryManager.UnitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<WarrantyLengthReadDto>(warrantyLength);
+            return _mapper.Map<WarrantyLengthReadDto>(length);
         }
 
     }

@@ -12,9 +12,10 @@ namespace Infrastructure.Data.Repositories
             _context = context;
         }
 
-        public void SaveChanges()
+        public async Task SaveChangesAsync()
         {
-            if (_context.ChangeTracker.HasChanges()) _context.SaveChanges();
+            if (_context.ChangeTracker.HasChanges()) 
+               await _context.SaveChangesAsync();
         }
     }
 }

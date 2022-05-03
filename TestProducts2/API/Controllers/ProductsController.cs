@@ -20,45 +20,47 @@ namespace API.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public ActionResult<IEnumerable<ProductReadDto>> GetAll()
+        public async Task<ActionResult<IEnumerable<ProductReadDto>>> GetAll()
         {
-            return Ok(_serviceManager.ProductService.GetAll());
+            var products = await _serviceManager.ProductService.GetAllAsync();
+            return Ok(products);
         }
 
         // GET api/Products/{id}
         [HttpGet("{id}")]
-        public ActionResult<ProductReadDto> GetById(int id)
+        public async Task<ActionResult<ProductReadDto>> GetById(int id)
         {
-            var productReadDto = _serviceManager.ProductService.GetById(id);
+            var productReadDto = await _serviceManager.ProductService.GetByIdAsync(id);
+
             return Ok(productReadDto);
         }
 
         //POST api/Products
         [HttpPost]
-        public ActionResult<ProductReadDto> Create(ProductCreateDto productDto)
+        public async Task<ActionResult<ProductReadDto>> Create(ProductCreateDto productDto)
         {
-            return Ok(_serviceManager.ProductService.Create(productDto));
+            return Ok(await _serviceManager.ProductService.CreateAsync(productDto));
         }
 
         // PUT api/Products/{id}
         [HttpPut("{id}")]
-        public ActionResult<ProductReadDto> Update(int id, ProductUpdateDto productDto)
+        public async Task<ActionResult<ProductReadDto>> Update(int id, ProductUpdateDto productDto)
         {
-            return Ok(_serviceManager.ProductService.Update(id, productDto));
+            return Ok(await _serviceManager.ProductService.UpdateAsync(id, productDto));
         }
 
         // PATCH api/Products/{id}
         [HttpPatch("{id}")]
-        public ActionResult<ProductReadDto> PartialUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc)
+        public async Task<ActionResult<ProductReadDto>> PartialUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc)
         {
-            return Ok(_serviceManager.ProductService.PartialUpdate(id, patchDoc));
+            return Ok(await _serviceManager.ProductService.PartialUpdateAsync(id, patchDoc));
         }
 
         // DELETE api/Products/{id}
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            _serviceManager.ProductService.Delete(id);
+            await _serviceManager.ProductService.DeleteAsync(id);
             return NoContent();
         }
     }

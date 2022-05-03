@@ -1,18 +1,17 @@
 ﻿using API.Dtos.Create;
 using API.Dtos.Read;
 using API.Dtos.Update;
-using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace API.Services.Abstractions
 {
     public interface IWarrantyNotabeneService
     {
-        public IEnumerable<WarrantyNotabeneReadDto> GetAll();
-        public WarrantyNotabeneReadDto GetById(int id);
-        public WarrantyNotabeneReadDto Create(WarrantyNotabeneCreateDto warrantyNotabeneCreateDto);
-        public WarrantyNotabeneReadDto Update(int id, WarrantyNotabeneUpdateDto warrantyNotabeneUpdateDto);
-        public WarrantyNotabeneReadDto PartialUpdate(int id, JsonPatchDocument<WarrantyNotabeneUpdateDto> patchDoc);
-        public void Delete(int id);
+        public Task<IEnumerable<WarrantyNotabeneReadDto>> GetAllAsync();
+        public Task<WarrantyNotabeneReadDto> GetByIdAsync(int id);
+        public Task<WarrantyNotabeneReadDto> CreateAsync(WarrantyNotabeneCreateDto notaBeneCreateDto);
+        public Task<WarrantyNotabeneReadDto> UpdateAsync(int id, WarrantyNotabeneUpdateDto notaBeneUpdateDto);
+        public Task<WarrantyNotabeneReadDto> PartialUpdateAsync(int id, JsonPatchDocument<WarrantyNotabeneUpdateDto> patchDoc);
+        public Task DeleteAsync(int id);
     }
 }

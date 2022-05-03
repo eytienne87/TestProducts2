@@ -20,44 +20,47 @@ namespace API.Controllers
 
         // GET: api/MarketSegments
         [HttpGet]
-        public ActionResult<IEnumerable<MarketSegmentReadDto>> GetAll()
+        public async Task<ActionResult<IEnumerable<MarketSegmentReadDto>>> GetAll()
         {
-            return Ok(_serviceManager.MarketSegmentService.GetAll());
+            var segments = await _serviceManager.MarketSegmentService.GetAllAsync();
+            return Ok(segments);
         }
 
         // GET api/MarketSegments/{id}
         [HttpGet("{id}")]
-        public ActionResult<MarketSegmentReadDto> GetById(int id)
+        public async Task<ActionResult<MarketSegmentReadDto>> GetById(int id)
         {
-            return Ok(_serviceManager.MarketSegmentService.GetById(id));
+            var segmentReadDto = await _serviceManager.MarketSegmentService.GetByIdAsync(id);
+
+            return Ok(segmentReadDto);
         }
 
         //POST api/MarketSegments
         [HttpPost]
-        public ActionResult<MarketSegmentReadDto> Create(MarketSegmentCreateDto categoryDto)
+        public async Task<ActionResult<MarketSegmentReadDto>> Create(MarketSegmentCreateDto segmentDto)
         {
-            return Ok(_serviceManager.MarketSegmentService.Create(categoryDto));
+            return Ok(await _serviceManager.MarketSegmentService.CreateAsync(segmentDto));
         }
 
         // PUT api/MarketSegments/{id}
         [HttpPut("{id}")]
-        public ActionResult Update(int id, MarketSegmentUpdateDto categoryDto)
+        public async Task<ActionResult<MarketSegmentReadDto>> Update(int id, MarketSegmentUpdateDto segmentDto)
         {
-            return Ok(_serviceManager.MarketSegmentService.Update(id, categoryDto));
+            return Ok(await _serviceManager.MarketSegmentService.UpdateAsync(id, segmentDto));
         }
 
         // PATCH api/MarketSegments/{id}
         [HttpPatch("{id}")]
-        public ActionResult PartialUpdate(int id, JsonPatchDocument<MarketSegmentUpdateDto> patchDoc)
+        public async Task<ActionResult<MarketSegmentReadDto>> PartialUpdate(int id, JsonPatchDocument<MarketSegmentUpdateDto> patchDoc)
         {
-            return Ok(_serviceManager.MarketSegmentService.PartialUpdate(id, patchDoc));
+            return Ok(await _serviceManager.MarketSegmentService.PartialUpdateAsync(id, patchDoc));
         }
 
         // DELETE api/MarketSegments/{id}
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            _serviceManager.MarketSegmentService.Delete(id);
+            await _serviceManager.MarketSegmentService.DeleteAsync(id);
             return NoContent();
         }
     }

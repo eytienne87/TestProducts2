@@ -17,11 +17,9 @@ namespace Infrastructure.Data.Repositories
             table = _context.Set<T>();
         }
 
-        public bool Create(T item)
+        public void Create(T item)
         {
             table.Add(item);
-
-            return SaveChanges();
         }
 
         public void Delete(T item)
@@ -31,9 +29,8 @@ namespace Infrastructure.Data.Repositories
                 throw new ArgumentNullException(nameof(item));
             }
             table.Remove(item);
-
         }
-        public IQueryable<T> Get(Expression<Func<T, bool>>? filter = null)
+        public async Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>>? filter = null)
         {
             IQueryable<T> query = table;
 
@@ -54,26 +51,19 @@ namespace Infrastructure.Data.Repositories
             table.RemoveRange(items);
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return table.ToList();
+            return await table.ToListAsync();
         }
 
-        public T? GetById(int Id)
+        public async Task<T> GetByIdAsync(int Id)
         {
-            return table.FirstOrDefault(q => q.Id == Id);
+            return await table.FirstOrDefaultAsync(q => q.Id == Id);
         }
 
-        public bool SaveChanges()
-        {
-            return _context.SaveChanges() >= 0;
-        }
-
-        public bool Update(T item)
+        public void Update(T item)
         {
             _context.Update(item);
-
-            return SaveChanges();
         }
     }
 }
