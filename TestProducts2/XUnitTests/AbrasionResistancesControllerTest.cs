@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 using XUnitTests.TestsHelper;
 
@@ -23,13 +24,12 @@ namespace XUnitTests
             _testHelper = new TestHelper();
             _testHelper.TestSeedData();
             _controller = new AbrasionResistancesController(_testHelper.ServiceManager);
-            
         }
 
         [Fact]
-        public void GetAllTest()
+        public async Task GetAllTest()
         {
-            var result = _controller.GetAll();
+            var result = await _controller.GetAll();
 
             Assert.IsType<OkObjectResult>(result.Result);
 
@@ -44,10 +44,10 @@ namespace XUnitTests
 
         [Theory]
         [InlineData(1, 10)]
-        public void GetByIdTest(int validId, int invalidId)
+        public async Task GetByIdTest(int validId, int invalidId)
         {
-            var validResult = _controller.GetById(validId);
-            var invalidResult = _controller.GetById(invalidId);
+            var validResult = await _controller.GetById(validId);
+            var invalidResult = await _controller.GetById(invalidId);
 
             Assert.IsType<OkObjectResult>(validResult.Result);
             var validItem = validResult.Result as OkObjectResult;
@@ -65,13 +65,13 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void CreateTest()
+        public async Task CreateTest()
         {
             //Arrange
             AbrasionResistanceCreateDto completeAbrasion = GenerateCreateDto();
 
             //Act
-            var result = _controller.Create(completeAbrasion);
+            var result = await _controller.Create(completeAbrasion);
 
             //Assert
             Assert.IsType<OkObjectResult>(result.Result);
@@ -109,19 +109,19 @@ namespace XUnitTests
 
         [Theory]
         [InlineData(1, 10)]
-        public void DeleteTest(int validId, int invalidId)
+        public async Task DeleteTest(int validId, int invalidId)
         {
             var notFoundResult = _controller.Delete(invalidId);
 
             Assert.IsType<NotFoundResult>(notFoundResult);
 
-            Assert.Single(_testHelper.ServiceManager.AbrasionResistanceService.GetAll());
+            Assert.Single(await _testHelper.ServiceManager.AbrasionResistanceService.GetAll());
 
             var noContentResult = _controller.Delete(validId);
 
             Assert.IsType<NoContentResult>(noContentResult);
 
-            Assert.Empty(_testHelper.ServiceManager.AbrasionResistanceService.GetAll());
+            Assert.Empty(await _testHelper.ServiceManager.AbrasionResistanceService.GetAll());
         }
 
         //[Theory]
@@ -164,10 +164,10 @@ namespace XUnitTests
 
         [Theory]
         [InlineData(1)]
-        public void UpdateTest_ValidId_ValidDto_ReturnsOkObject(int validId)
+        public async Task UpdateTest_ValidId_ValidDto_ReturnsOkObject(int validId)
         {
             AbrasionResistanceUpdateDto abrasionDto = GenerateUpdateDto();
-            var result = _controller.Update(validId, abrasionDto);
+            var result = await _controller.Update(validId, abrasionDto);
 
             Assert.IsType<OkObjectResult>(result.Result);
             var okObjectResult = result.Result as OkObjectResult;
@@ -215,12 +215,12 @@ namespace XUnitTests
 
         [Theory]
         [InlineData(1)]
-        public void PartialUpdateTest_ValidId_ValidPatchDoc_ReturnsOkObJect(int validId)
+        public async Task PartialUpdateTest_ValidId_ValidPatchDoc_ReturnsOkObJect(int validId)
         {
             JsonPatchDocument<AbrasionResistanceUpdateDto> patchDoc = new JsonPatchDocument<AbrasionResistanceUpdateDto>();
             patchDoc.Replace(e => e.ProductType, "a patched product type");
 
-            var result = _controller.PartialUpdate(validId, patchDoc);
+            var result = await _controller.PartialUpdate(validId, patchDoc);
 
             Assert.IsType<OkObjectResult>(result.Result);
             var okObjectResult = result.Result as OkObjectResult;

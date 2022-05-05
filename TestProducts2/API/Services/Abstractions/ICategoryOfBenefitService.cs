@@ -7,11 +7,11 @@ namespace API.Services.Abstractions
 {
     public interface ICategoryOfBenefitService
     {
-        public Task<IEnumerable<CategoryOfBenefitReadDto>> GetAllAsync();
-        public Task<CategoryOfBenefitReadDto> GetByIdAsync(int id);
-        public Task<CategoryOfBenefitReadDto> CreateAsync(CategoryOfBenefitCreateDto categoryCreateDto);
-        public Task<CategoryOfBenefitReadDto> UpdateAsync(int id, CategoryOfBenefitUpdateDto categoryUpdateDto);
-        public Task<CategoryOfBenefitReadDto> PartialUpdateAsync(int id, JsonPatchDocument<CategoryOfBenefitUpdateDto> patchDoc);
-        public Task DeleteAsync(int id);
+        public Task<IEnumerable<CategoryOfBenefitReadDto>> GetAll();
+        public Task<CategoryOfBenefitReadDto?> GetById(int id);
+        public Task<CategoryOfBenefitReadDto> Create(CategoryOfBenefitCreateDto categoryCreateDto);
+        public Task<CategoryOfBenefitReadDto> Update(int id, CategoryOfBenefitUpdateDto categoryUpdateDto);
+        public Task<CategoryOfBenefitReadDto> PartialUpdate(int id, JsonPatchDocument<CategoryOfBenefitUpdateDto> patchDoc);
+        public Task Delete(int id);
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 using XUnitTests.TestsHelper;
 
@@ -25,9 +26,9 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void GetAllTest()
+        public async Task GetAllTest()
         {
-            var result = _controller.GetAll();
+            var result = await _controller.GetAll();
             Assert.IsType<OkObjectResult>(result.Result);
 
             var list = result.Result as OkObjectResult;
@@ -50,9 +51,9 @@ namespace XUnitTests
         
         [Theory]
         [InlineData(1)]
-        public void GetByIdTest_ReturnsOkObject(int validId)
+        public async Task GetByIdTest_ReturnsOkObject(int validId)
         {
-            var validResult = _controller.GetById(validId);
+            var validResult = await _controller.GetById(validId);
 
             Assert.IsType<OkObjectResult>(validResult.Result);
             var validItem = validResult.Result as OkObjectResult;
@@ -64,11 +65,11 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void CreateTest()
+        public async Task CreateTest()
         {
             ProductCreateDto completeProduct = GenerateCreateDto();
 
-            var result = _controller.Create(completeProduct);
+            var result = await _controller.Create(completeProduct);
 
             Assert.IsType<OkObjectResult>(result.Result);
 
@@ -95,7 +96,7 @@ namespace XUnitTests
 
         [Theory]
         [InlineData(1, 10)]
-        public void DeleteTest(int validId, int invalidId)
+        public async Task DeleteTest(int validId, int invalidId)
         {
             //Arrange
 
@@ -105,7 +106,7 @@ namespace XUnitTests
             //Assert
             Assert.IsType<NotFoundResult>(notFoundResult);
             //Assert.Equal(1, _testHelper.ServiceManager.ProductService.GetAll().Count());
-            Assert.Single(_testHelper.ServiceManager.ProductService.GetAll());
+            Assert.Single(await _testHelper.ServiceManager.ProductService.GetAll());
 
             //Act
             var noContentResult = _controller.Delete(validId);
@@ -113,15 +114,15 @@ namespace XUnitTests
             //Assert
             Assert.IsType<NoContentResult>(noContentResult);
             //Assert.Equal(0, _testHelper.ServiceManager.ProductService.GetAll().Count());
-            Assert.Empty(_testHelper.ServiceManager.ProductService.GetAll());
+            Assert.Empty(await _testHelper.ServiceManager.ProductService.GetAll());
         }       
         
         [Theory]
         [InlineData(1)]
-        public void UpdateTest_ValidId_ValidDto_ReturnsOkObject(int validId)
+        public async Task UpdateTest_ValidId_ValidDto_ReturnsOkObject(int validId)
         {
             ProductUpdateDto productDto = GenerateUpdateDto();
-            var result = _controller.Update(validId, productDto);
+            var result = await _controller.Update(validId, productDto);
 
             Assert.IsType<OkObjectResult>(result.Result);
             var okObjectResult = result.Result as OkObjectResult;
@@ -162,12 +163,12 @@ namespace XUnitTests
 
         [Theory]
         [InlineData(1)]
-        public void PartialUpdateTest_ValidId_ValidPatchDoc_ReturnsOkObJect(int validId) 
+        public async Task PartialUpdateTest_ValidId_ValidPatchDoc_ReturnsOkObJect(int validId) 
         {
             JsonPatchDocument<ProductUpdateDto> patchDoc = new JsonPatchDocument<ProductUpdateDto>();
             patchDoc.Replace(e => e.ProductType, "a patched product type");
 
-            var result = _controller.PartialUpdate(validId, patchDoc);
+            var result = await _controller.PartialUpdate(validId, patchDoc);
 
             Assert.IsType<OkObjectResult>(result.Result);
             var okObjectResult = result.Result as OkObjectResult;

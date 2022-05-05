@@ -21,7 +21,7 @@ namespace API.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<AbrasionResistanceReadDto> CreateAsync(AbrasionResistanceCreateDto abrasionDto)
+        public async Task<AbrasionResistanceReadDto> Create(AbrasionResistanceCreateDto abrasionDto)
         {
             if (abrasionDto == null)
                 throw new BadRequestException("The format of the abrasion DTO was invalid");
@@ -29,35 +29,35 @@ namespace API.Services.Implementations
             var abrasion = _mapper.Map<AbrasionResistance>(abrasionDto);
 
             _repositoryManager.AbrasionResistanceRepository.Create(abrasion);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<AbrasionResistanceReadDto>(abrasion);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task Delete(int id)
         {
-            var abrasion = await _repositoryManager.AbrasionResistanceRepository.GetByIdAsync(id);
+            var abrasion = await _repositoryManager.AbrasionResistanceRepository.GetById(id);
             if (abrasion == null)
                 throw new NotFoundException($"The abrasion with the identifier {id} could not be found");
 
             _repositoryManager.AbrasionResistanceRepository.Delete(abrasion);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return;
         }
 
 
-        public async Task<IEnumerable<AbrasionResistanceReadDto>> GetAllAsync()
+        public async Task<IEnumerable<AbrasionResistanceReadDto>> GetAll()
         {
-            var abrasions = await _repositoryManager.AbrasionResistanceRepository.GetAllAsync();
+            var abrasions = await _repositoryManager.AbrasionResistanceRepository.GetAll();
             var mappedAbrasionResistances = _mapper.Map<IEnumerable<AbrasionResistanceReadDto>>(abrasions);
 
             return mappedAbrasionResistances;
         }
 
-        public async Task<AbrasionResistanceReadDto>? GetByIdAsync(int id)
+        public async Task<AbrasionResistanceReadDto?> GetById(int id)
         {
-            var abrasion = await _repositoryManager.AbrasionResistanceRepository.GetByIdAsync(id);
+            var abrasion = await _repositoryManager.AbrasionResistanceRepository.GetById(id);
 
             if (abrasion == null)
                 throw new NotFoundException($"The abrasion with the identifier {id} could not be found");
@@ -67,12 +67,12 @@ namespace API.Services.Implementations
             return abrasionDto;
         }
 
-        public async Task<AbrasionResistanceReadDto> PartialUpdateAsync(int id, JsonPatchDocument<AbrasionResistanceUpdateDto> patchDoc)
+        public async Task<AbrasionResistanceReadDto> PartialUpdate(int id, JsonPatchDocument<AbrasionResistanceUpdateDto> patchDoc)
         {
             if (patchDoc == null)
                 throw new BadRequestException("The Patch Document provided was invalid");
 
-            var abrasion = await _repositoryManager.AbrasionResistanceRepository.GetByIdAsync(id);
+            var abrasion = await _repositoryManager.AbrasionResistanceRepository.GetById(id);
 
             if (abrasion == null)
                 throw new NotFoundException($"The abrasion with the identifier {id} could not be found");
@@ -85,18 +85,18 @@ namespace API.Services.Implementations
 
             _repositoryManager.AbrasionResistanceRepository.Update(abrasion);
 
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<AbrasionResistanceReadDto>(abrasion);
         }
 
 
-        public async Task<AbrasionResistanceReadDto> UpdateAsync(int id, AbrasionResistanceUpdateDto abrasionDto)
+        public async Task<AbrasionResistanceReadDto> Update(int id, AbrasionResistanceUpdateDto abrasionDto)
         {
             if (abrasionDto == null)
                 throw new BadRequestException("The AbrasionResistance DTO provided was invalid");
 
-            var abrasion = await _repositoryManager.AbrasionResistanceRepository.GetByIdAsync(id);
+            var abrasion = await _repositoryManager.AbrasionResistanceRepository.GetById(id);
 
             if (abrasion == null)
                 throw new NotFoundException($"The abrasion with the identifier {id} could not be found");
@@ -105,7 +105,7 @@ namespace API.Services.Implementations
             _mapper.Map(abrasionDto, abrasion);
 
             _repositoryManager.AbrasionResistanceRepository.Update(abrasion);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<AbrasionResistanceReadDto>(abrasion);
         }

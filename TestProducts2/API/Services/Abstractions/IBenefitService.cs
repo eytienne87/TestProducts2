@@ -7,11 +7,11 @@ namespace API.Services.Abstractions
 {
     public interface IBenefitService
     {
-        public Task<IEnumerable<BenefitReadDto>> GetAllAsync();
-        public Task<BenefitReadDto> GetByIdAsync(int id);
-        public Task<BenefitReadDto> CreateAsync(BenefitCreateDto benefitCreateDto);
-        public Task<BenefitReadDto> UpdateAsync(int id, BenefitUpdateDto benefitUpdateDto);
-        public Task<BenefitReadDto> PartialUpdateAsync(int id, JsonPatchDocument<BenefitUpdateDto> patchDoc);
-        public Task DeleteAsync(int id);
+        public Task<IEnumerable<BenefitReadDto>> GetAll();
+        public Task<BenefitReadDto?> GetById(int id);
+        public Task<BenefitReadDto> Create(BenefitCreateDto benefitCreateDto);
+        public Task<BenefitReadDto> Update(int id, BenefitUpdateDto benefitUpdateDto);
+        public Task<BenefitReadDto> PartialUpdate(int id, JsonPatchDocument<BenefitUpdateDto> patchDoc);
+        public Task Delete(int id);
     }
 }

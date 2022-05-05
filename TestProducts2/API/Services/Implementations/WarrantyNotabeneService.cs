@@ -21,7 +21,7 @@ namespace API.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<WarrantyNotabeneReadDto> CreateAsync(WarrantyNotabeneCreateDto notabeneDto)
+        public async Task<WarrantyNotabeneReadDto> Create(WarrantyNotabeneCreateDto notabeneDto)
         {
             if (notabeneDto == null)
                 throw new BadRequestException("The format of the notabene DTO was invalid");
@@ -29,35 +29,35 @@ namespace API.Services.Implementations
             var notabene = _mapper.Map<WarrantyNotabene>(notabeneDto);
 
             _repositoryManager.WarrantyNotabeneRepository.Create(notabene);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<WarrantyNotabeneReadDto>(notabene);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task Delete(int id)
         {
-            var notabene = await _repositoryManager.WarrantyNotabeneRepository.GetByIdAsync(id);
+            var notabene = await _repositoryManager.WarrantyNotabeneRepository.GetById(id);
             if (notabene == null)
                 throw new NotFoundException($"The notabene with the identifier {id} could not be found");
 
             _repositoryManager.WarrantyNotabeneRepository.Delete(notabene);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return;
         }
 
 
-        public async Task<IEnumerable<WarrantyNotabeneReadDto>> GetAllAsync()
+        public async Task<IEnumerable<WarrantyNotabeneReadDto>> GetAll()
         {
-            var notabenes = await _repositoryManager.WarrantyNotabeneRepository.GetAllAsync();
+            var notabenes = await _repositoryManager.WarrantyNotabeneRepository.GetAll();
             var mappedWarrantyNotabenes = _mapper.Map<IEnumerable<WarrantyNotabeneReadDto>>(notabenes);
 
             return mappedWarrantyNotabenes;
         }
 
-        public async Task<WarrantyNotabeneReadDto>? GetByIdAsync(int id)
+        public async Task<WarrantyNotabeneReadDto?> GetById(int id)
         {
-            var notabene = await _repositoryManager.WarrantyNotabeneRepository.GetByIdAsync(id);
+            var notabene = await _repositoryManager.WarrantyNotabeneRepository.GetById(id);
 
             if (notabene == null)
                 throw new NotFoundException($"The notabene with the identifier {id} could not be found");
@@ -67,12 +67,12 @@ namespace API.Services.Implementations
             return notabeneDto;
         }
 
-        public async Task<WarrantyNotabeneReadDto> PartialUpdateAsync(int id, JsonPatchDocument<WarrantyNotabeneUpdateDto> patchDoc)
+        public async Task<WarrantyNotabeneReadDto> PartialUpdate(int id, JsonPatchDocument<WarrantyNotabeneUpdateDto> patchDoc)
         {
             if (patchDoc == null)
                 throw new BadRequestException("The Patch Document provided was invalid");
 
-            var notabene = await _repositoryManager.WarrantyNotabeneRepository.GetByIdAsync(id);
+            var notabene = await _repositoryManager.WarrantyNotabeneRepository.GetById(id);
 
             if (notabene == null)
                 throw new NotFoundException($"The notabene with the identifier {id} could not be found");
@@ -85,18 +85,18 @@ namespace API.Services.Implementations
 
             _repositoryManager.WarrantyNotabeneRepository.Update(notabene);
 
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<WarrantyNotabeneReadDto>(notabene);
         }
 
 
-        public async Task<WarrantyNotabeneReadDto> UpdateAsync(int id, WarrantyNotabeneUpdateDto notabeneDto)
+        public async Task<WarrantyNotabeneReadDto> Update(int id, WarrantyNotabeneUpdateDto notabeneDto)
         {
             if (notabeneDto == null)
                 throw new BadRequestException("The WarrantyNotabene DTO provided was invalid");
 
-            var notabene = await _repositoryManager.WarrantyNotabeneRepository.GetByIdAsync(id);
+            var notabene = await _repositoryManager.WarrantyNotabeneRepository.GetById(id);
 
             if (notabene == null)
                 throw new NotFoundException($"The notabene with the identifier {id} could not be found");
@@ -105,7 +105,7 @@ namespace API.Services.Implementations
             _mapper.Map(notabeneDto, notabene);
 
             _repositoryManager.WarrantyNotabeneRepository.Update(notabene);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<WarrantyNotabeneReadDto>(notabene);
         }

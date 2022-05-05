@@ -7,11 +7,11 @@ namespace API.Services.Abstractions
 {
     public interface IMarketSegmentService
     {
-        public Task<IEnumerable<MarketSegmentReadDto>> GetAllAsync();
-        public Task<MarketSegmentReadDto> GetByIdAsync(int id);
-        public Task<MarketSegmentReadDto> CreateAsync(MarketSegmentCreateDto segmentCreateDto);
-        public Task<MarketSegmentReadDto> UpdateAsync(int id, MarketSegmentUpdateDto segmentUpdateDto);
-        public Task<MarketSegmentReadDto> PartialUpdateAsync(int id, JsonPatchDocument<MarketSegmentUpdateDto> patchDoc);
-        public Task DeleteAsync(int id);
+        public Task<IEnumerable<MarketSegmentReadDto>> GetAll();
+        public Task<MarketSegmentReadDto?> GetById(int id);
+        public Task<MarketSegmentReadDto> Create(MarketSegmentCreateDto marketCreateDto);
+        public Task<MarketSegmentReadDto> Update(int id, MarketSegmentUpdateDto marketUpdateDto);
+        public Task<MarketSegmentReadDto> PartialUpdate(int id, JsonPatchDocument<MarketSegmentUpdateDto> patchDoc);
+        public Task Delete(int id);
     }
 }

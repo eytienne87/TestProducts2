@@ -6,8 +6,6 @@ using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 using System.Reflection;
 
 namespace XUnitTests.TestsHelper

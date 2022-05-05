@@ -22,45 +22,47 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WarrantyLengthReadDto>>> GetAll()
         {
-            var lengths = await _serviceManager.WarrantyLengthService.GetAllAsync();
-            return Ok(lengths);
+            var categories = await _serviceManager.WarrantyLengthService.GetAll();
+            return Ok(categories);
         }
 
         // GET api/WarrantyLengths/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<WarrantyLengthReadDto>> GetById(int id)
         {
-            var lengthReadDto = await _serviceManager.WarrantyLengthService.GetByIdAsync(id);
-
+            var lengthReadDto = await _serviceManager.WarrantyLengthService.GetById(id);
             return Ok(lengthReadDto);
         }
 
         //POST api/WarrantyLengths
         [HttpPost]
-        public async Task<ActionResult<WarrantyLengthReadDto>> Create(WarrantyLengthCreateDto lengthDto)
+        public async Task<ActionResult<WarrantyLengthReadDto>> Create(WarrantyLengthCreateDto lengthCreateDto)
         {
-            return Ok(await _serviceManager.WarrantyLengthService.CreateAsync(lengthDto));
+            var lengthReadDto = await _serviceManager.WarrantyLengthService.Create(lengthCreateDto);
+            return CreatedAtAction(nameof(GetById), new { id = lengthReadDto.Id }, lengthReadDto);
         }
 
         // PUT api/WarrantyLengths/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult<WarrantyLengthReadDto>> Update(int id, WarrantyLengthUpdateDto lengthDto)
         {
-            return Ok(await _serviceManager.WarrantyLengthService.UpdateAsync(id, lengthDto));
+            await _serviceManager.WarrantyLengthService.Update(id, lengthDto);
+            return NoContent();
         }
 
         // PATCH api/WarrantyLengths/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult<WarrantyLengthReadDto>> PartialUpdate(int id, JsonPatchDocument<WarrantyLengthUpdateDto> patchDoc)
         {
-            return Ok(await _serviceManager.WarrantyLengthService.PartialUpdateAsync(id, patchDoc));
+            await _serviceManager.WarrantyLengthService.PartialUpdate(id, patchDoc);
+            return NoContent();
         }
 
         // DELETE api/WarrantyLengths/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await _serviceManager.WarrantyLengthService.DeleteAsync(id);
+            await _serviceManager.WarrantyLengthService.Delete(id);
             return NoContent();
         }
     }

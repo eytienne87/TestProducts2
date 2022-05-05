@@ -23,47 +23,46 @@ namespace API.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<BenefitReadDto> CreateAsync(BenefitCreateDto benefitDto)
+        public async Task<BenefitReadDto> Create(BenefitCreateDto benefitDto)
         {
             if (benefitDto == null)
                 throw new BadRequestException("The format of the benefit DTO was invalid");
 
             var benefit = _mapper.Map<Benefit>(benefitDto);
 
-            await SetBenefitNavigationsAsync(benefit, benefitDto);
+            await SetBenefitNavigations(benefit, benefitDto);
 
             _repositoryManager.BenefitRepository.Create(benefit);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<BenefitReadDto>(benefit);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task Delete(int id)
         {
-            var benefit = await _repositoryManager.BenefitRepository.GetByIdAsync(id);
+            var benefit = await _repositoryManager.BenefitRepository.GetById(id);
+
             if (benefit == null)
-            {
                 throw new NotFoundException($"The benefit with the identifier {id} could not be found");
-            }
 
             _repositoryManager.BenefitRepository.Delete(benefit);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return;
         }
 
 
-        public async Task<IEnumerable<BenefitReadDto>> GetAllAsync()
+        public async Task<IEnumerable<BenefitReadDto>> GetAll()
         {
-            var benefits = await _repositoryManager.BenefitRepository.GetAllAsync();
+            var benefits = await _repositoryManager.BenefitRepository.GetAll();
             var mappedBenefits = _mapper.Map<IEnumerable<BenefitReadDto>>(benefits);
 
             return mappedBenefits;
         }
 
-        public async Task<BenefitReadDto> GetByIdAsync(int id)
+        public async Task<BenefitReadDto?> GetById(int id)
         {
-            var benefit = await _repositoryManager.BenefitRepository.GetByIdAsync(id);
+            var benefit = await _repositoryManager.BenefitRepository.GetById(id);
 
             if (benefit == null)
                 throw new NotFoundException($"The benefit with the identifier {id} could not be found");
@@ -73,12 +72,12 @@ namespace API.Services.Implementations
             return benefitDto;
         }
 
-        public async Task<BenefitReadDto> PartialUpdateAsync(int id, JsonPatchDocument<BenefitUpdateDto> patchDoc)
+        public async Task<BenefitReadDto> PartialUpdate(int id, JsonPatchDocument<BenefitUpdateDto> patchDoc)
         {
             if (patchDoc == null)
                 throw new BadRequestException("The Patch Document provided was invalid");
 
-            var benefit = await _repositoryManager.BenefitRepository.GetByIdAsync(id);
+            var benefit = await _repositoryManager.BenefitRepository.GetById(id);
 
             if (benefit == null)
                 throw new NotFoundException($"The benefit with the identifier {id} could not be found");
@@ -89,22 +88,22 @@ namespace API.Services.Implementations
             benefitToPatch.Id = benefit.Id;
             _mapper.Map(benefitToPatch, benefit);
 
-            await SetBenefitNavigationsAsync(benefit, benefitToPatch);
+            await SetBenefitNavigations(benefit, benefitToPatch);
 
             _repositoryManager.BenefitRepository.Update(benefit);
 
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<BenefitReadDto>(benefit);
         }
 
 
-        public async Task<BenefitReadDto> UpdateAsync(int id, BenefitUpdateDto benefitDto)
+        public async Task<BenefitReadDto> Update(int id, BenefitUpdateDto benefitDto)
         {
             if (benefitDto == null)
                 throw new BadRequestException("The Benefit DTO provided was invalid");
 
-            var benefit = await _repositoryManager.BenefitRepository.GetByIdAsync(id);
+            var benefit = await _repositoryManager.BenefitRepository.GetById(id);
 
             if (benefit == null)
                 throw new NotFoundException($"The benefit with the identifier {id} could not be found");
@@ -112,19 +111,19 @@ namespace API.Services.Implementations
             benefitDto.Id = benefit.Id;
             _mapper.Map(benefitDto, benefit);
 
-            await SetBenefitNavigationsAsync(benefit, benefitDto);
+            await SetBenefitNavigations(benefit, benefitDto);
 
             _repositoryManager.BenefitRepository.Update(benefit);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<BenefitReadDto>(benefit);
         }
 
 
 
-        private async Task SetBenefitNavigationsAsync(Benefit benefit, object benefitDto)
+        private async Task SetBenefitNavigations(Benefit benefit, object benefitDto)
         {
-            benefit.Category = await _repositoryManager.CategoryOfBenefitRepository.GetByIdAsync((int)Helper.GetDynamicValue(benefitDto, "CategoryId")!);
+            benefit.Category = await _repositoryManager.CategoryOfBenefitRepository.GetById((int)Helper.GetDynamicValue(benefitDto, "CategoryId")!);
 
             benefit.MarketSegments = new HashSet<MarketSegment>();
             var marketSegmentsFromDto = Helper.GetDynamicValue(benefitDto, "MarketSegments");
@@ -138,7 +137,7 @@ namespace API.Services.Implementations
 
             foreach (var marketSegment in marketSegments)
             {
-                var marketSegmentModel = await _repositoryManager.MarketSegmentRepository.GetByIdAsync((int)Helper.GetDynamicValue(marketSegment, "Id"));
+                var marketSegmentModel = await _repositoryManager.MarketSegmentRepository.GetById((int)Helper.GetDynamicValue(marketSegment, "Id"));
                 if (marketSegmentModel != null)
                 {
                     benefit.MarketSegments.Add(marketSegmentModel);

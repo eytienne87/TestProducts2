@@ -4,6 +4,6 @@ namespace Domain.Models
 {
     public class WarrantyLength : BaseClass
     {
-        public ICollection<WarrantyLengthDescription> Descriptions { get; set; }
+        public ICollection<WarrantyLengthDescription> Descriptions { get; set; } = new HashSet<WarrantyLengthDescription>();
     }
 }

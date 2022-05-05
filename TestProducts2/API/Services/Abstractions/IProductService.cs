@@ -7,11 +7,11 @@ namespace API.Services.Abstractions
 {
     public interface IProductService
     {
-        public Task<IEnumerable<ProductReadDto>> GetAllAsync();
-        public Task<ProductReadDto> GetByIdAsync(int id);
-        public Task<ProductReadDto> CreateAsync(ProductCreateDto productCreateDto);
-        public Task<ProductReadDto> UpdateAsync(int id, ProductUpdateDto productUpdateDto);
-        public Task<ProductReadDto> PartialUpdateAsync(int id, JsonPatchDocument<ProductUpdateDto> patchDoc);
-        public Task DeleteAsync(int id);
+        public Task<IEnumerable<ProductReadDto>> GetAll();
+        public Task<ProductReadDto> GetById(int id);
+        public Task<ProductReadDto> Create(ProductCreateDto productCreateDto);
+        public Task<ProductReadDto> Update(int id, ProductUpdateDto productUpdateDto);
+        public Task<ProductReadDto> PartialUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc);
+        public Task Delete(int id);
     }
 }

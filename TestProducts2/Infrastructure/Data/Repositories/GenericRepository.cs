@@ -30,15 +30,15 @@ namespace Infrastructure.Data.Repositories
             }
             table.Remove(item);
         }
-        public async Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>>? filter = null)
-        {
-            IQueryable<T> query = table;
 
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-            return query;
+        public async Task<T?> FindOne(Expression<Func<T, bool>>? filter = null)
+        {
+            return await GetQuery(filter).FirstOrDefaultAsync();
+        }
+        
+        public async Task<IEnumerable<T>> FindAll(Expression<Func<T, bool>>? filter = null)
+        {
+            return await GetQuery(filter).ToListAsync();
         }
 
         public void BulkDelete(List<T> items)
@@ -51,12 +51,12 @@ namespace Infrastructure.Data.Repositories
             table.RemoveRange(items);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAll()
         {
             return await table.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int Id)
+        public async Task<T?> GetById(int Id)
         {
             return await table.FirstOrDefaultAsync(q => q.Id == Id);
         }
@@ -65,6 +65,18 @@ namespace Infrastructure.Data.Repositories
         {
             _context.Update(item);
         }
+
+        protected virtual IQueryable<T> GetQuery(Expression<Func<T, bool>>? expression = null)
+        {
+            IQueryable<T> query = table;
+
+            if (expression != null)
+            {
+                query = query.Where(expression);
+            }
+            return query;
+        }
+
     }
 }
 

@@ -10,15 +10,19 @@ namespace API.Common
         private readonly SqlServerContext _sqlContext;
         private readonly PostgresContext _postgresContext;
 
-        public DataSeeder(SqlServerContext sqlContext, PostgresContext postgresContext)
+        //public DataSeeder(SqlServerContext sqlContext, PostgresContext postgresContext)
+        //{
+        //    _sqlContext = sqlContext;
+        //    _postgresContext = postgresContext;
+        //}
+        public DataSeeder(SqlServerContext sqlContext)
         {
             _sqlContext = sqlContext;
-            _postgresContext = postgresContext;
         }
 
         public void Seed()
         {
-            if (!_postgresContext.ColorNames.Any())
+            if (!_postgresContext.ColorNames.Any() && _postgresContext != null)
             {
                 var colorNames = new HashSet<ColorName>()
                 {

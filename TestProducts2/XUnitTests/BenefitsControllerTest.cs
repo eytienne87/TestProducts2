@@ -1,20 +1,14 @@
 using API.Controllers;
 using API.Dtos.Create;
-using API.Dtos.Profiles;
 using API.Dtos.Read;
 using API.Dtos.Update;
-using API.Services.Abstractions;
-using API.Services.Implementations;
-using AutoMapper;
-using Domain.Interfaces;
-using Domain.Models;
 using Domain.Shared;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 using XUnitTests.TestsHelper;
 
@@ -33,9 +27,9 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void GetAllTest()
+        public async Task GetAllTest()
         {
-            var result = _controller.GetAll();
+            var result = await _controller.GetAll();
             Assert.IsType<OkObjectResult>(result.Result);
 
             var list = result.Result as OkObjectResult;
@@ -49,10 +43,10 @@ namespace XUnitTests
 
         [Theory]
         [InlineData(1, 10)]
-        public void GetByIdTest(int validId, int invalidId)
+        public async Task GetByIdTest(int validId, int invalidId)
         {
-            var validResult = _controller.GetById(validId);
-            var invalidResult = _controller.GetById(invalidId);
+            var validResult = await _controller.GetById(validId);
+            var invalidResult = await _controller.GetById(invalidId);
 
             Assert.IsType<OkObjectResult>(validResult.Result);
             var validItem = validResult.Result as OkObjectResult;
@@ -70,13 +64,13 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void CreateTest()
+        public async Task CreateTest()
         {
             //Arrange
             BenefitCreateDto completeBenefit = GenerateCreateDto();
 
             //Act
-            var result = _controller.Create(completeBenefit);
+            var result = await _controller.Create(completeBenefit);
 
             //Assert
             Assert.IsType<OkObjectResult>(result.Result);
@@ -110,7 +104,7 @@ namespace XUnitTests
 
         [Theory]
         [InlineData(1, 10)]
-        public void DeleteTest(int validId, int invalidId)
+        public async Task DeleteTest(int validId, int invalidId)
         {
             //Arrange
 
@@ -120,7 +114,7 @@ namespace XUnitTests
             //Assert
             Assert.IsType<NotFoundResult>(notFoundResult);
             //Assert.Equal(1, _testHelper.ServiceManager.BenefitService.GetAll().Count());
-            Assert.Single(_testHelper.ServiceManager.BenefitService.GetAll());
+            Assert.Single(await _testHelper.ServiceManager.BenefitService.GetAll());
 
             //Act
             var noContentResult = _controller.Delete(validId);
@@ -128,7 +122,7 @@ namespace XUnitTests
             //Assert
             Assert.IsType<NoContentResult>(noContentResult);
             //Assert.Equal(0, _testHelper.ServiceManager.BenefitService.GetAll().Count());
-            Assert.Empty(_testHelper.ServiceManager.BenefitService.GetAll());
+            Assert.Empty(await _testHelper.ServiceManager.BenefitService.GetAll());
         }       
         
         //[Theory]
@@ -171,10 +165,10 @@ namespace XUnitTests
         
         [Theory]
         [InlineData(1)]
-        public void UpdateTest_ValidId_ValidDto_ReturnsOkObject(int validId)
+        public async Task UpdateTest_ValidId_ValidDto_ReturnsOkObject(int validId)
         {
             BenefitUpdateDto benefitDto = GenerateUpdateDto();
-            var result = _controller.Update(validId, benefitDto);
+            var result = await _controller.Update(validId, benefitDto);
 
             Assert.IsType<OkObjectResult>(result.Result);
             var okObjectResult = result.Result as OkObjectResult;
@@ -215,12 +209,12 @@ namespace XUnitTests
 
         [Theory]
         [InlineData(1)]
-        public void PartialUpdateTest_ValidId_ValidPatchDoc_ReturnsOkObJect(int validId) 
+        public async Task PartialUpdateTest_ValidId_ValidPatchDoc_ReturnsOkObJect(int validId) 
         {
             JsonPatchDocument<BenefitUpdateDto> patchDoc = new JsonPatchDocument<BenefitUpdateDto>();
             patchDoc.Replace(e => e.ProductType, "a patched product type");
 
-            var result = _controller.PartialUpdate(validId, patchDoc);
+            var result = await _controller.PartialUpdate(validId, patchDoc);
 
             Assert.IsType<OkObjectResult>(result.Result);
             var okObjectResult = result.Result as OkObjectResult;

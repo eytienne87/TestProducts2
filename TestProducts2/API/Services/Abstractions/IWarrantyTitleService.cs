@@ -7,12 +7,11 @@ namespace API.Services.Abstractions
 {
     public interface IWarrantyTitleService
     {
-        public Task<IEnumerable<WarrantyTitleReadDto>> GetAllAsync();
-        public Task<WarrantyTitleReadDto> GetByIdAsync(int id);
-        public Task<WarrantyTitleReadDto> CreateAsync(WarrantyTitleCreateDto titleCreateDto);
-        public Task<WarrantyTitleReadDto> UpdateAsync(int id, WarrantyTitleUpdateDto titleUpdateDto);
-        public Task<WarrantyTitleReadDto> PartialUpdateAsync(int id, JsonPatchDocument<WarrantyTitleUpdateDto> patchDoc);
-        public Task DeleteAsync(int id);
+        public Task<IEnumerable<WarrantyTitleReadDto>> GetAll();
+        public Task<WarrantyTitleReadDto?> GetById(int id);
+        public Task<WarrantyTitleReadDto> Create(WarrantyTitleCreateDto titleCreateDto);
+        public Task<WarrantyTitleReadDto> Update(int id, WarrantyTitleUpdateDto titleUpdateDto);
+        public Task<WarrantyTitleReadDto> PartialUpdate(int id, JsonPatchDocument<WarrantyTitleUpdateDto> patchDoc);
+        public Task Delete(int id);
     }
 }
-

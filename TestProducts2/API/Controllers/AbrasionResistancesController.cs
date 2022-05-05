@@ -22,7 +22,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AbrasionResistanceReadDto>>> GetAll()
         {
-            var abrasions = await _serviceManager.AbrasionResistanceService.GetAllAsync();
+            var abrasions = await _serviceManager.AbrasionResistanceService.GetAll();
             return Ok(abrasions);
         }
 
@@ -30,37 +30,39 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AbrasionResistanceReadDto>> GetById(int id)
         {
-            var abrasionReadDto = await _serviceManager.AbrasionResistanceService.GetByIdAsync(id);
-
+            var abrasionReadDto = await _serviceManager.AbrasionResistanceService.GetById(id);
             return Ok(abrasionReadDto);
         }
 
         //POST api/AbrasionResistances
         [HttpPost]
-        public async Task<ActionResult<AbrasionResistanceReadDto>> Create(AbrasionResistanceCreateDto abrasionDto)
+        public async Task<ActionResult<AbrasionResistanceReadDto>> Create(AbrasionResistanceCreateDto abrasionCreateDto)
         {
-            return Ok(await _serviceManager.AbrasionResistanceService.CreateAsync(abrasionDto));
+            var abrasionReadDto = await _serviceManager.AbrasionResistanceService.Create(abrasionCreateDto);
+            return CreatedAtAction(nameof(GetById), new { id = abrasionReadDto.Id }, abrasionReadDto);
         }
 
         // PUT api/AbrasionResistances/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult<AbrasionResistanceReadDto>> Update(int id, AbrasionResistanceUpdateDto abrasionDto)
         {
-            return Ok(await _serviceManager.AbrasionResistanceService.UpdateAsync(id, abrasionDto));
+            await _serviceManager.AbrasionResistanceService.Update(id, abrasionDto);
+            return NoContent();
         }
 
         // PATCH api/AbrasionResistances/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult<AbrasionResistanceReadDto>> PartialUpdate(int id, JsonPatchDocument<AbrasionResistanceUpdateDto> patchDoc)
         {
-            return Ok(await _serviceManager.AbrasionResistanceService.PartialUpdateAsync(id, patchDoc));
+            await _serviceManager.AbrasionResistanceService.PartialUpdate(id, patchDoc);
+            return NoContent();
         }
 
         // DELETE api/AbrasionResistances/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await _serviceManager.AbrasionResistanceService.DeleteAsync(id);
+            await _serviceManager.AbrasionResistanceService.Delete(id);
             return NoContent();
         }
     }

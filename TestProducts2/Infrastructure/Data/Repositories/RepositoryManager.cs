@@ -31,6 +31,19 @@ namespace Infrastructure.Data.Repositories
             _warrantyNotabeneRepository = new Lazy<IRepository<WarrantyNotabene>>(() => new GenericRepository<WarrantyNotabene>(sqlServerContext));
             _unitOfWork = new Lazy<IUnitOfWork>(() => new UnitOfWork(sqlServerContext));
             _colorNameRepository = new Lazy<IRepository<ColorName>>(() => new GenericRepository<ColorName>(postgresContext));
+        }    
+        public RepositoryManager(SqlServerContext sqlServerContext)
+        {
+            _abrasionResistanceRepository = new Lazy<IRepository<AbrasionResistance>>(() => new GenericRepository<AbrasionResistance>(sqlServerContext));
+            _benefitRepository = new Lazy<IRepository<Benefit>>(() => new GenericRepository<Benefit>(sqlServerContext));
+            _categoryOfBenefitRepository = new Lazy<IRepository<CategoryOfBenefit>>(() => new GenericRepository<CategoryOfBenefit>(sqlServerContext));
+            _marketSegmentRepository = new Lazy<IRepository<MarketSegment>>(() => new GenericRepository<MarketSegment>(sqlServerContext));
+            _productRepository = new Lazy<IRepository<Product>>(() => new GenericRepository<Product>(sqlServerContext));
+            _warrantyRepository = new Lazy<IRepository<Warranty>>(() => new GenericRepository<Warranty>(sqlServerContext));
+            _warrantyTitleRepository = new Lazy<IRepository<WarrantyTitle>>(() => new GenericRepository<WarrantyTitle>(sqlServerContext));
+            _warrantyLengthRepository = new Lazy<IRepository<WarrantyLength>>(() => new GenericRepository<WarrantyLength>(sqlServerContext));
+            _warrantyNotabeneRepository = new Lazy<IRepository<WarrantyNotabene>>(() => new GenericRepository<WarrantyNotabene>(sqlServerContext));
+            _unitOfWork = new Lazy<IUnitOfWork>(() => new UnitOfWork(sqlServerContext));
         }
 
         public IRepository<AbrasionResistance> AbrasionResistanceRepository => _abrasionResistanceRepository.Value;

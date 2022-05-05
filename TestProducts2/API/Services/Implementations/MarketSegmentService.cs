@@ -21,7 +21,7 @@ namespace API.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<MarketSegmentReadDto> CreateAsync(MarketSegmentCreateDto segmentDto)
+        public async Task<MarketSegmentReadDto> Create(MarketSegmentCreateDto segmentDto)
         {
             if (segmentDto == null)
                 throw new BadRequestException("The format of the segment DTO was invalid");
@@ -29,35 +29,36 @@ namespace API.Services.Implementations
             var segment = _mapper.Map<MarketSegment>(segmentDto);
 
             _repositoryManager.MarketSegmentRepository.Create(segment);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<MarketSegmentReadDto>(segment);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task Delete
+            (int id)
         {
-            var segment = await _repositoryManager.MarketSegmentRepository.GetByIdAsync(id);
+            var segment = await _repositoryManager.MarketSegmentRepository.GetById(id);
             if (segment == null)
                 throw new NotFoundException($"The segment with the identifier {id} could not be found");
 
             _repositoryManager.MarketSegmentRepository.Delete(segment);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return;
         }
 
 
-        public async Task<IEnumerable<MarketSegmentReadDto>> GetAllAsync()
+        public async Task<IEnumerable<MarketSegmentReadDto>> GetAll()
         {
-            var segments = await _repositoryManager.MarketSegmentRepository.GetAllAsync();
+            var segments = await _repositoryManager.MarketSegmentRepository.GetAll();
             var mappedMarketSegments = _mapper.Map<IEnumerable<MarketSegmentReadDto>>(segments);
 
             return mappedMarketSegments;
         }
 
-        public async Task<MarketSegmentReadDto>? GetByIdAsync(int id)
+        public async Task<MarketSegmentReadDto?> GetById(int id)
         {
-            var segment = await _repositoryManager.MarketSegmentRepository.GetByIdAsync(id);
+            var segment = await _repositoryManager.MarketSegmentRepository.GetById(id);
 
             if (segment == null)
                 throw new NotFoundException($"The segment with the identifier {id} could not be found");
@@ -67,12 +68,12 @@ namespace API.Services.Implementations
             return segmentDto;
         }
 
-        public async Task<MarketSegmentReadDto> PartialUpdateAsync(int id, JsonPatchDocument<MarketSegmentUpdateDto> patchDoc)
+        public async Task<MarketSegmentReadDto> PartialUpdate(int id, JsonPatchDocument<MarketSegmentUpdateDto> patchDoc)
         {
             if (patchDoc == null)
                 throw new BadRequestException("The Patch Document provided was invalid");
 
-            var segment = await _repositoryManager.MarketSegmentRepository.GetByIdAsync(id);
+            var segment = await _repositoryManager.MarketSegmentRepository.GetById(id);
 
             if (segment == null)
                 throw new NotFoundException($"The segment with the identifier {id} could not be found");
@@ -85,18 +86,18 @@ namespace API.Services.Implementations
 
             _repositoryManager.MarketSegmentRepository.Update(segment);
 
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<MarketSegmentReadDto>(segment);
         }
 
 
-        public async Task<MarketSegmentReadDto> UpdateAsync(int id, MarketSegmentUpdateDto segmentDto)
+        public async Task<MarketSegmentReadDto> Update(int id, MarketSegmentUpdateDto segmentDto)
         {
             if (segmentDto == null)
                 throw new BadRequestException("The MarketSegment DTO provided was invalid");
 
-            var segment = await _repositoryManager.MarketSegmentRepository.GetByIdAsync(id);
+            var segment = await _repositoryManager.MarketSegmentRepository.GetById(id);
 
             if (segment == null)
                 throw new NotFoundException($"The segment with the identifier {id} could not be found");
@@ -105,7 +106,7 @@ namespace API.Services.Implementations
             _mapper.Map(segmentDto, segment);
 
             _repositoryManager.MarketSegmentRepository.Update(segment);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<MarketSegmentReadDto>(segment);
         }

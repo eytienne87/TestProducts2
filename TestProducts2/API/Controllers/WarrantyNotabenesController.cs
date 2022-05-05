@@ -22,7 +22,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WarrantyNotabeneReadDto>>> GetAll()
         {
-            var notabenes = await _serviceManager.WarrantyNotabeneService.GetAllAsync();
+            var notabenes = await _serviceManager.WarrantyNotabeneService.GetAll();
             return Ok(notabenes);
         }
 
@@ -30,37 +30,39 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<WarrantyNotabeneReadDto>> GetById(int id)
         {
-            var notabeneReadDto = await _serviceManager.WarrantyNotabeneService.GetByIdAsync(id);
-
+            var notabeneReadDto = await _serviceManager.WarrantyNotabeneService.GetById(id);
             return Ok(notabeneReadDto);
         }
 
         //POST api/WarrantyNotabenes
         [HttpPost]
-        public async Task<ActionResult<WarrantyNotabeneReadDto>> Create(WarrantyNotabeneCreateDto notabeneDto)
+        public async Task<ActionResult<WarrantyNotabeneReadDto>> Create(WarrantyNotabeneCreateDto notabeneCreateDto)
         {
-            return Ok(await _serviceManager.WarrantyNotabeneService.CreateAsync(notabeneDto));
+            var notabeneReadDto = await _serviceManager.WarrantyNotabeneService.Create(notabeneCreateDto);
+            return CreatedAtAction(nameof(GetById), new { id = notabeneReadDto.Id }, notabeneReadDto);
         }
 
         // PUT api/WarrantyNotabenes/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult<WarrantyNotabeneReadDto>> Update(int id, WarrantyNotabeneUpdateDto notabeneDto)
         {
-            return Ok(await _serviceManager.WarrantyNotabeneService.UpdateAsync(id, notabeneDto));
+            await _serviceManager.WarrantyNotabeneService.Update(id, notabeneDto);
+            return NoContent();
         }
 
         // PATCH api/WarrantyNotabenes/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult<WarrantyNotabeneReadDto>> PartialUpdate(int id, JsonPatchDocument<WarrantyNotabeneUpdateDto> patchDoc)
         {
-            return Ok(await _serviceManager.WarrantyNotabeneService.PartialUpdateAsync(id, patchDoc));
+            await _serviceManager.WarrantyNotabeneService.PartialUpdate(id, patchDoc);
+            return NoContent();
         }
 
         // DELETE api/WarrantyNotabenes/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await _serviceManager.WarrantyNotabeneService.DeleteAsync(id);
+            await _serviceManager.WarrantyNotabeneService.Delete(id);
             return NoContent();
         }
     }

@@ -22,7 +22,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BenefitReadDto>>> GetAll()
         {
-            var benefits = await _serviceManager.BenefitService.GetAllAsync();
+            var benefits = await _serviceManager.BenefitService.GetAll();
             return Ok(benefits);
         }
 
@@ -30,37 +30,39 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BenefitReadDto>> GetById(int id)
         {
-            var benefitReadDto =  await _serviceManager.BenefitService.GetByIdAsync(id);
-
+            var benefitReadDto =  await _serviceManager.BenefitService.GetById(id);
             return Ok(benefitReadDto);
         }
 
         //POST api/Benefits
         [HttpPost]
-        public async Task<ActionResult<BenefitReadDto>> Create(BenefitCreateDto benefitDto)
+        public async Task<ActionResult<BenefitReadDto>> Create(BenefitCreateDto benefitCreateDto)
         {
-            return Ok(await _serviceManager.BenefitService.CreateAsync(benefitDto));
+            var benefitReadDto = await _serviceManager.BenefitService.Create(benefitCreateDto);
+            return CreatedAtAction(nameof(GetById), new { id = benefitReadDto.Id }, benefitReadDto);
         }
 
         // PUT api/Benefits/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult<BenefitReadDto>> Update(int id, BenefitUpdateDto benefitDto)
         {
-            return Ok(await _serviceManager.BenefitService.UpdateAsync(id, benefitDto));
+            await _serviceManager.BenefitService.Update(id, benefitDto);
+            return NoContent(); 
         }
 
         // PATCH api/Benefits/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult<BenefitReadDto>> PartialUpdate(int id, JsonPatchDocument<BenefitUpdateDto> patchDoc)
         {
-            return Ok(await _serviceManager.BenefitService.PartialUpdateAsync(id, patchDoc));
+            await _serviceManager.BenefitService.PartialUpdate(id, patchDoc);
+            return NoContent();
         }
 
         // DELETE api/Benefits/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await _serviceManager.BenefitService.DeleteAsync(id);
+            await _serviceManager.BenefitService.Delete(id);
             return NoContent();
         }
     }

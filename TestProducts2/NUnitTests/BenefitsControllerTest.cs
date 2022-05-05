@@ -26,7 +26,7 @@ namespace NUnitTests
     //        //Arrange
     //        _benefits = DataInitializer.CreateRandomBenefits();
     //        var unitOfWorkStub = new Mock<IUnitOfWork>();
-    //        unitOfWorkStub.Setup(uow => uow.BenefitRepository.GetAllAsync())
+    //        unitOfWorkStub.Setup(uow => uow.BenefitRepository.GetAll())
     //            .Returns(_benefits);
     //        _unitOfWork = unitOfWorkStub.Object;
     //    }
@@ -37,7 +37,7 @@ namespace NUnitTests
     //        //Act
     //        var controller = new BenefitsController(_unitOfWork, _mapper);
 
-    //        var result = (OkObjectResult)controller.GetAllAsync().Result;
+    //        var result = (OkObjectResult)controller.GetAll().Result;
 
     //        var mappedResult = _mapper.Map<IEnumerable<BenefitReadDto>>(_benefits, opt => opt.Items["lang"] = null);
 

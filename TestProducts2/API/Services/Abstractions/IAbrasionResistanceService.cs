@@ -7,11 +7,11 @@ namespace API.Services.Abstractions
 {
     public interface IAbrasionResistanceService
     {
-        public Task<IEnumerable<AbrasionResistanceReadDto>> GetAllAsync();
-        public Task<AbrasionResistanceReadDto> GetByIdAsync(int id);
-        public Task<AbrasionResistanceReadDto> CreateAsync(AbrasionResistanceCreateDto abrasionCreateDto);
-        public Task<AbrasionResistanceReadDto> UpdateAsync(int id, AbrasionResistanceUpdateDto abrasionUpdateDto);
-        public Task<AbrasionResistanceReadDto> PartialUpdateAsync(int id, JsonPatchDocument<AbrasionResistanceUpdateDto> patchDoc);
-        public Task DeleteAsync(int id);
+        public Task<IEnumerable<AbrasionResistanceReadDto>> GetAll();
+        public Task<AbrasionResistanceReadDto?> GetById(int id);
+        public Task<AbrasionResistanceReadDto> Create(AbrasionResistanceCreateDto abrasionCreateDto);
+        public Task<AbrasionResistanceReadDto> Update(int id, AbrasionResistanceUpdateDto abrasionUpdateDto);
+        public Task<AbrasionResistanceReadDto> PartialUpdate(int id, JsonPatchDocument<AbrasionResistanceUpdateDto> patchDoc);
+        public Task Delete(int id);
     }
 }

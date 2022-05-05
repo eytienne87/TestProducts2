@@ -23,51 +23,51 @@ namespace API.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<ProductReadDto> CreateAsync (ProductCreateDto productDto)
+        public async Task<ProductReadDto> Create (ProductCreateDto productDto)
         {
             if (productDto == null)
                 throw new BadRequestException("The format of the product DTO was invalid");
 
             var product = _mapper.Map<Product>(productDto);
 
-            SetProductNavigationsAsync(product, productDto);
+            await SetProductNavigations(product, productDto);
 
             _repositoryManager.ProductRepository.Create(product);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<ProductReadDto>(product);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task Delete(int id)
         {
-            var product = await _repositoryManager.ProductRepository.GetByIdAsync(id);
+            var product = await _repositoryManager.ProductRepository.GetById(id);
             if (product == null)
             {
                 throw new NotFoundException($"The product with the identifier {id} could not be found");
             }
 
             _repositoryManager.ProductRepository.Delete(product);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return;
         }
 
 
-        public async Task<IEnumerable<ProductReadDto>> GetAllAsync()
+        public async Task<IEnumerable<ProductReadDto>> GetAll()
         {
-            var products = await _repositoryManager.ProductRepository.GetAllAsync();
+            var products = await _repositoryManager.ProductRepository.GetAll();
             var productReadDtos = _mapper.Map<IEnumerable<ProductReadDto>>(products);
             foreach (var dto in productReadDtos)
             {
-                dto.ColorName = await SetProductReadDtoAsync(dto);
+                dto.ColorName = await SetProductReadDto(dto);
             }
 
             return productReadDtos;
         }
 
-        public async Task<ProductReadDto> GetByIdAsync(int id)
+        public async Task<ProductReadDto> GetById(int id)
         {
-            var product = await _repositoryManager.ProductRepository.GetByIdAsync(id);
+            var product = await _repositoryManager.ProductRepository.GetById(id);
 
             if (product == null)
                 throw new NotFoundException($"The product with the identifier {id} could not be found");
@@ -77,12 +77,12 @@ namespace API.Services.Implementations
             return productDto;
         }
 
-        public async Task<ProductReadDto> PartialUpdateAsync(int id, JsonPatchDocument<ProductUpdateDto> patchDoc)
+        public async Task<ProductReadDto> PartialUpdate(int id, JsonPatchDocument<ProductUpdateDto> patchDoc)
         {
             if (patchDoc == null)
                 throw new BadRequestException("The Patch Document provided was invalid");
 
-            var product = await _repositoryManager.ProductRepository.GetByIdAsync(id);
+            var product = await _repositoryManager.ProductRepository.GetById(id);
 
             if (product == null)
                 throw new NotFoundException($"The product with the identifier {id} could not be found");
@@ -93,22 +93,22 @@ namespace API.Services.Implementations
             productToPatch.Id = product.Id;
             _mapper.Map(productToPatch, product);
 
-            await SetProductNavigationsAsync(product, productToPatch);
+            await SetProductNavigations(product, productToPatch);
 
             _repositoryManager.ProductRepository.Update(product);
 
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<ProductReadDto>(product);
         }
 
 
-        public async Task<ProductReadDto> UpdateAsync(int id, ProductUpdateDto productDto)
+        public async Task<ProductReadDto> Update(int id, ProductUpdateDto productDto)
         {
             if (productDto == null)
                 throw new BadRequestException("The Product DTO provided was invalid");
 
-            var product = await _repositoryManager.ProductRepository.GetByIdAsync(id);
+            var product = await _repositoryManager.ProductRepository.GetById(id);
 
             if (product == null)
                 throw new NotFoundException($"The product with the identifier {id} could not be found");
@@ -116,17 +116,17 @@ namespace API.Services.Implementations
             productDto.Id = product.Id;
             _mapper.Map(productDto, product);
 
-            await SetProductNavigationsAsync(product, productDto);
+            await SetProductNavigations(product, productDto);
 
             _repositoryManager.ProductRepository.Update(product);
-            await _repositoryManager.UnitOfWork.SaveChangesAsync();
+            await _repositoryManager.UnitOfWork.SaveChanges();
 
             return _mapper.Map<ProductReadDto>(product);
         }
 
-        private async Task SetProductNavigationsAsync(Product product, object productDto)
+        private async Task SetProductNavigations(Product product, object productDto)
         {
-            product.Abrasion = await _repositoryManager.AbrasionResistanceRepository.GetByIdAsync((int)Helper.GetDynamicValue(productDto, "AbrasionId")!);
+            product.Abrasion = await _repositoryManager.AbrasionResistanceRepository.GetById((int)Helper.GetDynamicValue(productDto, "AbrasionId")!);
 
             product.Benefits = new HashSet<Benefit>();
             var benefitsFromDto = Helper.GetDynamicValue(productDto, "Benefits");
@@ -143,7 +143,7 @@ namespace API.Services.Implementations
 
             foreach (var benefit in benefitsFromDto)
             {
-                var benefitModel = await _repositoryManager.BenefitRepository.GetByIdAsync((int)Helper.GetDynamicValue(benefit, "Id"));
+                var benefitModel = await _repositoryManager.BenefitRepository.GetById((int)Helper.GetDynamicValue(benefit, "Id"));
                 if (benefitModel != null)
                 {
                     product.Benefits.Add(benefitModel);
@@ -162,15 +162,13 @@ namespace API.Services.Implementations
                 int? warrantyNotabeneId = (int?)Helper.GetDynamicValue(warranty, "WarrantyNotabeneId");
 
                 var warrantyModel = await _repositoryManager.WarrantyRepository
-                                        .GetAsync(w => w.WarrantyTitle.Id == warrantyTitleId &&
+                                        .FindOne(w => w.WarrantyTitle.Id == warrantyTitleId &&
                                                   w.WarrantyLength.Id == warrantyLengthId &&
-                                                 (w.WarrantyNotabene != null ? w.WarrantyNotabene.Id : null) == warrantyNotabeneId)
-                                        .FirstOrDefault();
+                                                 (w.WarrantyNotabene != null ? w.WarrantyNotabene.Id : null) == warrantyNotabeneId);
 
-
-                var warrantyTitleModel = await _repositoryManager.WarrantyTitleRepository.GetByIdAsync(warrantyTitleId);
-                var warrantyLengthModel = await _repositoryManager.WarrantyLengthRepository.GetByIdAsync(warrantyLengthId);
-                var warrantyNotabeneModel = await _repositoryManager.WarrantyNotabeneRepository.GetByIdAsync((int)warrantyNotabeneId);
+                var warrantyTitleModel = await _repositoryManager.WarrantyTitleRepository.GetById(warrantyTitleId);
+                var warrantyLengthModel = await _repositoryManager.WarrantyLengthRepository.GetById(warrantyLengthId);
+                var warrantyNotabeneModel = await _repositoryManager.WarrantyNotabeneRepository.GetById((int)warrantyNotabeneId);
 
                 if (warrantyModel != null)
                 {
@@ -187,9 +185,9 @@ namespace API.Services.Implementations
                 }
             }
         }
-        private async Task<ColorNameReadDto> SetProductReadDtoAsync(ProductReadDto productReadDto)
+        private async Task<ColorNameReadDto> SetProductReadDto(ProductReadDto productReadDto)
         {
-            var colorName = await _repositoryManager.ColorNameRepository.GetAsync(c => c.ProductType == productReadDto.ProductType).FirstOrDefaultAsync();
+            var colorName = await _repositoryManager.ColorNameRepository.FindOne(c => c.ProductType == productReadDto.ProductType);
             var colorNameDto = _mapper.Map<ColorNameReadDto>(colorName);
             return colorNameDto;
         }
