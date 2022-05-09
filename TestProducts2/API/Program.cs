@@ -1,5 +1,4 @@
 using API.Common;
-using API.Dtos.Profiles;
 using API.Middleware;
 using API.Services.Abstractions;
 using API.Services.Implementations;
@@ -8,6 +7,7 @@ using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -23,15 +23,15 @@ builder.Services.AddTransient<DataSeeder>();
 //builder.Services.AddDbContext<SqlServerContext>(opt => opt.UseInMemoryDatabase("InMem"));
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
-builder.Services.AddAutoMapper(typeof(BenefitsProfile));
+builder.Services.AddAutoMapper(Assembly.Load("API"));
 //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers().AddNewtonsoftJson(s => 
     s.SerializerSettings.ContractResolver = new DefaultContractResolver
     {
-        NamingStrategy = new SnakeCaseNamingStrategy()
-        //NamingStrategy = new CamelCaseNamingStrategy()
+        //NamingStrategy = new SnakeCaseNamingStrategy()
+        NamingStrategy = new CamelCaseNamingStrategy()
     }
 );
 
