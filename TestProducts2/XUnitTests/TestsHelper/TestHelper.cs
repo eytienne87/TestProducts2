@@ -1,4 +1,5 @@
 ﻿using API.Common;
+using API.Middleware;
 using API.Services.Abstractions;
 using API.Services.Implementations;
 using AutoMapper;
@@ -19,7 +20,6 @@ namespace XUnitTests.TestsHelper
         {
             var builder = new DbContextOptionsBuilder<SqlServerContext>();
             builder.UseInMemoryDatabase(databaseName: "TestDbInMemory");
-
             var dbContextOptions = builder.Options;
             
             _context = new SqlServerContext(dbContextOptions);
@@ -46,7 +46,7 @@ namespace XUnitTests.TestsHelper
 
         public void TestSeedData()
         {
-            var seeder = new DataSeeder(_context);
+            var seeder = new DataSeeder(_context, null);
             seeder.Seed();
         }
     }

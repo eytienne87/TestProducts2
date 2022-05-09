@@ -26,11 +26,11 @@ namespace API.Controllers
             return Ok(benefits);
         }
 
-        // GET api/Benefits/{id}
+        //GET api/Benefits/{id
         [HttpGet("{id}")]
         public async Task<ActionResult<BenefitReadDto>> GetById(int id)
         {
-            var benefitReadDto =  await _serviceManager.BenefitService.GetById(id);
+            var benefitReadDto = await _serviceManager.BenefitService.GetById(id);
             return Ok(benefitReadDto);
         }
 
