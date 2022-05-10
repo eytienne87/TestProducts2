@@ -154,6 +154,20 @@ namespace XUnitTests
 
             Assert.Equal("1, 2 & X", result.ProductType);
         }
+        
+        [Theory]
+        [InlineData(100)]
+        public async Task Partial_Update_NotFound_Failure(int Id)
+        {
+            var patchDoc = new JsonPatchDocument<BenefitUpdateDto>();
+            patchDoc.Replace(e => e.ProductType, "1, 2 & X");
+
+            var serializedDoc = JsonConvert.SerializeObject(patchDoc);
+            var requestContent = new StringContent(serializedDoc, Encoding.UTF8, "application/json-patch+json");
+
+            var patchResponse = await _client.PatchAsync($"{TestServerName}/{Controller}/{Id}", requestContent);
+            Assert.Equal(HttpStatusCode.NotFound, patchResponse.StatusCode);
+        }
 
         private BenefitCreateDto GenerateCreateDto()
         {
