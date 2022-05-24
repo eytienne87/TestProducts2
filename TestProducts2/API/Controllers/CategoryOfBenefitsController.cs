@@ -9,18 +9,18 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryOfBenefitsController : Controller
+    public class BenefitCategoriesController : Controller
     {
         private readonly IServiceManager _serviceManager;
 
-        public CategoryOfBenefitsController(IServiceManager serviceManager)
+        public BenefitCategoriesController(IServiceManager serviceManager)
         {
             _serviceManager = serviceManager;
         }
 
         // GET: api/CategoryOfBenefits
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryOfBenefitReadDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<BenefitCategoryReadDto>>> GetAll()
         {
             var categories = await _serviceManager.CategoryOfBenefitService.GetAll();
             return Ok(categories);
@@ -28,7 +28,7 @@ namespace API.Controllers
 
         // GET api/CategoryOfBenefits/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryOfBenefitReadDto>> GetById(int id)
+        public async Task<ActionResult<BenefitCategoryReadDto>> GetById(int id)
         {
             var categoryReadDto = await _serviceManager.CategoryOfBenefitService.GetById(id);
             return Ok(categoryReadDto);
@@ -36,7 +36,7 @@ namespace API.Controllers
 
         //POST api/CategoryOfBenefits
         [HttpPost]
-        public async Task<ActionResult<CategoryOfBenefitReadDto>> Create(CategoryOfBenefitCreateDto categoryCreateDto)
+        public async Task<ActionResult<BenefitCategoryReadDto>> Create(CategoryOfBenefitCreateDto categoryCreateDto)
         {
             var categoryReadDto = await _serviceManager.CategoryOfBenefitService.Create(categoryCreateDto);
             return CreatedAtAction(nameof(GetById), new { id = categoryReadDto.Id }, categoryReadDto);
@@ -44,7 +44,7 @@ namespace API.Controllers
 
         // PUT api/CategoryOfBenefits/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult<CategoryOfBenefitReadDto>> Update(int id, CategoryOfBenefitUpdateDto categoryDto)
+        public async Task<ActionResult<BenefitCategoryReadDto>> Update(int id, CategoryOfBenefitUpdateDto categoryDto)
         {
             await _serviceManager.CategoryOfBenefitService.Update(id, categoryDto);
             return NoContent();
@@ -52,7 +52,7 @@ namespace API.Controllers
 
         // PATCH api/CategoryOfBenefits/{id}
         [HttpPatch("{id}")]
-        public async Task<ActionResult<CategoryOfBenefitReadDto>> PartialUpdate(int id, JsonPatchDocument<CategoryOfBenefitUpdateDto> patchDoc)
+        public async Task<ActionResult<BenefitCategoryReadDto>> PartialUpdate(int id, JsonPatchDocument<CategoryOfBenefitUpdateDto> patchDoc)
         {
             await _serviceManager.CategoryOfBenefitService.PartialUpdate(id, patchDoc);
             return NoContent();

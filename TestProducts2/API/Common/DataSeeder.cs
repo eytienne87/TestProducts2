@@ -91,11 +91,11 @@ namespace API.Common
                                         },
                                     },
                                 },
-                                Category = new CategoryOfBenefit {
-                                    Descriptions = new HashSet<CategoryOfBenefitDescription>()
+                                Category = new BenefitCategory {
+                                    Descriptions = new HashSet<BenefitCategoryDescription>()
                                     {
-                                        new CategoryOfBenefitDescription { Language = LanguageClass.en, Description = "Easy" },
-                                        new CategoryOfBenefitDescription { Language = LanguageClass.fr, Description = "Facile" }
+                                        new BenefitCategoryDescription { Language = LanguageClass.en, Description = "Easy" },
+                                        new BenefitCategoryDescription { Language = LanguageClass.fr, Description = "Facile" }
                                     },
                                     CreatedDate = DateTime.Now,
                                     UpdatedDate = DateTime.Today.AddDays(1)
@@ -129,11 +129,11 @@ namespace API.Common
                             //            },
                             //        },
                             //    },
-                            //    Category = new CategoryOfBenefit {
-                            //        Descriptions = new HashSet<CategoryOfBenefitDescription>()
+                            //    Category = new BenefitCategory {
+                            //        Descriptions = new HashSet<BenefitCategoryDescription>()
                             //        {
-                            //            new CategoryOfBenefitDescription { Language = LanguageClass.en, Description = "Lasting" },
-                            //            new CategoryOfBenefitDescription { Language = LanguageClass.fr, Description = "Endurant" }
+                            //            new BenefitCategoryDescription { Language = LanguageClass.en, Description = "Lasting" },
+                            //            new BenefitCategoryDescription { Language = LanguageClass.fr, Description = "Endurant" }
                             //        },
                             //        CreatedDate = DateTime.Now,
                             //        UpdatedDate = DateTime.Today.AddDays(1)

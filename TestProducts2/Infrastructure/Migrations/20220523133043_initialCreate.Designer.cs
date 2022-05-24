@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(SqlServerContext))]
-    [Migration("20220427130629_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220523133043_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,7 +51,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ProductsId");
 
-                    b.ToTable("BenefitProduct");
+                    b.ToTable("ProductsBenefits", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.AbrasionResistance", b =>
@@ -74,7 +74,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbrasionResistance");
+                    b.ToTable("AbrasionResistances");
                 });
 
             modelBuilder.Entity("Domain.Models.AbrasionResistanceDescription", b =>
@@ -91,7 +91,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("AbrasionResistanceId", "Language");
 
-                    b.ToTable("AbrasionResistanceDescription");
+                    b.ToTable("AbrasionResistanceDescriptions");
                 });
 
             modelBuilder.Entity("Domain.Models.Benefit", b =>
@@ -122,24 +122,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Benefits");
                 });
 
-            modelBuilder.Entity("Domain.Models.BenefitDescription", b =>
-                {
-                    b.Property<int>("BenefitId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Language")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BenefitId", "Language");
-
-                    b.ToTable("BenefitDescription");
-                });
-
-            modelBuilder.Entity("Domain.Models.CategoryOfBenefit", b =>
+            modelBuilder.Entity("Domain.Models.BenefitCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -155,12 +138,34 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CategoryOfBenefits");
+                    b.ToTable("BenefitCategories");
                 });
 
-            modelBuilder.Entity("Domain.Models.CategoryOfBenefitDescription", b =>
+            modelBuilder.Entity("Domain.Models.BenefitCategoryDescription", b =>
                 {
                     b.Property<int>("CategoryOfBenefitId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BenefitCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategoryOfBenefitId", "Language");
+
+                    b.HasIndex("BenefitCategoryId");
+
+                    b.ToTable("BenefitCategoryDescriptions");
+                });
+
+            modelBuilder.Entity("Domain.Models.BenefitDescription", b =>
+                {
+                    b.Property<int>("BenefitId")
                         .HasColumnType("int");
 
                     b.Property<int>("Language")
@@ -170,9 +175,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CategoryOfBenefitId", "Language");
+                    b.HasKey("BenefitId", "Language");
 
-                    b.ToTable("CategoryOfBenefitDescription");
+                    b.ToTable("BenefitDescriptions");
                 });
 
             modelBuilder.Entity("Domain.Models.MarketSegment", b =>
@@ -212,7 +217,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("MarketSegmentId", "Language");
 
-                    b.ToTable("MarketSegmentDescription");
+                    b.ToTable("MarketSegmentDescriptions");
                 });
 
             modelBuilder.Entity("Domain.Models.Product", b =>
@@ -318,7 +323,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("WarrantyLengthId", "Language");
 
-                    b.ToTable("WarrantyLengthDescription");
+                    b.ToTable("WarrantyLengthDescriptions");
                 });
 
             modelBuilder.Entity("Domain.Models.WarrantyNotabene", b =>
@@ -358,7 +363,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("WarrantyNotabeneId", "Language");
 
-                    b.ToTable("WarrantyNotabeneDescription");
+                    b.ToTable("WarrantyNotabeneDescriptions");
                 });
 
             modelBuilder.Entity("Domain.Models.WarrantyTitle", b =>
@@ -398,7 +403,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("WarrantyTitleId", "Language");
 
-                    b.ToTable("WarrantyTitleDescription");
+                    b.ToTable("WarrantyTitleDescriptions");
                 });
 
             modelBuilder.Entity("ProductWarranty", b =>
@@ -457,11 +462,18 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Benefit", b =>
                 {
-                    b.HasOne("Domain.Models.CategoryOfBenefit", "Category")
+                    b.HasOne("Domain.Models.BenefitCategory", "Category")
                         .WithMany("Benefits")
                         .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Domain.Models.BenefitCategoryDescription", b =>
+                {
+                    b.HasOne("Domain.Models.BenefitCategory", null)
+                        .WithMany("Descriptions")
+                        .HasForeignKey("BenefitCategoryId");
                 });
 
             modelBuilder.Entity("Domain.Models.BenefitDescription", b =>
@@ -469,15 +481,6 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Models.Benefit", null)
                         .WithMany("Descriptions")
                         .HasForeignKey("BenefitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Models.CategoryOfBenefitDescription", b =>
-                {
-                    b.HasOne("Domain.Models.CategoryOfBenefit", null)
-                        .WithMany("Descriptions")
-                        .HasForeignKey("CategoryOfBenefitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -579,7 +582,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("Descriptions");
                 });
 
-            modelBuilder.Entity("Domain.Models.CategoryOfBenefit", b =>
+            modelBuilder.Entity("Domain.Models.BenefitCategory", b =>
                 {
                     b.Navigation("Benefits");
 

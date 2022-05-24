@@ -9,77 +9,27 @@ namespace Infrastructure.Data
         {
         }
 
-        public DbSet<AbrasionResistance> AbrasionResistance { get; set; } = default!;
+        public DbSet<AbrasionResistance> AbrasionResistances { get; set; } = default!;
+        public DbSet<AbrasionResistanceDescription> AbrasionResistanceDescriptions { get; set; } = default!;
         public DbSet<Benefit> Benefits { get; set; } = default!;
-        public DbSet<CategoryOfBenefit> CategoryOfBenefits { get; set; } = default!;
+        public DbSet<BenefitDescription> BenefitDescriptions { get; set; } = default!;
+        public DbSet<BenefitCategory> BenefitCategories { get; set; } = default!;
+        public DbSet<BenefitCategoryDescription> BenefitCategoryDescriptions { get; set; } = default!;
         public DbSet<MarketSegment> MarketSegments { get; set; } = default!;
+        public DbSet<MarketSegmentDescription> MarketSegmentDescriptions { get; set; } = default!;
         public DbSet<Product> Products { get; set; } = default!;
         public DbSet<Warranty> Warranties { get; set; } = default!;
         public DbSet<WarrantyLength> WarrantyLengths { get; set; } = default!;
+        public DbSet<WarrantyLengthDescription> WarrantyLengthDescriptions { get; set; } = default!;
         public DbSet<WarrantyNotabene> WarrantyNotabenes { get; set; } = default!;
+        public DbSet<WarrantyNotabeneDescription> WarrantyNotabeneDescriptions { get; set; } = default!;
         public DbSet<WarrantyTitle> WarrantyTitles { get; set; } = default!;
+        public DbSet<WarrantyTitleDescription> WarrantyTitleDescriptions { get; set; } = default!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // ----- Autoinclude -----
-
-            //Abrasion Resistance
-            modelBuilder.Entity<AbrasionResistance>().Navigation(b => b.Descriptions).AutoInclude();       
-            
-            //Benefits
-            modelBuilder.Entity<Benefit>().Navigation(b => b.Descriptions).AutoInclude();
-            modelBuilder.Entity<Benefit>().Navigation(b => b.Category).AutoInclude();
-            modelBuilder.Entity<Benefit>().Navigation(b => b.MarketSegments).AutoInclude();
-
-            //Category of Benefits
-            modelBuilder.Entity<CategoryOfBenefit>().Navigation(cb => cb.Descriptions).AutoInclude();
-
-            //Market Segment
-            modelBuilder.Entity<MarketSegment>().Navigation(ms => ms.Descriptions).AutoInclude();
-
-            //Products
-            modelBuilder.Entity<Product>().Navigation(p => p.Abrasion).AutoInclude();
-            modelBuilder.Entity<Product>().Navigation(p => p.Benefits).AutoInclude();
-            modelBuilder.Entity<Product>().Navigation(p => p.Warranties).AutoInclude();
-
-            //Warranties
-            modelBuilder.Entity<Warranty>().Navigation(w => w.WarrantyTitle).AutoInclude();
-            modelBuilder.Entity<Warranty>().Navigation(w => w.WarrantyLength).AutoInclude();
-            modelBuilder.Entity<Warranty>().Navigation(w => w.WarrantyNotabene).AutoInclude();
-
-            //Warranty Length
-            modelBuilder.Entity<WarrantyLength>().Navigation(wt => wt.Descriptions).AutoInclude();
-
-            //Warranty Notabene
-            modelBuilder.Entity<WarrantyNotabene>().Navigation(wt => wt.Descriptions).AutoInclude();
-
-            //Warranty Title
-            modelBuilder.Entity<WarrantyTitle>().Navigation(wt => wt.Descriptions).AutoInclude();
-
-
-            // ----- Unique Keys -----
-
-            //AbrasionResistanceDescription
-            modelBuilder.Entity<AbrasionResistanceDescription>().HasKey(ad => new { ad.AbrasionResistanceId, ad.Language });
-            
-            //BenefitDescription
-            modelBuilder.Entity<BenefitDescription>().HasKey(bd => new { bd.BenefitId, bd.Language });
-
-            //CategoryOfBenefitDescription
-            modelBuilder.Entity<CategoryOfBenefitDescription>().HasKey(bc => new { bc.CategoryOfBenefitId, bc.Language });
-
-            //MarketSegmentDescription
-            modelBuilder.Entity<MarketSegmentDescription>().HasKey(ms => new { ms.MarketSegmentId, ms.Language });
-
-            //WarrantyTitleDescription
-            modelBuilder.Entity<WarrantyTitleDescription>().HasKey(wt => new { wt.WarrantyTitleId, wt.Language });
-
-            //WarrantyLengthDescription
-            modelBuilder.Entity<WarrantyLengthDescription>().HasKey(wl => new { wl.WarrantyLengthId, wl.Language });
-
-            //WarrantyNotabeneDescription
-            modelBuilder.Entity<WarrantyNotabeneDescription>().HasKey(wn => new { wn.WarrantyNotabeneId, wn.Language });
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SqlServerContext).Assembly);
         }
 
         //public override int SaveChanges()

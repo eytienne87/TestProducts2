@@ -12,23 +12,23 @@ namespace API.Dtos.Profiles
     {
         public CategoryOfBenefitsProfile()
         {
-            CreateMap<CategoryOfBenefit, CategoryOfBenefitReadDto>()
-                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom<DescriptionResolver<CategoryOfBenefitDescription, CategoryOfBenefitDescriptionReadDto>>());
+            CreateMap<BenefitCategory, BenefitCategoryReadDto>()
+                .ForMember(dest => dest.Descriptions, opt => opt.MapFrom<DescriptionResolver<BenefitCategoryDescription, CategoryOfBenefitDescriptionReadDto>>());
 
-            CreateMap<CategoryOfBenefitDescription, CategoryOfBenefitDescriptionReadDto>();
+            CreateMap<BenefitCategoryDescription, CategoryOfBenefitDescriptionReadDto>();
 
-            CreateMap<CategoryOfBenefitCreateDto, CategoryOfBenefit>()
+            CreateMap<CategoryOfBenefitCreateDto, BenefitCategory>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
-            CreateMap<CategoryOfBenefitDescriptionCreateDto, CategoryOfBenefitDescription>();
+            CreateMap<CategoryOfBenefitDescriptionCreateDto, BenefitCategoryDescription>();
 
-            CreateMap<CategoryOfBenefitUpdateDto, CategoryOfBenefit>()
+            CreateMap<CategoryOfBenefitUpdateDto, BenefitCategory>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
-            CreateMap<CategoryOfBenefitDescriptionUpdateDto, CategoryOfBenefitDescription>();
+            CreateMap<CategoryOfBenefitDescriptionUpdateDto, BenefitCategoryDescription>();
 
-            CreateMap<CategoryOfBenefit, CategoryOfBenefitUpdateDto>()
+            CreateMap<BenefitCategory, CategoryOfBenefitUpdateDto>()
                 .ForMember(dest => dest.Descriptions, opt => opt.MapFrom(src => src.Descriptions));
 
-            CreateMap<CategoryOfBenefitDescription, CategoryOfBenefitDescriptionUpdateDto>();
+            CreateMap<BenefitCategoryDescription, CategoryOfBenefitDescriptionUpdateDto>();
 
         }
     }

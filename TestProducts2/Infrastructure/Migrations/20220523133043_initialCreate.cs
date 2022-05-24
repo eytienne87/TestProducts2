@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AbrasionResistance",
+                name: "AbrasionResistances",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -21,11 +21,11 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbrasionResistance", x => x.Id);
+                    table.PrimaryKey("PK_AbrasionResistances", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryOfBenefits",
+                name: "BenefitCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -35,7 +35,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryOfBenefits", x => x.Id);
+                    table.PrimaryKey("PK_BenefitCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,7 +98,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbrasionResistanceDescription",
+                name: "AbrasionResistanceDescriptions",
                 columns: table => new
                 {
                     AbrasionResistanceId = table.Column<int>(type: "int", nullable: false),
@@ -107,11 +107,11 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AbrasionResistanceDescription", x => new { x.AbrasionResistanceId, x.Language });
+                    table.PrimaryKey("PK_AbrasionResistanceDescriptions", x => new { x.AbrasionResistanceId, x.Language });
                     table.ForeignKey(
-                        name: "FK_AbrasionResistanceDescription_AbrasionResistance_AbrasionResistanceId",
+                        name: "FK_AbrasionResistanceDescriptions_AbrasionResistances_AbrasionResistanceId",
                         column: x => x.AbrasionResistanceId,
-                        principalTable: "AbrasionResistance",
+                        principalTable: "AbrasionResistances",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -133,9 +133,28 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_AbrasionResistance_AbrasionId",
+                        name: "FK_Products_AbrasionResistances_AbrasionId",
                         column: x => x.AbrasionId,
-                        principalTable: "AbrasionResistance",
+                        principalTable: "AbrasionResistances",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BenefitCategoryDescriptions",
+                columns: table => new
+                {
+                    CategoryOfBenefitId = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BenefitCategoryId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BenefitCategoryDescriptions", x => new { x.CategoryOfBenefitId, x.Language });
+                    table.ForeignKey(
+                        name: "FK_BenefitCategoryDescriptions_BenefitCategories_BenefitCategoryId",
+                        column: x => x.BenefitCategoryId,
+                        principalTable: "BenefitCategories",
                         principalColumn: "Id");
                 });
 
@@ -154,33 +173,14 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Benefits", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Benefits_CategoryOfBenefits_CategoryId",
+                        name: "FK_Benefits_BenefitCategories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "CategoryOfBenefits",
+                        principalTable: "BenefitCategories",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryOfBenefitDescription",
-                columns: table => new
-                {
-                    CategoryOfBenefitId = table.Column<int>(type: "int", nullable: false),
-                    Language = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryOfBenefitDescription", x => new { x.CategoryOfBenefitId, x.Language });
-                    table.ForeignKey(
-                        name: "FK_CategoryOfBenefitDescription_CategoryOfBenefits_CategoryOfBenefitId",
-                        column: x => x.CategoryOfBenefitId,
-                        principalTable: "CategoryOfBenefits",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MarketSegmentDescription",
+                name: "MarketSegmentDescriptions",
                 columns: table => new
                 {
                     MarketSegmentId = table.Column<int>(type: "int", nullable: false),
@@ -189,9 +189,9 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MarketSegmentDescription", x => new { x.MarketSegmentId, x.Language });
+                    table.PrimaryKey("PK_MarketSegmentDescriptions", x => new { x.MarketSegmentId, x.Language });
                     table.ForeignKey(
-                        name: "FK_MarketSegmentDescription_MarketSegments_MarketSegmentId",
+                        name: "FK_MarketSegmentDescriptions_MarketSegments_MarketSegmentId",
                         column: x => x.MarketSegmentId,
                         principalTable: "MarketSegments",
                         principalColumn: "Id",
@@ -199,7 +199,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WarrantyLengthDescription",
+                name: "WarrantyLengthDescriptions",
                 columns: table => new
                 {
                     WarrantyLengthId = table.Column<int>(type: "int", nullable: false),
@@ -208,9 +208,9 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WarrantyLengthDescription", x => new { x.WarrantyLengthId, x.Language });
+                    table.PrimaryKey("PK_WarrantyLengthDescriptions", x => new { x.WarrantyLengthId, x.Language });
                     table.ForeignKey(
-                        name: "FK_WarrantyLengthDescription_WarrantyLengths_WarrantyLengthId",
+                        name: "FK_WarrantyLengthDescriptions_WarrantyLengths_WarrantyLengthId",
                         column: x => x.WarrantyLengthId,
                         principalTable: "WarrantyLengths",
                         principalColumn: "Id",
@@ -218,7 +218,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WarrantyNotabeneDescription",
+                name: "WarrantyNotabeneDescriptions",
                 columns: table => new
                 {
                     WarrantyNotabeneId = table.Column<int>(type: "int", nullable: false),
@@ -227,9 +227,9 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WarrantyNotabeneDescription", x => new { x.WarrantyNotabeneId, x.Language });
+                    table.PrimaryKey("PK_WarrantyNotabeneDescriptions", x => new { x.WarrantyNotabeneId, x.Language });
                     table.ForeignKey(
-                        name: "FK_WarrantyNotabeneDescription_WarrantyNotabenes_WarrantyNotabeneId",
+                        name: "FK_WarrantyNotabeneDescriptions_WarrantyNotabenes_WarrantyNotabeneId",
                         column: x => x.WarrantyNotabeneId,
                         principalTable: "WarrantyNotabenes",
                         principalColumn: "Id",
@@ -271,7 +271,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WarrantyTitleDescription",
+                name: "WarrantyTitleDescriptions",
                 columns: table => new
                 {
                     WarrantyTitleId = table.Column<int>(type: "int", nullable: false),
@@ -280,9 +280,9 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WarrantyTitleDescription", x => new { x.WarrantyTitleId, x.Language });
+                    table.PrimaryKey("PK_WarrantyTitleDescriptions", x => new { x.WarrantyTitleId, x.Language });
                     table.ForeignKey(
-                        name: "FK_WarrantyTitleDescription_WarrantyTitles_WarrantyTitleId",
+                        name: "FK_WarrantyTitleDescriptions_WarrantyTitles_WarrantyTitleId",
                         column: x => x.WarrantyTitleId,
                         principalTable: "WarrantyTitles",
                         principalColumn: "Id",
@@ -290,7 +290,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BenefitDescription",
+                name: "BenefitDescriptions",
                 columns: table => new
                 {
                     BenefitId = table.Column<int>(type: "int", nullable: false),
@@ -299,9 +299,9 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BenefitDescription", x => new { x.BenefitId, x.Language });
+                    table.PrimaryKey("PK_BenefitDescriptions", x => new { x.BenefitId, x.Language });
                     table.ForeignKey(
-                        name: "FK_BenefitDescription_Benefits_BenefitId",
+                        name: "FK_BenefitDescriptions_Benefits_BenefitId",
                         column: x => x.BenefitId,
                         principalTable: "Benefits",
                         principalColumn: "Id",
@@ -333,7 +333,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BenefitProduct",
+                name: "ProductsBenefits",
                 columns: table => new
                 {
                     BenefitsId = table.Column<int>(type: "int", nullable: false),
@@ -341,15 +341,15 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BenefitProduct", x => new { x.BenefitsId, x.ProductsId });
+                    table.PrimaryKey("PK_ProductsBenefits", x => new { x.BenefitsId, x.ProductsId });
                     table.ForeignKey(
-                        name: "FK_BenefitProduct_Benefits_BenefitsId",
+                        name: "FK_ProductsBenefits_Benefits_BenefitsId",
                         column: x => x.BenefitsId,
                         principalTable: "Benefits",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BenefitProduct_Products_ProductsId",
+                        name: "FK_ProductsBenefits_Products_ProductsId",
                         column: x => x.ProductsId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -381,14 +381,14 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_BenefitCategoryDescriptions_BenefitCategoryId",
+                table: "BenefitCategoryDescriptions",
+                column: "BenefitCategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BenefitMarketSegment_MarketSegmentsId",
                 table: "BenefitMarketSegment",
                 column: "MarketSegmentsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BenefitProduct_ProductsId",
-                table: "BenefitProduct",
-                column: "ProductsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Benefits_CategoryId",
@@ -399,6 +399,11 @@ namespace Infrastructure.Migrations
                 name: "IX_Products_AbrasionId",
                 table: "Products",
                 column: "AbrasionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductsBenefits_ProductsId",
+                table: "ProductsBenefits",
+                column: "ProductsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductWarranty_WarrantiesId",
@@ -424,40 +429,40 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AbrasionResistanceDescription");
+                name: "AbrasionResistanceDescriptions");
 
             migrationBuilder.DropTable(
-                name: "BenefitDescription");
+                name: "BenefitCategoryDescriptions");
+
+            migrationBuilder.DropTable(
+                name: "BenefitDescriptions");
 
             migrationBuilder.DropTable(
                 name: "BenefitMarketSegment");
 
             migrationBuilder.DropTable(
-                name: "BenefitProduct");
+                name: "MarketSegmentDescriptions");
 
             migrationBuilder.DropTable(
-                name: "CategoryOfBenefitDescription");
-
-            migrationBuilder.DropTable(
-                name: "MarketSegmentDescription");
+                name: "ProductsBenefits");
 
             migrationBuilder.DropTable(
                 name: "ProductWarranty");
 
             migrationBuilder.DropTable(
-                name: "WarrantyLengthDescription");
+                name: "WarrantyLengthDescriptions");
 
             migrationBuilder.DropTable(
-                name: "WarrantyNotabeneDescription");
+                name: "WarrantyNotabeneDescriptions");
 
             migrationBuilder.DropTable(
-                name: "WarrantyTitleDescription");
-
-            migrationBuilder.DropTable(
-                name: "Benefits");
+                name: "WarrantyTitleDescriptions");
 
             migrationBuilder.DropTable(
                 name: "MarketSegments");
+
+            migrationBuilder.DropTable(
+                name: "Benefits");
 
             migrationBuilder.DropTable(
                 name: "Products");
@@ -466,10 +471,10 @@ namespace Infrastructure.Migrations
                 name: "Warranties");
 
             migrationBuilder.DropTable(
-                name: "CategoryOfBenefits");
+                name: "BenefitCategories");
 
             migrationBuilder.DropTable(
-                name: "AbrasionResistance");
+                name: "AbrasionResistances");
 
             migrationBuilder.DropTable(
                 name: "WarrantyLengths");

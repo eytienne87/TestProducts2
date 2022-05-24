@@ -12,21 +12,24 @@ namespace API.Controllers
     public class BenefitsController : Controller
     {
         private readonly IServiceManager _serviceManager;
+        private readonly ILogger<BenefitsController> _logger;
 
-        public BenefitsController(IServiceManager serviceManager)
+        public BenefitsController(IServiceManager serviceManager, ILogger<BenefitsController> logger)
         {
             _serviceManager = serviceManager;
+            _logger = logger;
         }
 
         // GET: api/Benefits
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BenefitReadDto>>> GetAll()
         {
+            _logger.LogInformation("GetAllBenefits...");
             var benefits = await _serviceManager.BenefitService.GetAll();
             return Ok(benefits);
         }
 
-        //GET api/Benefits/{id
+        //GET api/Benefits/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<BenefitReadDto>> GetById(int id)
         {

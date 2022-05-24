@@ -21,7 +21,7 @@ namespace XUnitTests
     public class BenefitsControllerTest
     {
 
-        private HttpClient _client = null!;
+        private HttpClient _client = new HttpClient();
         private string Controller = "benefits";
 
         public BenefitsControllerTest()

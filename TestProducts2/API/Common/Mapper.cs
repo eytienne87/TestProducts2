@@ -13,7 +13,7 @@
         //        {
         //            Id = productBenefit.Id,
         //            ProductType = productBenefit.ProductType,
-        //            Category = productBenefit.Category != null ? new CategoryOfBenefitReadDto
+        //            Category = productBenefit.Category != null ? new BenefitCategoryReadDto
         //            {
         //                Id = productBenefit.Category.Id,
         //                Descriptions = productBenefit.Category.Descriptions?.Select(productBenefitCategoryDescription => new CategoryOfBenefitDescriptionReadDto

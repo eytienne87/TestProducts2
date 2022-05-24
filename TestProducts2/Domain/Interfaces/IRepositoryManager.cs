@@ -6,7 +6,7 @@ namespace Domain.Interfaces
     {
         IRepository<AbrasionResistance> AbrasionResistanceRepository { get; }
         IRepository<Benefit> BenefitRepository { get; }
-        IRepository<CategoryOfBenefit> CategoryOfBenefitRepository { get; }
+        IRepository<BenefitCategory> CategoryOfBenefitRepository { get; }
         IRepository<MarketSegment> MarketSegmentRepository { get; }
         IRepository<Product> ProductRepository { get; }
         IRepository<Warranty> WarrantyRepository { get; }

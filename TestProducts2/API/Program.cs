@@ -7,11 +7,19 @@ using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
+using Serilog;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+//builder.Logging.ClearProviders();
+//builder.Logging.AddConsole();
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
 builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
+builder.Logging.AddSerilog(logger);
+
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var sqlConnectionString = builder.Configuration.GetConnectionString("SqlConnection");
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);

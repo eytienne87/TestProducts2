@@ -2,7 +2,7 @@
 
 namespace Domain.Models
 {
-    public class CategoryOfBenefitDescription
+    public class BenefitCategoryDescription
     {
         public int CategoryOfBenefitId { get; set; }
         public LanguageClass Language { get; set; }

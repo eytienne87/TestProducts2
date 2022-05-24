@@ -21,17 +21,17 @@ namespace API.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<CategoryOfBenefitReadDto> Create(CategoryOfBenefitCreateDto categoryDto)
+        public async Task<BenefitCategoryReadDto> Create(CategoryOfBenefitCreateDto categoryDto)
         {
             if (categoryDto == null)
                 throw new BadRequestException("The format of the category DTO was invalid");
 
-            var category = _mapper.Map<CategoryOfBenefit>(categoryDto);
+            var category = _mapper.Map<BenefitCategory>(categoryDto);
 
             _repositoryManager.CategoryOfBenefitRepository.Create(category);
             await _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<CategoryOfBenefitReadDto>(category);
+            return _mapper.Map<BenefitCategoryReadDto>(category);
         }
 
         public async Task Delete(int id)
@@ -47,27 +47,27 @@ namespace API.Services.Implementations
         }
 
 
-        public async Task<IEnumerable<CategoryOfBenefitReadDto>> GetAll()
+        public async Task<IEnumerable<BenefitCategoryReadDto>> GetAll()
         {
             var categories = await _repositoryManager.CategoryOfBenefitRepository.GetAll();
-            var mappedCategoryOfBenefits = _mapper.Map<IEnumerable<CategoryOfBenefitReadDto>>(categories);
+            var mappedCategoryOfBenefits = _mapper.Map<IEnumerable<BenefitCategoryReadDto>>(categories);
 
             return mappedCategoryOfBenefits;
         }
 
-        public async Task<CategoryOfBenefitReadDto?> GetById(int id)
+        public async Task<BenefitCategoryReadDto?> GetById(int id)
         {
             var category = await _repositoryManager.CategoryOfBenefitRepository.GetById(id);
 
             if (category == null)
                 throw new NotFoundException($"The category with the identifier {id} could not be found");
 
-            var categoryDto = _mapper.Map<CategoryOfBenefitReadDto>(category);
+            var categoryDto = _mapper.Map<BenefitCategoryReadDto>(category);
 
             return categoryDto;
         }
 
-        public async Task<CategoryOfBenefitReadDto> PartialUpdate(int id, JsonPatchDocument<CategoryOfBenefitUpdateDto> patchDoc)
+        public async Task<BenefitCategoryReadDto> PartialUpdate(int id, JsonPatchDocument<CategoryOfBenefitUpdateDto> patchDoc)
         {
             if (patchDoc == null)
                 throw new BadRequestException("The Patch Document provided was invalid");
@@ -87,14 +87,14 @@ namespace API.Services.Implementations
 
             await _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<CategoryOfBenefitReadDto>(category);
+            return _mapper.Map<BenefitCategoryReadDto>(category);
         }
 
 
-        public async Task<CategoryOfBenefitReadDto> Update(int id, CategoryOfBenefitUpdateDto categoryDto)
+        public async Task<BenefitCategoryReadDto> Update(int id, CategoryOfBenefitUpdateDto categoryDto)
         {
             if (categoryDto == null)
-                throw new BadRequestException("The CategoryOfBenefit DTO provided was invalid");
+                throw new BadRequestException("The BenefitCategory DTO provided was invalid");
 
             var category = await _repositoryManager.CategoryOfBenefitRepository.GetById(id);
 
@@ -107,7 +107,7 @@ namespace API.Services.Implementations
             _repositoryManager.CategoryOfBenefitRepository.Update(category);
             await _repositoryManager.UnitOfWork.SaveChanges();
 
-            return _mapper.Map<CategoryOfBenefitReadDto>(category);
+            return _mapper.Map<BenefitCategoryReadDto>(category);
         }
 
     }
