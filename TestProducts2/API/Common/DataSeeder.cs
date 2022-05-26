@@ -49,9 +49,12 @@ namespace API.Common
                 {
                     new Product()
                     {
-                        ProductType = "Redwood Laminate",
-                        StyleCode = "1234",
-                        StyleName = "Wood",
+                        ProductType = "a",
+                        StyleCode = "12345",
+                        BackingCode = "12",
+                        ColorCode = "13579",
+                        MarketingProgram = "ProgramA",
+                        Width = 1.25m,
                         Abrasion = new AbrasionResistance
                         {
                             ProductType = "Redwood Laminate TEST",

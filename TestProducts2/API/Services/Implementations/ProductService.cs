@@ -8,6 +8,7 @@ using Domain.Exceptions;
 using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using static API.Common.Helper;
 
 namespace API.Services.Implementations
 {
@@ -25,6 +26,7 @@ namespace API.Services.Implementations
 
         public async Task<ProductReadDto> Create (ProductCreateDto productDto)
         {
+            await ValidateProduct(productDto);
             if (productDto == null)
                 throw new BadRequestException("The format of the product DTO was invalid");
 
@@ -184,6 +186,32 @@ namespace API.Services.Implementations
                     });
                 }
             }
+        }
+        private async Task ValidateProduct(object productDto)
+        {
+            var productType = GetDynamicValue(productDto, "ProductType") as string;
+            var styleCode = GetDynamicValue(productDto, "StyleCode") as string;
+            var backingCode = GetDynamicValue(productDto, "BackingCode") as string;
+            var width = (decimal?)GetDynamicValue(productDto, "Width");
+            var marketingProgram = GetDynamicValue(productDto, "MarketingProgram") as string;
+            var colorCode = GetDynamicValue(productDto, "ColorCode") as string;
+
+            if (productType != null && (productType.Trim().Length == 0 || productType.Trim().Length > 1))
+                throw new ModelException("The product type entered was not valid");
+
+            if (styleCode != null && (styleCode.Trim().Length == 0 || styleCode.Trim().Length > 5))
+                throw new ModelException("The style code entered was not valid");
+
+            var product = await _repositoryManager.ProductRepository.FindOne(p =>
+                                p.ProductType == productType &&
+                                p.StyleCode == styleCode &&
+                                p.BackingCode == backingCode &&
+                                p.Width == width &&
+                                p.MarketingProgram == marketingProgram &&
+                                p.ColorCode == colorCode
+                            );
+            if (product != null)
+                throw new ConflictException("This product already exists in the database");
         }
         private async Task<ColorNameReadDto> SetProductReadDto(ProductReadDto productReadDto)
         {
